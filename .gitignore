@@ -1,0 +1,4 @@
+*.o
+*.3d
+.vscode
+generator
