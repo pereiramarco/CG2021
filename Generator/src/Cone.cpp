@@ -1,5 +1,7 @@
 #include "../include/Cone.h"
-#include "../include/Model.h"
+#include <vector>
+#include "../include/Ponto3D.h"
+#include <string>
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <unordered_map>
@@ -94,7 +96,7 @@ void Cone::generate() {
 }
 
 void Cone::saveToFile(string filename) {
-    ofstream fout(filename, ios::out) ; 
+    ofstream fout("../" + filename, ios::out) ; 
     fout<< "cone\n" << to_string(nSlices) << "\n" << to_string(nStacks) << "\n" << to_string(height) << "\n";
     for (int i=1;i<=2*nSlices;i++) {
         for (int j=0;j<=nStacks;j++) {
@@ -104,8 +106,10 @@ void Cone::saveToFile(string filename) {
     }
 } 
 
+/*
 void Cone::draw() {
     for (auto& t : faces) {
         t->desenha();
     }
 }
+*/

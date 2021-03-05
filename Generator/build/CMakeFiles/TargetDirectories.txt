@@ -1,0 +1,3 @@
+/home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/build/CMakeFiles/rebuild_cache.dir
+/home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/build/CMakeFiles/edit_cache.dir
+/home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/build/CMakeFiles/generator.dir

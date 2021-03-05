@@ -1,5 +1,7 @@
 #include "../include/Box.h"
-#include "../include/Model.h"
+#include <vector>
+#include "../include/Ponto3D.h"
+#include <string>
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <unordered_map>
@@ -98,7 +100,7 @@ void Box::generate() {
 }
 
 void Box::saveToFile(string filename) {
-    ofstream fout(filename, ios::out) ; 
+    ofstream fout("../"+filename, ios::out) ; 
     fout<< "box\n" << to_string(nDivisions) << "\n";
     for (int i=0;i<=nDivisions+1;i++) {
         for (int j=0;j<=nDivisions+1;j++) {
@@ -112,8 +114,10 @@ void Box::saveToFile(string filename) {
     
 }
 
+/*
 void Box::draw() {
     for (auto& t: faces) {
         t->desenha();
     }
 }
+*/

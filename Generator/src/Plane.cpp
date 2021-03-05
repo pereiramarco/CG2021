@@ -1,5 +1,7 @@
 #include "../include/Plane.h"
-#include "../include/Model.h"
+#include <vector>
+#include "../include/Ponto3D.h"
+#include <string>
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <unordered_map>
@@ -29,7 +31,7 @@ void Plane::generate() {
 
 
 void Plane::saveToFile(string filename) {
-    ofstream fout(filename, ios::out) ; 
+    ofstream fout("../" + filename, ios::out) ; 
     fout<< "plane\n";
     fout << to_string(topRight->x) << " " << to_string(topRight->y) << " " << to_string(topRight->z) << "\n";
     fout << to_string(topLeft->x) << " " << to_string(topLeft->y) << " " << to_string(topLeft->z) << "\n";
@@ -37,7 +39,9 @@ void Plane::saveToFile(string filename) {
     fout << to_string(bottomRight->x) << " " << to_string(bottomRight->y) << " " << to_string(bottomRight->z) << "\n";
 }
 
+/*
 void Plane::draw() {
     t1->desenha();
     t2->desenha();
 }
+*/

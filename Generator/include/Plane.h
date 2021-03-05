@@ -1,9 +1,10 @@
 #pragma once
 #include <tuple>
 #include <vector>
+#include "Ponto3D.h"
+#include <string>
 #include <map>
 #include "Triangulo.h"
-#include "Ponto3D.h"
 
 class Plane{
 public:

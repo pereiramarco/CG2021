@@ -1,23 +1,21 @@
 #pragma once
 #include <vector>
 #include <map>
-#include "Model.h"
-#include "Triangulo.h"
 #include "Ponto3D.h"
-
-using namespace std;
+#include <string>
+#include "Triangulo.h"
 
 class Sphere {
 private:
     int radius,nStacks,nSlices;
-    vector<Triangulo*> faces;
-    map<pair<int,int>,Ponto3D*> points;
+    std::vector<Triangulo*> faces;
+    std::map<std::pair<int,int>,Ponto3D*> points;
     void addTopOrBottom(bool top,int slice,int stack,int last);
     void addLastSlice(int last,int slice,int stack);
 public:
     Sphere();
     Sphere(int radiusG,int slicesG,int stacksG);
-    Model generate();
+    void generate();
     void draw();
-    void saveToFile(string filename);
+    void saveToFile(std::string filename);
 };

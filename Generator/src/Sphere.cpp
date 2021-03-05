@@ -1,5 +1,7 @@
 #include "../include/Sphere.h"
-#include "../include/Model.h"
+#include <vector>
+#include "../include/Ponto3D.h"
+#include <string>
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <unordered_map>
@@ -44,7 +46,7 @@ void Sphere::addLastSlice(int last,int slice,int stack) {//last=0 se for última
     faces.push_back(t2);
 }
 
-Model Sphere::generate() {
+void Sphere::generate() {
     double slice_angle_increment=M_PI/nSlices;
     double stack_angle_increment=M_PI/(nStacks+1);
     for (int stack=1;stack<=nStacks;stack++) {
@@ -83,11 +85,10 @@ Model Sphere::generate() {
             }
         }
     }
-    return Model();
 }
 
 void Sphere::saveToFile(string filename){
-    ofstream fout(filename, ios::out) ; 
+    ofstream fout("../"+filename, ios::out) ; 
     fout<< "sphere\n" << to_string(nSlices) << "\n" << to_string(nStacks) << "\n" << to_string(radius) << "\n";
     for (int i=1;i<=2*nSlices;i++) {
         for (int j=1;j<=nStacks;j++) {
@@ -97,8 +98,10 @@ void Sphere::saveToFile(string filename){
     }
 }
 
+/*
 void Sphere::draw() {
     for (auto& t : faces) {
         t->desenha();
     }
 }
+*/

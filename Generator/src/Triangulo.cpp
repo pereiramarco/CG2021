@@ -30,6 +30,7 @@ Triangulo::Triangulo(Ponto3D *ponto11,Ponto3D *ponto22,Ponto3D *ponto33,Ponto3D*
 	cor = corG;
 }
 
+/*
 void Triangulo::desenha() {
 
     glColor3f(cor->x,cor->y,cor->z);
@@ -38,7 +39,7 @@ void Triangulo::desenha() {
     glVertex3f(ponto3->x,ponto3->y,ponto3->z);
 	glColor3f(1,1,1);
 }
-    
+*/
 
 void Triangulo::printCoords() {
 	std::cout<< "CIMA: " << ponto1->getCoords() << "\nESQ: " << ponto2->getCoords() << "\nDIR: "<< ponto3->getCoords() << "\n";
