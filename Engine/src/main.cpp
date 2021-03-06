@@ -171,8 +171,12 @@ void readFile3D(std::string filename) {
 int main(int argc, char **argv) {
 	xmlContent parser;
 	parser.parse();
-	//readFile3D("../sphere.3d");
-	readFile3D("../plane.3d");
+	std::vector<std::string> files = parser.getModels();
+	for(int i = 0; i < files.size();i++) {
+		std::string model = "../" + files[i];
+		readFile3D(model);
+	}
+	
 // init GLUT and the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);

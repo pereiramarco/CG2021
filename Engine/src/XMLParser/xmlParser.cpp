@@ -29,6 +29,10 @@ void xmlContent::parse() {
 
 }
 
-std::vector<const char*> xmlContent::getModels() {
-    return files;
+std::vector<std::string> xmlContent::getModels() {
+    std::vector<std::string> ret;
+    for(int i = 0; i < files.size();i++) {
+        ret.push_back(std::string(files[i]));
+    }
+    return ret;
 }

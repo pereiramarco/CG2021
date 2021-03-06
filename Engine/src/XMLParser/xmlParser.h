@@ -13,7 +13,7 @@ class xmlContent {
         xmlContent(char* st);
         xmlContent(std::string st);
         void parse();
-        std::vector<const char*> getModels();
+        std::vector<std::string> getModels();
     private:
         std::string filename;
         std::vector<const char*> files;
