@@ -3,15 +3,23 @@
 
 CMakeFiles/generator.dir/src/Box.cpp.o
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Box.h
+ /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Model.h
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Ponto3D.h
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Triangulo.h
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/src/Box.cpp
 CMakeFiles/generator.dir/src/Cone.cpp.o
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Cone.h
+ /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Model.h
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Ponto3D.h
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Triangulo.h
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/src/Cone.cpp
+CMakeFiles/generator.dir/src/Model.cpp.o
+ /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Model.h
+ /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Ponto3D.h
+ /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Triangulo.h
+ /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/src/Model.cpp
 CMakeFiles/generator.dir/src/Plane.cpp.o
+ /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Model.h
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Plane.h
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Ponto3D.h
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Triangulo.h
@@ -20,6 +28,7 @@ CMakeFiles/generator.dir/src/Ponto3D.cpp.o
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Ponto3D.h
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/src/Ponto3D.cpp
 CMakeFiles/generator.dir/src/Sphere.cpp.o
+ /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Model.h
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Ponto3D.h
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Sphere.h
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Triangulo.h
@@ -31,6 +40,7 @@ CMakeFiles/generator.dir/src/Triangulo.cpp.o
 CMakeFiles/generator.dir/src/main.cpp.o
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Box.h
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Cone.h
+ /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Model.h
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Plane.h
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Ponto3D.h
  /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Sphere.h

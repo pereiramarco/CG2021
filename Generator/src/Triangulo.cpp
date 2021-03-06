@@ -32,7 +32,6 @@ Triangulo::Triangulo(Ponto3D *ponto11,Ponto3D *ponto22,Ponto3D *ponto33,Ponto3D*
 
 /*
 void Triangulo::desenha() {
-
     glColor3f(cor->x,cor->y,cor->z);
     glVertex3f(ponto1->x,ponto1->y,ponto1->z);
     glVertex3f(ponto2->x,ponto2->y,ponto2->z);

@@ -2,11 +2,15 @@
 #include <string>
 
 Ponto3D::Ponto3D(){
-	x=0;y=0;z=0;
+	x=0;y=0;z=0;index=0;
 }
 
 Ponto3D::Ponto3D(float x1,float y1, float z1) {
 	x=x1;y=y1;z=z1;
+}
+
+Ponto3D::Ponto3D(float x1,float y1, float z1,int indexG) {
+	x=x1;y=y1;z=z1;index=indexG;
 }
 
 Ponto3D* Ponto3D::clone() {

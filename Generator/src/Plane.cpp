@@ -1,11 +1,12 @@
 #include "../include/Plane.h"
-#include <vector>
 #include "../include/Ponto3D.h"
-#include <string>
-#define _USE_MATH_DEFINES
+#include "../include/Model.h"
 #include <math.h>
 #include <unordered_map>
 #include <fstream>
+#include <string>
+#include <vector>
+#define _USE_MATH_DEFINES
 
 using namespace std;
 
@@ -18,30 +19,16 @@ Plane::Plane(int widthG,int depthG) {
     width=widthG;
     depth=depthG;
 }
-void Plane::generate() {
+Model* Plane::generate() {
+    vector<Ponto3D*> vertixes;
+    vector<Triangulo*> faces;
     float x=width/2.0;
     float z=depth/2.0;
-    topRight=new Ponto3D(x,0,-z);
-    topLeft=new Ponto3D(-x,0,-z);
-    bottomLeft=new Ponto3D(-x,0,z);
-    bottomRight=new Ponto3D(x,0,z);
-    t1=new Triangulo(topRight,topLeft,bottomLeft,new Ponto3D(1,0,0));
-    t2=new Triangulo(topRight,bottomLeft,bottomRight,new Ponto3D(0,1,0));
+    topRight=new Ponto3D(x,0,-z,0);vertixes.push_back(topRight);
+    topLeft=new Ponto3D(-x,0,-z,1);vertixes.push_back(topLeft);
+    bottomLeft=new Ponto3D(-x,0,z,2);vertixes.push_back(bottomLeft);
+    bottomRight=new Ponto3D(x,0,z,3);vertixes.push_back(bottomRight);
+    t1=new Triangulo(topRight,topLeft,bottomLeft,new Ponto3D(1,0,0));faces.push_back(t1);
+    t2=new Triangulo(topRight,bottomLeft,bottomRight,new Ponto3D(0,1,0));faces.push_back(t2);
+    return new Model(vertixes.size(),faces.size(),vertixes,faces);
 }
-
-
-void Plane::saveToFile(string filename) {
-    ofstream fout("../" + filename, ios::out) ; 
-    fout<< "plane\n";
-    fout << to_string(topRight->x) << " " << to_string(topRight->y) << " " << to_string(topRight->z) << "\n";
-    fout << to_string(topLeft->x) << " " << to_string(topLeft->y) << " " << to_string(topLeft->z) << "\n";
-    fout << to_string(bottomLeft->x) << " " << to_string(bottomLeft->y) << " " << to_string(bottomLeft->z) << "\n";
-    fout << to_string(bottomRight->x) << " " << to_string(bottomRight->y) << " " << to_string(bottomRight->z) << "\n";
-}
-
-/*
-void Plane::draw() {
-    t1->desenha();
-    t2->desenha();
-}
-*/

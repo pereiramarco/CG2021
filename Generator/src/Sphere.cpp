@@ -1,6 +1,7 @@
 #include "../include/Sphere.h"
 #include <vector>
 #include "../include/Ponto3D.h"
+#include "../include/Model.h"
 #include <string>
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -22,7 +23,7 @@ Sphere::Sphere(int radiusG,int slicesG,int stacksG) {
 }
 
 void Sphere::addTopOrBottom(bool onTop,int slice,int stack,int last) { //last será um se for última slice e 1 caso contrário
-    Ponto3D *top=new Ponto3D(0.0f,radius,0.0f),*bottom=new Ponto3D(0.0f,-radius,0.0f);
+    Ponto3D *top=new Ponto3D(0.0f,radius,0.0f,0),*bottom=new Ponto3D(0.0f,-radius,0.0f,1);
     static int special=1;
     Triangulo *t;
     pair<int,int> point_before(slice-last,stack);
@@ -46,9 +47,14 @@ void Sphere::addLastSlice(int last,int slice,int stack) {//last=0 se for última
     faces.push_back(t2);
 }
 
-void Sphere::generate() {
+Model* Sphere::generate() {
     double slice_angle_increment=M_PI/nSlices;
     double stack_angle_increment=M_PI/(nStacks+1);
+    int index=2;
+    vector<Ponto3D*> vertixes;
+    Ponto3D *top=new Ponto3D(0.0f,radius,0.0f,0),*bottom=new Ponto3D(0.0f,-radius,0.0f,1);
+    vertixes.push_back(top);
+    vertixes.push_back(bottom);
     for (int stack=1;stack<=nStacks;stack++) {
 
         double stack_angle=stack*stack_angle_increment;
@@ -62,7 +68,8 @@ void Sphere::generate() {
             float x=hypotenuse*cosf(slice_angle);
             float z=-hypotenuse*sinf(slice_angle);
 
-            Ponto3D * ponto=new Ponto3D(x,y,z);
+            Ponto3D * ponto=new Ponto3D(x,y,z,index++);
+            vertixes.push_back(ponto);
 
             //addPoint
             pair<int,int> sliceAndStack(slice,stack);
@@ -85,23 +92,6 @@ void Sphere::generate() {
             }
         }
     }
+    return new Model(vertixes.size(),faces.size(),vertixes,faces);
 }
 
-void Sphere::saveToFile(string filename){
-    ofstream fout("../"+filename, ios::out) ; 
-    fout<< "sphere\n" << to_string(nSlices) << "\n" << to_string(nStacks) << "\n" << to_string(radius) << "\n";
-    for (int i=1;i<=2*nSlices;i++) {
-        for (int j=1;j<=nStacks;j++) {
-            Ponto3D* p = points[pair<int,int>(i,j)];
-            fout<< to_string(i) << " " << to_string(j) << " " << to_string(p->x) << " " << to_string(p->y) << " " << to_string(p->z) << "\n";
-        }
-    }
-}
-
-/*
-void Sphere::draw() {
-    for (auto& t : faces) {
-        t->desenha();
-    }
-}
-*/

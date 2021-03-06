@@ -2,6 +2,7 @@
 #include "Triangulo.h"
 #include <vector>
 #include "Ponto3D.h"
+#include "Model.h"
 #include <string>
 #include <map>
 
@@ -9,9 +10,7 @@ class Cone{
 public:
     Cone();
     Cone(int radius,int heightG,int nSlicesG,int nStacksG);
-    void generate();
-    void draw();
-    void saveToFile(std::string filename);
+    Model * generate();
 private:
     int radiusBase,height,nStacks,nSlices;
     std::vector<Triangulo*> faces;

@@ -1,9 +1,3 @@
-#ifdef __MAIN__
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
-
 #include <string>
 #include <math.h>
 #include <iostream>
@@ -11,6 +5,7 @@
 #include "../include/Cone.h"
 #include "../include/Box.h"
 #include "../include/Plane.h"
+#include "../include/Model.h"
 
 
 using namespace std;
@@ -171,6 +166,8 @@ int main(int argc, char **argv) {
 */
 
 int main(int argc, char **argv) {
+	string filename;
+	Model* m;
     if (argc>2) {
         string type=string(argv[1]);
         if (type=="sphere") {
@@ -180,42 +177,40 @@ int main(int argc, char **argv) {
             }
             int radius=atoi(argv[2]),slices=atoi(argv[3]),stacks=atoi(argv[4]);
             Sphere *s = new Sphere(radius,slices,stacks);
-            s->generate();
-            string filename=string(argv[5]);
-            s->saveToFile(filename);
+            m=s->generate();
+            filename=string(argv[5]);
         }
-        if (type=="cone") {
+        else if (type=="cone") {
             if (argc!=7) {
                 cout<< "Not enough arguments\n";
                 return 1;
             }
             int radiusBase=atoi(argv[2]), height=atoi(argv[3]),slices=atoi(argv[4]),stacks=atoi(argv[5]);
             Cone *c = new Cone(radiusBase,height,slices,stacks);
-            c->generate();
-            string filename=string(argv[6]);
-            c->saveToFile(filename);
+            m=c->generate();
+            filename=string(argv[6]);
         }
-        if (type=="box") {
+        else if (type=="box") {
             if (argc!=6 && argc!=7) {
                 cout<< "Not enough arguments\n";
                 return 1;
             }
             int width=atoi(argv[2]),depth=atoi(argv[3]),height=atoi(argv[4]);
             Box *b = new Box(width,depth,height,argc==6?0:atoi(argv[5]));
-            b->generate();
-            string filename=string(argv[argc==6?5:6]);
-            b->saveToFile(filename);
+            m=b->generate();
+            filename=string(argv[argc==6?5:6]);
         }
-        if (type=="plane") {
+        else if (type=="plane") {
             if (argc!=5) {
                 cout<< "Not enough arguments\n";
                 return 1;
             }
             int width=atoi(argv[2]),depth=atoi(argv[3]);
             Plane *p = new Plane(width,depth);
-            p->generate();
-            string filename=string(argv[4]);
-            p->saveToFile(filename);
+            m=p->generate();
+            filename=string(argv[4]);
         }
+		else return 1;
+        m->saveToFile(filename);
     }
 }

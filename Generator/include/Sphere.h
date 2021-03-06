@@ -4,6 +4,7 @@
 #include "Ponto3D.h"
 #include <string>
 #include "Triangulo.h"
+#include "Model.h"
 
 class Sphere {
 private:
@@ -15,7 +16,5 @@ private:
 public:
     Sphere();
     Sphere(int radiusG,int slicesG,int stacksG);
-    void generate();
-    void draw();
-    void saveToFile(std::string filename);
+    Model* generate();
 };

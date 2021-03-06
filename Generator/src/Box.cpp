@@ -1,11 +1,10 @@
 #include "../include/Box.h"
-#include <vector>
 #include "../include/Ponto3D.h"
+#include <vector>
 #include <string>
-#define _USE_MATH_DEFINES
 #include <math.h>
-#include <unordered_map>
 #include <fstream>
+#define _USE_MATH_DEFINES
 
 using namespace std;
 
@@ -76,15 +75,18 @@ void Box::addZLayer(int iterations,bool top) {
     }
 }
 
-void Box::generate() {
+Model* Box::generate() {
     float x_increment=1.0*width/(1.0*nDivisions+1);
     float y_increment=1.0*height/(1.0*nDivisions+1);
     float z_increment=1.0*depth/(1.0*nDivisions+1);
+    int index=0;
+    vector<Ponto3D*> vertixes;
     for (int y=0;y<=nDivisions+1;y++) {
         for (int x=0;x<=nDivisions+1;x++) {
             for (int z=0;z<=nDivisions+1;z++) {
-                if (y==0 || y==nDivisions+1 || (x==0 || x==nDivisions+1) || (z==0 || z==nDivisions+1)) { 
-                    Ponto3D * p = new Ponto3D(x*x_increment,y*y_increment,z*z_increment);
+                if (y==0 || y==nDivisions+1 || x==0 || x==nDivisions+1 || z==0 || z==nDivisions+1) { 
+                    Ponto3D * p = new Ponto3D(x*x_increment,y*y_increment,z*z_increment,index++);
+                    vertixes.push_back(p);
                     tuple<int,int,int> t(x,y,z);
                     points[t]=p;
                 }
@@ -97,27 +99,5 @@ void Box::generate() {
     addXLayer(nDivisions+1,true);
     addZLayer(nDivisions+1,false);
     addZLayer(nDivisions+1,true);
+    return new Model(vertixes.size(),faces.size(),vertixes,faces);
 }
-
-void Box::saveToFile(string filename) {
-    ofstream fout("../"+filename, ios::out) ; 
-    fout<< "box\n" << to_string(nDivisions) << "\n";
-    for (int i=0;i<=nDivisions+1;i++) {
-        for (int j=0;j<=nDivisions+1;j++) {
-            for (int k=0;k<=nDivisions+1;k++) {
-                Ponto3D* p = points[tuple<int,int,int>(i,j,k)];
-                if (p!=NULL)
-                    fout<< to_string(i) << " " << to_string(j) << " " << to_string(k) << " " << to_string(p->x) << " " << to_string(p->y) << " " << to_string(p->z) << "\n";
-            } 
-        }
-    }
-    
-}
-
-/*
-void Box::draw() {
-    for (auto& t: faces) {
-        t->desenha();
-    }
-}
-*/

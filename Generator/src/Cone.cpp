@@ -1,11 +1,13 @@
 #include "../include/Cone.h"
-#include <vector>
 #include "../include/Ponto3D.h"
-#include <string>
-#define _USE_MATH_DEFINES
+#include "../include/Model.h"
 #include <math.h>
 #include <unordered_map>
 #include <fstream>
+#include <vector>
+#include <string>
+
+#define _USE_MATH_DEFINES
 
 using namespace std;
 
@@ -25,7 +27,7 @@ Cone::Cone(int radiusG,int heightG,int slicesG,int stacksG) {
 
 
 void Cone::addTop(int slice,int stack,int last) { //last será um se for última slice e 0 caso contrário
-    Ponto3D *top=new Ponto3D(0.0f,height,0.0f);
+    Ponto3D *top=new Ponto3D(0.0f,height,0.0f,1);
     static int special=1;
     Triangulo *t;
     pair<int,int> point_before(slice-last,stack);
@@ -53,11 +55,16 @@ void Cone::addSquare(int last,int slice,int stack) {//last=0 se for última, las
     faces.push_back(t2);
 }
 
-void Cone::generate() {
+Model* Cone::generate() {
     bool first;
     double slice_angle_increment=M_PI/nSlices;
     double cone_angle=atan(height/radiusBase);
     double cone_side_increment=sqrt(pow(height,2)+pow(radiusBase,2))/(nStacks+1);
+    vector<Ponto3D*> vertixes;
+    int index=2;
+    Ponto3D *top=new Ponto3D(0.0f,height,0.0f,1);
+    vertixes.push_back(new Ponto3D());
+    vertixes.push_back(top);
 
     for (int stack=0;stack<=nStacks;stack++) {
         float y=sinf(cone_angle)*cone_side_increment*stack;
@@ -68,7 +75,8 @@ void Cone::generate() {
             float x=cos(slice_angle_increment*slice)*xz;
             float z=-sinf(slice_angle_increment*slice)*xz;
 
-            Ponto3D * ponto = new Ponto3D(x,y,z);
+            Ponto3D * ponto = new Ponto3D(x,y,z,index++);
+            vertixes.push_back(ponto);
             pair<int,int> sliceAndStack(slice,stack);
             points[sliceAndStack]=ponto;
 
@@ -93,23 +101,5 @@ void Cone::generate() {
             }
         }
     }
+    return new Model(vertixes.size(),faces.size(),vertixes,faces);
 }
-
-void Cone::saveToFile(string filename) {
-    ofstream fout("../" + filename, ios::out) ; 
-    fout<< "cone\n" << to_string(nSlices) << "\n" << to_string(nStacks) << "\n" << to_string(height) << "\n";
-    for (int i=1;i<=2*nSlices;i++) {
-        for (int j=0;j<=nStacks;j++) {
-            Ponto3D* p = points[pair<int,int>(i,j)];
-            fout<< to_string(i) << " " << to_string(j) << " " << to_string(p->x) << " " << to_string(p->y) << " " << to_string(p->z) << "\n";
-        }
-    }
-} 
-
-/*
-void Cone::draw() {
-    for (auto& t : faces) {
-        t->desenha();
-    }
-}
-*/

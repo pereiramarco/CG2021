@@ -196,6 +196,33 @@ src/Cone.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/generator.dir/build.make CMakeFiles/generator.dir/src/Cone.cpp.s
 .PHONY : src/Cone.cpp.s
 
+src/Model.o: src/Model.cpp.o
+
+.PHONY : src/Model.o
+
+# target to build an object file
+src/Model.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/generator.dir/build.make CMakeFiles/generator.dir/src/Model.cpp.o
+.PHONY : src/Model.cpp.o
+
+src/Model.i: src/Model.cpp.i
+
+.PHONY : src/Model.i
+
+# target to preprocess a source file
+src/Model.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/generator.dir/build.make CMakeFiles/generator.dir/src/Model.cpp.i
+.PHONY : src/Model.cpp.i
+
+src/Model.s: src/Model.cpp.s
+
+.PHONY : src/Model.s
+
+# target to generate assembly for a file
+src/Model.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/generator.dir/build.make CMakeFiles/generator.dir/src/Model.cpp.s
+.PHONY : src/Model.cpp.s
+
 src/Plane.o: src/Plane.cpp.o
 
 .PHONY : src/Plane.o
@@ -346,6 +373,9 @@ help:
 	@echo "... src/Cone.o"
 	@echo "... src/Cone.i"
 	@echo "... src/Cone.s"
+	@echo "... src/Model.o"
+	@echo "... src/Model.i"
+	@echo "... src/Model.s"
 	@echo "... src/Plane.o"
 	@echo "... src/Plane.i"
 	@echo "... src/Plane.s"

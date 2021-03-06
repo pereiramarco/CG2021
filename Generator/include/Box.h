@@ -1,7 +1,8 @@
 #pragma once
 #include "Triangulo.h"
-#include <vector>
 #include "Ponto3D.h"
+#include "Model.h"
+#include <vector>
 #include <string>
 #include <tuple>
 #include <map>
@@ -10,9 +11,7 @@ class Box{
 public:
     Box();
     Box(int widthG,int depthG,int heightG,int nDivisionsG);
-    void generate();
-    void draw();
-    void saveToFile(std::string filename);
+    Model* generate();
 private:
     int width,depth,height,nDivisions;
     std::vector<Triangulo*> faces;
