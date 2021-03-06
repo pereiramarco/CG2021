@@ -6,34 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Box.h
-Triangulo.h
-/home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Triangulo.h
-Ponto3D.h
-/home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Ponto3D.h
-Model.h
-/home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Model.h
-vector
--
-string
--
-tuple
--
-map
--
-
-/home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Model.h
-Triangulo.h
-/home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Triangulo.h
-vector
--
-Ponto3D.h
-/home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Ponto3D.h
-string
--
-map
--
-
 /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Ponto3D.h
 string
 -
@@ -42,17 +14,13 @@ string
 Ponto3D.h
 /home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Ponto3D.h
 
-/home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/src/Box.cpp
-../include/Box.h
-/home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Box.h
-../include/Ponto3D.h
-/home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Ponto3D.h
-vector
+/home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/src/Triangulo.cpp
+GLUT/glut.h
 -
-string
+GL/glut.h
 -
-math.h
--
-fstream
--
+../include/Triangulo.h
+/home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/include/Triangulo.h
+iostream
+/home/marco/Desktop/Uni/3ano/2sem/CG/CG2021/Generator/src/iostream
 
