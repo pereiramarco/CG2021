@@ -1,4 +1,4 @@
-#include "../include/Triangulo.h"
+#include "../../Utils/Triangulo.h"
 #include "../include/Model.h"
 #include <vector>
 #include <string>

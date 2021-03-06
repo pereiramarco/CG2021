@@ -1,9 +1,9 @@
 #pragma once
 #include <vector>
 #include <map>
-#include "Ponto3D.h"
+#include "../../Utils/Ponto3D.h"
 #include <string>
-#include "Triangulo.h"
+#include "../../Utils/Triangulo.h"
 #include "Model.h"
 
 class Sphere {

@@ -1,5 +1,5 @@
 #include "../include/Cone.h"
-#include "../include/Ponto3D.h"
+#include "../../Utils/Ponto3D.h"
 #include "../include/Model.h"
 #include <math.h>
 #include <unordered_map>
@@ -34,7 +34,7 @@ void Cone::addTop(int slice,int stack,int last) { //last será um se for última
     pair<int,int> point_now(slice*last+(1-last),stack);
     Ponto3D *second=points[point_before];
     Ponto3D *third=points[point_now]; 
-    t = new Triangulo(top,third,second,new Ponto3D(special,1.0f,0.0f));
+    t = new Triangulo(top,third,second);
     this->faces.push_back(t);
     special=1-special;
 }
@@ -42,15 +42,15 @@ void Cone::addCircle(int last,int slice,int stack) {
     Ponto3D * middle=new Ponto3D();
     pair<int,int> before(slice-last,stack),now(slice*last+(1-last),stack);
     Ponto3D* beforePoint=points[before],*nowPoint=points[now];
-    Triangulo *t=new Triangulo(beforePoint,nowPoint,middle,new Ponto3D(0.0f,1.0f,1.0f));
+    Triangulo *t=new Triangulo(beforePoint,nowPoint,middle);
     faces.push_back(t);
 }
 
 void Cone::addSquare(int last,int slice,int stack) {//last=0 se for última, last=1 caso contrário;
     pair<int,int> topleft(slice-last,stack-1),topright(slice*last+(1-last),stack-1),bottomleft(slice-last,stack),bottomright(slice*last+(1-last),stack);
     Ponto3D * topRight=points[topright],*topLeft=points[topleft],*bottomLeft=points[bottomleft],*bottomRight=points[bottomright];
-    Triangulo *t1=new Triangulo(topRight,topLeft,bottomLeft,new Ponto3D(0.0f,0.0f,1.0f));
-    Triangulo *t2=new Triangulo(topRight,bottomLeft,bottomRight,new Ponto3D(1.0f,0.0f,0.0f));
+    Triangulo *t1=new Triangulo(topRight,topLeft,bottomLeft);
+    Triangulo *t2=new Triangulo(topRight,bottomLeft,bottomRight);
     faces.push_back(t1);
     faces.push_back(t2);
 }

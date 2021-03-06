@@ -1,7 +1,7 @@
 #pragma once
-#include "Triangulo.h"
+#include "../../Utils/Triangulo.h"
 #include <vector>
-#include "Ponto3D.h"
+#include "../../Utils/Ponto3D.h"
 #include "Model.h"
 #include <string>
 #include <map>

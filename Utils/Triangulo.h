@@ -7,6 +7,5 @@ public:
     Triangulo();
     Triangulo(Ponto3D *ponto11,Ponto3D *ponto22,Ponto3D *ponto33);
 	Triangulo(Ponto3D *ponto11,Ponto3D *ponto22,Ponto3D *ponto33,Ponto3D* corG);
-    void desenha();
 	void printCoords();
 };

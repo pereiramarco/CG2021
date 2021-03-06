@@ -1,5 +1,5 @@
 #include "../include/Box.h"
-#include "../include/Ponto3D.h"
+#include "../../Utils/Ponto3D.h"
 #include <vector>
 #include <string>
 #include <math.h>
@@ -25,12 +25,12 @@ Box::Box(int widthG,int depthG,int heightG,int nDivisionsG) {
 void Box::addSquare(bool top,Ponto3D * topRight,Ponto3D * topLeft,Ponto3D * bellowLeft,Ponto3D * bellowRight) {
     Triangulo *t1,*t2;
     if (top) {
-        t1=new Triangulo(topRight,topLeft,bellowLeft,new Ponto3D(0.0f,1.0f,0.0f));
-        t2=new Triangulo(topRight,bellowLeft,bellowRight,new Ponto3D(1.0f,0.0f,0.0f));
+        t1=new Triangulo(topRight,topLeft,bellowLeft);
+        t2=new Triangulo(topRight,bellowLeft,bellowRight);
     }
     else {
-        t1=new Triangulo(topRight,bellowLeft,topLeft,new Ponto3D(0.0f,1.0f,0.0f));
-        t2=new Triangulo(topRight,bellowRight,bellowLeft,new Ponto3D(1.0f,0.0f,0.0f));
+        t1=new Triangulo(topRight,bellowLeft,topLeft);
+        t2=new Triangulo(topRight,bellowRight,bellowLeft);
     }
     faces.push_back(t1);
     faces.push_back(t2);

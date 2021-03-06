@@ -1,4 +1,4 @@
-#include "../include/Ponto3D.h"
+#include "Ponto3D.h"
 #include <string>
 
 Ponto3D::Ponto3D(){

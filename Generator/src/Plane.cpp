@@ -1,5 +1,5 @@
 #include "../include/Plane.h"
-#include "../include/Ponto3D.h"
+#include "../../Utils/Ponto3D.h"
 #include "../include/Model.h"
 #include <math.h>
 #include <unordered_map>
@@ -28,7 +28,7 @@ Model* Plane::generate() {
     topLeft=new Ponto3D(-x,0,-z,1);vertixes.push_back(topLeft);
     bottomLeft=new Ponto3D(-x,0,z,2);vertixes.push_back(bottomLeft);
     bottomRight=new Ponto3D(x,0,z,3);vertixes.push_back(bottomRight);
-    t1=new Triangulo(topRight,topLeft,bottomLeft,new Ponto3D(1,0,0));faces.push_back(t1);
-    t2=new Triangulo(topRight,bottomLeft,bottomRight,new Ponto3D(0,1,0));faces.push_back(t2);
+    t1=new Triangulo(topRight,topLeft,bottomLeft);faces.push_back(t1);
+    t2=new Triangulo(topRight,bottomLeft,bottomRight);faces.push_back(t2);
     return new Model(vertixes.size(),faces.size(),vertixes,faces);
 }
