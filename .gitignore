@@ -2,3 +2,8 @@
 *.3d
 .vscode
 generator
+engine
+Generator/build/
+Engine/build/
+!Generator/build/.gitkeep
+!Engine/build/.gitkeep

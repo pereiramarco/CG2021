@@ -17,6 +17,13 @@ Triangulo::Triangulo(Ponto3D *ponto11,Ponto3D *ponto22,Ponto3D *ponto33) {
     cor = new Ponto3D(1.0f,1.0f,1.0f);
 }
 
+Triangulo::Triangulo(Ponto3D *ponto11,Ponto3D *ponto22,Ponto3D *ponto33,Ponto3D* corG) {
+    ponto1=ponto11;
+    ponto2=ponto22;
+    ponto3=ponto33;
+    cor = corG;
+}
+
 void Triangulo::printCoords() {
 	std::cout<< "CIMA: " << ponto1->getCoords() << "\nESQ: " << ponto2->getCoords() << "\nDIR: "<< ponto3->getCoords() << "\n";
 }

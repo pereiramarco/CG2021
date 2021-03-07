@@ -12,6 +12,7 @@
 #include <fstream>
 #include <sstream>
 #include <unordered_map>
+#include <cstdlib>
 
 using namespace std;
 
@@ -45,7 +46,7 @@ void drawFigures() {
 		for(int i = 0; i < value.second.size(); i++) {
 			triangulo = value.second.at(i);
 			glBegin(GL_TRIANGLES);
-			glColor3f(1.0f,1.0f,1.0f);
+			glColor3f(triangulo->cor->x,triangulo->cor->y,triangulo->cor->z);
 			glVertex3f(triangulo->ponto1->x,triangulo->ponto1->y,triangulo->ponto1->z);
     		glVertex3f(triangulo->ponto2->x,triangulo->ponto2->y,triangulo->ponto2->z);
     		glVertex3f(triangulo->ponto3->x,triangulo->ponto3->y,triangulo->ponto3->z);
@@ -124,7 +125,6 @@ void keyboardInput(unsigned char key, int x, int y) {
 		default:
             break;
 	}
-	glutPostRedisplay(); 
 }
 
 
@@ -162,7 +162,7 @@ void readFile3D(std::string filename) {
 			std::cout << "Erro! \n";
 			break;
 		}
-		triangulo = new Triangulo(vertices.at(x),vertices.at(y),vertices.at(z));
+		triangulo = new Triangulo(vertices.at(x),vertices.at(y),vertices.at(z),new Ponto3D(static_cast <float> (rand()) / static_cast <float> (RAND_MAX),static_cast <float> (rand()) / static_cast <float> (RAND_MAX),static_cast <float> (rand()) / static_cast <float> (RAND_MAX)));
 		triangulos.push_back(triangulo);
 	}
 	polygons[filename] = triangulos;
@@ -182,7 +182,7 @@ int main(int argc, char **argv) {
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
 	glutInitWindowPosition(100,100);
 	glutInitWindowSize(800,800);
-	glutCreateWindow("CG@DI-UM");
+	glutCreateWindow("CG2021 Dream Team");
 		
 // Required callback registry 
 	glutDisplayFunc(renderScene);

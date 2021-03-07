@@ -38,9 +38,11 @@ void Sphere::addTopOrBottom(bool onTop,int slice,int stack,int last) { //last se
     special=1-special;
 }
 
-void Sphere::addLastSlice(int last,int slice,int stack) {//last=0 se for última, last=1 caso contrário;
-    pair<int,int> topleft(slice-last,stack-1),topright(slice*last+(1-last),stack-1),bottomleft(slice-last,stack),bottomright(slice*last+(1-last),stack);
-    Ponto3D * topRight=points[topright],*topLeft=points[topleft],*bottomLeft=points[bottomleft],*bottomRight=points[bottomright];
+void Sphere::addSlice(int last,int slice,int stack) {//last=0 se for última, last=1 caso contrário;
+    pair<int,int> topleft(slice-last,stack-1),topright(slice*last+(1-last),stack-1);
+    pair<int,int> bottomleft(slice-last,stack),bottomright(slice*last+(1-last),stack);
+    Ponto3D * topRight=points[topright],*topLeft=points[topleft];
+    Ponto3D *bottomLeft=points[bottomleft],*bottomRight=points[bottomright];
     Triangulo *t1=new Triangulo(topRight,topLeft,bottomLeft);
     Triangulo *t2=new Triangulo(topRight,bottomLeft,bottomRight);
     faces.push_back(t1);
@@ -59,12 +61,12 @@ Model* Sphere::generate() {
 
         double stack_angle=stack*stack_angle_increment;
         float y=radius*cosf(stack_angle);
+        float hypotenuse=radius*sinf(stack_angle);
         bool first=true;
 
         for (int slice=1;slice<=2*nSlices;slice++) {
 
             double slice_angle=slice*slice_angle_increment;
-            float hypotenuse=radius*sinf(stack_angle);
             float x=hypotenuse*cosf(slice_angle);
             float z=-hypotenuse*sinf(slice_angle);
 
@@ -81,9 +83,9 @@ Model* Sphere::generate() {
                     addTopOrBottom(true,slice,stack,0);
             }
             else {//forma quadrados
-                addLastSlice(1,slice,stack);
+                addSlice(1,slice,stack);
                 if (slice==2*nSlices) //une quando está na última slice
-                    addLastSlice(0,slice,stack);
+                    addSlice(0,slice,stack);
             }
             if (stack==nStacks) {
                 addTopOrBottom(false,slice,stack,1);
