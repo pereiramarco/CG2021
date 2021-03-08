@@ -76,15 +76,15 @@ void Box::addZLayer(int iterations,bool top) {
 }
 
 Model* Box::generate() {
-    float x_increment=1.0*width/(1.0*nDivisions+1);
-    float y_increment=1.0*height/(1.0*nDivisions+1);
-    float z_increment=1.0*depth/(1.0*nDivisions+1);
+    float x_increment=1.0*width/(1.0*nDivisions);
+    float y_increment=1.0*height/(1.0*nDivisions);
+    float z_increment=1.0*depth/(1.0*nDivisions);
     int index=0;
     vector<Ponto3D*> vertixes;
-    for (int y=0;y<=nDivisions+1;y++) {
-        for (int x=0;x<=nDivisions+1;x++) {
-            for (int z=0;z<=nDivisions+1;z++) {
-                if (y==0 || y==nDivisions+1 || x==0 || x==nDivisions+1 || z==0 || z==nDivisions+1) { 
+    for (int y=0;y<=nDivisions;y++) {
+        for (int x=0;x<=nDivisions;x++) {
+            for (int z=0;z<=nDivisions;z++) {
+                if (y==0 || y==nDivisions || x==0 || x==nDivisions || z==0 || z==nDivisions) { 
                     Ponto3D * p = new Ponto3D(x*x_increment,y*y_increment,z*z_increment,index++);
                     vertixes.push_back(p);
                     tuple<int,int,int> t(x,y,z);
@@ -93,11 +93,11 @@ Model* Box::generate() {
             }
         }
     }
-    addYLayer(nDivisions+1,false);
-    addYLayer(nDivisions+1,true);
-    addXLayer(nDivisions+1,false);
-    addXLayer(nDivisions+1,true);
-    addZLayer(nDivisions+1,false);
-    addZLayer(nDivisions+1,true);
+    addYLayer(nDivisions,false);
+    addYLayer(nDivisions,true);
+    addXLayer(nDivisions,false);
+    addXLayer(nDivisions,true);
+    addZLayer(nDivisions,false);
+    addZLayer(nDivisions,true);
     return new Model(vertixes.size(),faces.size(),vertixes,faces);
 }

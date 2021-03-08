@@ -50,7 +50,7 @@ void Sphere::addSlice(int last,int slice,int stack) {//last=0 se for última, la
 }
 
 Model* Sphere::generate() {
-    double slice_angle_increment=M_PI/nSlices;
+    double slice_angle_increment=M_PI*2.0/nSlices;
     double stack_angle_increment=M_PI/(nStacks+1);
     int index=2;
     vector<Ponto3D*> vertixes;
@@ -64,7 +64,7 @@ Model* Sphere::generate() {
         float hypotenuse=radius*sinf(stack_angle);
         bool first=true;
 
-        for (int slice=1;slice<=2*nSlices;slice++) {
+        for (int slice=1;slice<=nSlices;slice++) {
 
             double slice_angle=slice*slice_angle_increment;
             float x=hypotenuse*cosf(slice_angle);
@@ -79,17 +79,17 @@ Model* Sphere::generate() {
             if (first) {first=false;continue;} //primeira iteração de cada slice deve apenas guardar o ponto
             if (stack==1) {//forma triangulos
                 addTopOrBottom(true,slice,stack,1);
-                if (slice==2*nSlices)
+                if (slice==nSlices)
                     addTopOrBottom(true,slice,stack,0);
             }
             else {//forma quadrados
                 addSlice(1,slice,stack);
-                if (slice==2*nSlices) //une quando está na última slice
+                if (slice==nSlices) //une quando está na última slice
                     addSlice(0,slice,stack);
             }
             if (stack==nStacks) {
                 addTopOrBottom(false,slice,stack,1);
-                if (slice==2*nSlices)
+                if (slice==nSlices)
                     addTopOrBottom(false,slice,stack,0);
             }
         }

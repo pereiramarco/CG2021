@@ -57,7 +57,7 @@ void Cone::addSquare(int last,int slice,int stack) {//last=0 se for última, las
 
 Model* Cone::generate() {
     bool first;
-    double slice_angle_increment=M_PI/nSlices;
+    double slice_angle_increment=M_PI*2.0/nSlices;
     double cone_angle=atan(height/radiusBase);
     double cone_side_increment=sqrt(pow(height,2)+pow(radiusBase,2))/(nStacks+1);
     vector<Ponto3D*> vertixes;
@@ -71,7 +71,7 @@ Model* Cone::generate() {
         float xz=radiusBase-cosf(cone_angle)*cone_side_increment*stack;
         first=true;
 
-        for (int slice=1;slice<=nSlices*2;slice++) {
+        for (int slice=1;slice<=nSlices;slice++) {
             float x=cos(slice_angle_increment*slice)*xz;
             float z=-sinf(slice_angle_increment*slice)*xz;
 
@@ -83,19 +83,19 @@ Model* Cone::generate() {
             if (first) {first=false;continue;}
             if (stack==0) {
                 addCircle(1,slice,stack);
-                if (slice==2*nSlices) {
+                if (slice==nSlices) {
                     addCircle(0,slice,stack);
                 }
             }
             else {
                 addSquare(1,slice,stack);
-                if (slice==2*nSlices) {
+                if (slice==nSlices) {
                     addSquare(0,slice,stack);
                 }
             }
             if (stack==nStacks) {
                 addTop(slice,stack,1);
-                if (slice==2*nSlices) {
+                if (slice==nSlices) {
                     addTop(slice,stack,0);
                 }
             }

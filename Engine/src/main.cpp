@@ -134,6 +134,7 @@ void mouseControls(int x,int y) {
 }
 
 void readFile3D(std::string filename) {
+	srand(time(NULL)); //dá seed à aleatoriedade de forma a ter sempre cores diferentes.
 	std::ifstream fp(filename);
 	int numVertexes, numTriangles;
 	float x,y,z;
@@ -162,7 +163,10 @@ void readFile3D(std::string filename) {
 			std::cout << "Erro! \n";
 			break;
 		}
-		triangulo = new Triangulo(vertices.at(x),vertices.at(y),vertices.at(z),new Ponto3D(static_cast <float> (rand()) / static_cast <float> (RAND_MAX),static_cast <float> (rand()) / static_cast <float> (RAND_MAX),static_cast <float> (rand()) / static_cast <float> (RAND_MAX)));
+		float corx=((float)rand())/INT_MAX;
+		float cory=((float)rand())/INT_MAX;
+		float corz=((float)rand())/INT_MAX;
+		triangulo = new Triangulo(vertices.at(x),vertices.at(y),vertices.at(z),new Ponto3D(corx,cory,corz));
 		triangulos.push_back(triangulo);
 	}
 	polygons[filename] = triangulos;
