@@ -2,9 +2,9 @@
 #include "../../Utils/Ponto3D.h"
 #include <vector>
 #include <string>
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include <fstream>
-#define _USE_MATH_DEFINES
 
 using namespace std;
 

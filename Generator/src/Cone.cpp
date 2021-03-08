@@ -1,13 +1,13 @@
 #include "../include/Cone.h"
 #include "../../Utils/Ponto3D.h"
 #include "../include/Model.h"
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include <unordered_map>
 #include <fstream>
 #include <vector>
 #include <string>
 
-#define _USE_MATH_DEFINES
 
 using namespace std;
 

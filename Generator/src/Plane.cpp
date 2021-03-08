@@ -1,12 +1,12 @@
 #include "../include/Plane.h"
 #include "../../Utils/Ponto3D.h"
 #include "../include/Model.h"
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include <unordered_map>
 #include <fstream>
 #include <string>
 #include <vector>
-#define _USE_MATH_DEFINES
 
 using namespace std;
 
