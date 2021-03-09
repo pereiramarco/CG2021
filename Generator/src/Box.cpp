@@ -36,10 +36,10 @@ void Box::addSquare(bool top,Ponto3D * topRight,Ponto3D * topLeft,Ponto3D * bell
     faces.push_back(t2);
 }
 
-void Box::addYLayer(int iterations,bool top) { 
-    int y=top?0:iterations;
-    for (int x=0;x<iterations;x++) {
-        for (int z=0;z<iterations;z++) {
+void Box::addYLayer(bool top) { 
+    int y=top?0:nDivisions;
+    for (int x=0;x<nDivisions;x++) {
+        for (int z=0;z<nDivisions;z++) {
             Ponto3D * topLeft=points[tuple<int,int,int>(x,y,z)];
             Ponto3D * topRight=points[tuple<int,int,int>(x+1,y,z)];
             Ponto3D * bellowLeft=points[tuple<int,int,int>(x,y,z+1)];
@@ -49,10 +49,10 @@ void Box::addYLayer(int iterations,bool top) {
     }
 }
 
-void Box::addXLayer(int iterations,bool top) {
-    int x=top?0:iterations;
-    for (int y=0;y<iterations;y++) {
-        for (int z=0;z<iterations;z++) {
+void Box::addXLayer(bool top) {
+    int x=top?0:nDivisions;
+    for (int y=0;y<nDivisions;y++) {
+        for (int z=0;z<nDivisions;z++) {
             Ponto3D * topLeft=points[tuple<int,int,int>(x,y,z)];
             Ponto3D * topRight=points[tuple<int,int,int>(x,y,z+1)];
             Ponto3D * bellowLeft=points[tuple<int,int,int>(x,y+1,z)];
@@ -62,10 +62,10 @@ void Box::addXLayer(int iterations,bool top) {
     }
 }
 
-void Box::addZLayer(int iterations,bool top) {
-    int z=top?0:iterations;
-    for (int x=0;x<iterations;x++) {
-        for (int y=0;y<iterations;y++) {
+void Box::addZLayer(bool top) {
+    int z=top?0:nDivisions;
+    for (int x=0;x<nDivisions;x++) {
+        for (int y=0;y<nDivisions;y++) {
             Ponto3D * topLeft=points[tuple<int,int,int>(x,y,z)];
             Ponto3D * topRight=points[tuple<int,int,int>(x+1,y,z)];
             Ponto3D * bellowLeft=points[tuple<int,int,int>(x,y+1,z)];
@@ -93,11 +93,11 @@ Model* Box::generate() {
             }
         }
     }
-    addYLayer(nDivisions,false);
-    addYLayer(nDivisions,true);
-    addXLayer(nDivisions,false);
-    addXLayer(nDivisions,true);
-    addZLayer(nDivisions,false);
-    addZLayer(nDivisions,true);
+    addYLayer(false);
+    addYLayer(true);
+    addXLayer(false);
+    addXLayer(true);
+    addZLayer(false);
+    addZLayer(true);
     return new Model(vertixes.size(),faces.size(),vertixes,faces);
 }
