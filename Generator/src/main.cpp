@@ -46,14 +46,14 @@ int main(int argc, char **argv) {
             filename=string(argv[argc==6?5:6]);
         }
         else if (type=="plane") {
-            if (argc!=5) {
+            if (argc!=4) {
                 cout<< "Not enough arguments\n";
                 return 1;
             }
-            int width=atoi(argv[2]),depth=atoi(argv[3]);
-            Plane *p = new Plane(width,depth);
+            int side=atoi(argv[2]);
+            Plane *p = new Plane(side);
             m=p->generate();
-            filename=string(argv[4]);
+            filename=string(argv[3]);
         }
 		else return 1;
         m->saveToFile(filename);

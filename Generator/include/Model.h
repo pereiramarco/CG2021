@@ -7,7 +7,7 @@
 
 class Model{
 public:
-    Model(int nVertices,int nTriangulosG,std::vector<Ponto3D*> vertixesG,std::vector<Triangulo*> faces);
+    Model(std::vector<Ponto3D*> vertixesG,std::vector<Triangulo*> faces);
     void saveToFile(std::string filename);
 private:
     int nVertices,nTriangulos;

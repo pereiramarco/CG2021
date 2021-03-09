@@ -7,9 +7,9 @@
 
 using namespace std;
 
-Model::Model(int nVerticesG,int nTriangulosG,std::vector<Ponto3D*> vertixesG,std::vector<Triangulo*> facesG) {
-    nVertices=nVerticesG;
-    nTriangulos=nTriangulosG;
+Model::Model(std::vector<Ponto3D*> vertixesG,std::vector<Triangulo*> facesG) {
+    nVertices=vertixesG.size();
+    nTriangulos=facesG.size();
     vertixes=vertixesG;
     faces=facesG;
 }

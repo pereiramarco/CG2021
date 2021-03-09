@@ -16,7 +16,7 @@
 
 using namespace std;
 
-float rotateSpeed=1.0f,rotateSpeed2=1.0f;
+float rotationAngle=1.0f,rotationAngle2=1.0f;
 int profundidade=1;
 bool axis=false;
 std::unordered_map<std::string,std::vector<Triangulo*> > polygons;
@@ -62,13 +62,13 @@ void renderScene(void) {
 
 	// set the camera
 	glLoadIdentity();
-	gluLookAt(profundidade,profundidade,profundidade, 
+	gluLookAt(profundidade*2,profundidade*2,profundidade*2, 
 		      0.0,0.0,0.0,
 			  0.0f,1.0f,0.0f);
 
 // put the geometric transformations here
-	glRotatef(rotateSpeed,0.0,1.0,0.0);
-    glRotatef(rotateSpeed2,1.0,0.0,1.0);
+	glRotatef(rotationAngle,0.0,1.0,0.0);
+    glRotatef(rotationAngle2,1.0,0.0,1.0);
 
 // put drawing instructions here
 	if (axis) meteAxis();
@@ -107,16 +107,16 @@ void changeSize(int w, int h) {
 // write function to process keyboard events
 void keyboardInput(unsigned char key, int x, int y) {
 	switch(key) {
-		case 'w':
-			rotateSpeed+=10;
+		case 'd':
+			rotationAngle+=10;
+			break;
+		case 'a':
+			rotationAngle-=10;
 			break;
 		case 's':
-			rotateSpeed-=10;
-			break;
-		case 'm':
 			profundidade+=1;
 			break;
-		case 'n':
+		case 'w':
 			profundidade=profundidade==1?1:profundidade-1;
 			break;
 		case ' ':
@@ -129,8 +129,8 @@ void keyboardInput(unsigned char key, int x, int y) {
 
 
 void mouseControls(int x,int y) {
-	rotateSpeed=x%360;
-    rotateSpeed2=y%360;
+	rotationAngle=x/2%360;
+    rotationAngle2=y/2%360;
 }
 
 void readFile3D(std::string filename) {
@@ -163,9 +163,9 @@ void readFile3D(std::string filename) {
 			std::cout << "Erro! \n";
 			break;
 		}
-		float corx=((float)rand())/INT_MAX;
-		float cory=((float)rand())/INT_MAX;
-		float corz=((float)rand())/INT_MAX;
+		float corx=(1.0*rand())/INT_MAX;
+		float cory=(1.0*rand())/INT_MAX;
+		float corz=(1.0*rand())/INT_MAX;
 		triangulo = new Triangulo(vertices.at(x),vertices.at(y),vertices.at(z),new Ponto3D(corx,cory,corz));
 		triangulos.push_back(triangulo);
 	}

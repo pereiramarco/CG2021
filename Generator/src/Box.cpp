@@ -37,40 +37,40 @@ void Box::addSquare(bool top,Ponto3D * topRight,Ponto3D * topLeft,Ponto3D * bell
 }
 
 void Box::addYLayer(bool top) { 
-    int y=top?0:nDivisions;
+    int y=top?nDivisions:0;
     for (int x=0;x<nDivisions;x++) {
         for (int z=0;z<nDivisions;z++) {
             Ponto3D * topLeft=points[tuple<int,int,int>(x,y,z)];
             Ponto3D * topRight=points[tuple<int,int,int>(x+1,y,z)];
             Ponto3D * bellowLeft=points[tuple<int,int,int>(x,y,z+1)];
             Ponto3D * bellowRight=points[tuple<int,int,int>(x+1,y,z+1)];
-            addSquare(!top,topRight,topLeft,bellowLeft,bellowRight);
+            addSquare(top,topRight,topLeft,bellowLeft,bellowRight);
         }
     }
 }
 
 void Box::addXLayer(bool top) {
-    int x=top?0:nDivisions;
+    int x=top?nDivisions:0;
     for (int y=0;y<nDivisions;y++) {
         for (int z=0;z<nDivisions;z++) {
             Ponto3D * topLeft=points[tuple<int,int,int>(x,y,z)];
             Ponto3D * topRight=points[tuple<int,int,int>(x,y,z+1)];
             Ponto3D * bellowLeft=points[tuple<int,int,int>(x,y+1,z)];
             Ponto3D * bellowRight=points[tuple<int,int,int>(x,y+1,z+1)];
-            addSquare(!top,topRight,topLeft,bellowLeft,bellowRight);
+            addSquare(top,topRight,topLeft,bellowLeft,bellowRight);
         }
     }
 }
 
 void Box::addZLayer(bool top) {
-    int z=top?0:nDivisions;
+    int z=top?nDivisions:0;
     for (int x=0;x<nDivisions;x++) {
         for (int y=0;y<nDivisions;y++) {
             Ponto3D * topLeft=points[tuple<int,int,int>(x,y,z)];
             Ponto3D * topRight=points[tuple<int,int,int>(x+1,y,z)];
             Ponto3D * bellowLeft=points[tuple<int,int,int>(x,y+1,z)];
             Ponto3D * bellowRight=points[tuple<int,int,int>(x+1,y+1,z)];
-            addSquare(top,topRight,topLeft,bellowLeft,bellowRight);
+            addSquare(!top,topRight,topLeft,bellowLeft,bellowRight);
         }
     }
 }
@@ -99,5 +99,5 @@ Model* Box::generate() {
     addXLayer(true);
     addZLayer(false);
     addZLayer(true);
-    return new Model(vertixes.size(),faces.size(),vertixes,faces);
+    return new Model(vertixes,faces);
 }

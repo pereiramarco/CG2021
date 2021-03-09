@@ -94,6 +94,6 @@ Model* Sphere::generate() {
             }
         }
     }
-    return new Model(vertixes.size(),faces.size(),vertixes,faces);
+    return new Model(vertixes,faces);
 }
 

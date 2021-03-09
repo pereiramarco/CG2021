@@ -10,10 +10,10 @@
 class Plane{
 public:
     Plane();
-    Plane(int widthG,int depthG);
+    Plane(int sideG);
     Model* generate();
 private:
-    int width,depth;
+    int side;
     Triangulo * t1,*t2;
     Ponto3D * topRight,*topLeft,*bottomLeft,*bottomRight;
 };
