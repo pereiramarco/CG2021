@@ -46,7 +46,7 @@ void drawFigures() {
 		for(int i = 0; i < value.second.size(); i++) {
 			triangulo = value.second.at(i);
 			glBegin(GL_TRIANGLES);
-			glColor3f(triangulo->cor->x,triangulo->cor->y,triangulo->cor->z);
+			glColor3f(triangulo->redValue,triangulo->greenValue,triangulo->blueValue);
 			glVertex3f(triangulo->ponto1->x,triangulo->ponto1->y,triangulo->ponto1->z);
     		glVertex3f(triangulo->ponto2->x,triangulo->ponto2->y,triangulo->ponto2->z);
     		glVertex3f(triangulo->ponto3->x,triangulo->ponto3->y,triangulo->ponto3->z);
@@ -146,6 +146,7 @@ void readFile3D(std::string filename) {
 	std::vector<Ponto3D*> vertices;
 	std::vector<Triangulo*> triangulos;
 	Triangulo * triangulo;
+	// Aquisição dos Pontos de Desenho dos Triangulos do ficheiro
 	for(i = 0; i < numVertexes; i++) {
 		std::getline(fp,line);
 		std::istringstream iss(line);
@@ -156,17 +157,19 @@ void readFile3D(std::string filename) {
 		Ponto3D * ponto = new Ponto3D(x,y,z);
 		vertices.push_back(ponto);
 	}
+	// Aquisição dos Triangulos a partir de 3 Pontos do Ficheiro
+	int indicePonto1, indicePonto2, indicePonto3;
 	for(i = 0; i < numTriangles; i++) {
 		std::getline(fp,line);
 		std::istringstream iss(line);
-		if(!(iss >> x >> y >> z)) {
+		if(!(iss >> indicePonto1 >> indicePonto2 >> indicePonto3)) {
 			std::cout << "Erro! \n";
 			break;
 		}
-		float corx=(1.0*rand())/INT_MAX;
-		float cory=(1.0*rand())/INT_MAX;
-		float corz=(1.0*rand())/INT_MAX;
-		triangulo = new Triangulo(vertices.at(x),vertices.at(y),vertices.at(z),new Ponto3D(corx,cory,corz));
+		float redValue=(1.0*rand())/INT_MAX;
+		float greenValue=(1.0*rand())/INT_MAX;
+		float blueValue=(1.0*rand())/INT_MAX;
+		triangulo = new Triangulo(vertices.at(indicePonto1),vertices.at(indicePonto2),vertices.at(indicePonto3),redValue,greenValue,blueValue);
 		triangulos.push_back(triangulo);
 	}
 	polygons[filename] = triangulos;

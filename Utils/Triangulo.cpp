@@ -7,21 +7,23 @@ Triangulo::Triangulo() {
     ponto1=new Ponto3D();
     ponto2=new Ponto3D();
     ponto3=new Ponto3D(); 
-	cor = new Ponto3D(1.0f,1.0f,1.0f);
+	redValue = greenValue = blueValue = 1.0f;
 }
 
 Triangulo::Triangulo(Ponto3D *ponto11,Ponto3D *ponto22,Ponto3D *ponto33) {
     ponto1=ponto11;
     ponto2=ponto22;
     ponto3=ponto33;
-    cor = new Ponto3D(1.0f,1.0f,1.0f);
+    redValue = greenValue = blueValue = 1.0f;
 }
 
-Triangulo::Triangulo(Ponto3D *ponto11,Ponto3D *ponto22,Ponto3D *ponto33,Ponto3D* corG) {
+Triangulo::Triangulo(Ponto3D *ponto11,Ponto3D *ponto22,Ponto3D *ponto33,float redV,float greenV,float blueV) {
     ponto1=ponto11;
     ponto2=ponto22;
     ponto3=ponto33;
-    cor = corG;
+    redValue = redV;
+    greenValue = greenV;
+    blueValue = blueV;
 }
 
 void Triangulo::printCoords() {
