@@ -1,16 +1,16 @@
 #pragma once
-#include "../../Utils/Triangulo.h"
+#include "../../Utils/Triangle.h"
 #include <vector>
-#include "../../Utils/Ponto3D.h"
+#include "../../Utils/Point3D.h"
 #include <string>
 #include <map>
 
 class Model{
 public:
-    Model(std::vector<Ponto3D*> vertixesG,std::vector<Triangulo*> faces);
+    Model(std::vector<Point3D*> vertixesG,std::vector<Triangle*> faces);
     void saveToFile(std::string filename);
 private:
     int nVertices,nTriangulos;
-    std::vector<Triangulo*> faces;
-    std::vector<Ponto3D*> vertixes;
+    std::vector<Triangle*> faces;
+    std::vector<Point3D*> vertixes;
 };

@@ -4,8 +4,8 @@
 #include <GL/glut.h>
 #endif
 
-#include "../../Utils/Ponto3D.h"
-#include "../../Utils/Triangulo.h"
+#include "../../Utils/Point3D.h"
+#include "../../Utils/Triangle.h"
 #include "XMLParser/xmlParser.h"
 #include <string>
 #include <math.h>
@@ -19,7 +19,7 @@ using namespace std;
 float rotationAngle=1.0f,rotationAngle2=1.0f;
 int profundidade=1;
 bool axis=false;
-std::unordered_map<std::string,std::vector<Triangulo*> > polygons;
+std::unordered_map<std::string,std::vector<Triangle*> > polygons;
 
 void meteAxis() {
 	glBegin(GL_LINES);
@@ -41,15 +41,15 @@ void meteAxis() {
 }
 
 void drawFigures() {
-	Triangulo * triangulo;
+	Triangle * triangle;
 	for(auto value : polygons) {
 		for(int i = 0; i < value.second.size(); i++) {
-			triangulo = value.second.at(i);
+			triangle = value.second.at(i);
 			glBegin(GL_TRIANGLES);
-			glColor3f(triangulo->redValue,triangulo->greenValue,triangulo->blueValue);
-			glVertex3f(triangulo->ponto1->x,triangulo->ponto1->y,triangulo->ponto1->z);
-    		glVertex3f(triangulo->ponto2->x,triangulo->ponto2->y,triangulo->ponto2->z);
-    		glVertex3f(triangulo->ponto3->x,triangulo->ponto3->y,triangulo->ponto3->z);
+			glColor3f(triangle->redValue,triangle->greenValue,triangle->blueValue);
+			glVertex3f(triangle->ponto1->x,triangle->ponto1->y,triangle->ponto1->z);
+    		glVertex3f(triangle->ponto2->x,triangle->ponto2->y,triangle->ponto2->z);
+    		glVertex3f(triangle->ponto3->x,triangle->ponto3->y,triangle->ponto3->z);
 			glEnd();
 		}
 	}
@@ -143,10 +143,10 @@ void readFile3D(std::string filename) {
 	std::istringstream iss(line);
 	iss >> numVertexes >> numTriangles;
 	int i;
-	std::vector<Ponto3D*> vertices;
-	std::vector<Triangulo*> triangulos;
-	Triangulo * triangulo;
-	// Aquisição dos Pontos de Desenho dos Triangulos do ficheiro
+	std::vector<Point3D*> vertices;
+	std::vector<Triangle*> triangles;
+	Triangle * triangle;
+	// Aquisição dos Pontos de Desenho dos Triangles do ficheiro
 	for(i = 0; i < numVertexes; i++) {
 		std::getline(fp,line);
 		std::istringstream iss(line);
@@ -154,10 +154,10 @@ void readFile3D(std::string filename) {
 			std::cout << "Erro! \n";
 			break;
 		}
-		Ponto3D * ponto = new Ponto3D(x,y,z);
+		Point3D * ponto = new Point3D(x,y,z);
 		vertices.push_back(ponto);
 	}
-	// Aquisição dos Triangulos a partir de 3 Pontos do Ficheiro
+	// Aquisição dos Triangles a partir de 3 Pontos do Ficheiro
 	int indicePonto1, indicePonto2, indicePonto3;
 	for(i = 0; i < numTriangles; i++) {
 		std::getline(fp,line);
@@ -169,10 +169,10 @@ void readFile3D(std::string filename) {
 		float redValue=(1.0*rand())/INT_MAX;
 		float greenValue=(1.0*rand())/INT_MAX;
 		float blueValue=(1.0*rand())/INT_MAX;
-		triangulo = new Triangulo(vertices.at(indicePonto1),vertices.at(indicePonto2),vertices.at(indicePonto3),redValue,greenValue,blueValue);
-		triangulos.push_back(triangulo);
+		triangle = new Triangle(vertices.at(indicePonto1),vertices.at(indicePonto2),vertices.at(indicePonto3),redValue,greenValue,blueValue);
+		triangles.push_back(triangle);
 	}
-	polygons[filename] = triangulos;
+	polygons[filename] = triangles;
 }
 
 int main(int argc, char **argv) {

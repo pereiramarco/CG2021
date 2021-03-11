@@ -1,6 +1,6 @@
 #pragma once
-#include "../../Utils/Triangulo.h"
-#include "../../Utils/Ponto3D.h"
+#include "../../Utils/Triangle.h"
+#include "../../Utils/Point3D.h"
 #include "Model.h"
 #include <tuple>
 #include <vector>
@@ -14,6 +14,6 @@ public:
     Model* generate();
 private:
     int side;
-    Triangulo * t1,*t2;
-    Ponto3D * topRight,*topLeft,*bottomLeft,*bottomRight;
+    Triangle * t1,*t2;
+    Point3D * topRight,*topLeft,*bottomLeft,*bottomRight;
 };

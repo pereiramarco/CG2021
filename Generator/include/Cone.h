@@ -1,7 +1,7 @@
 #pragma once
-#include "../../Utils/Triangulo.h"
+#include "../../Utils/Triangle.h"
 #include <vector>
-#include "../../Utils/Ponto3D.h"
+#include "../../Utils/Point3D.h"
 #include "Model.h"
 #include <string>
 #include <map>
@@ -13,9 +13,9 @@ public:
     Model * generate();
 private:
     int radiusBase,height,nStacks,nSlices;
-    std::vector<Triangulo*> faces;
-    std::map<std::pair<int,int>,Ponto3D*> points;
-    void addTop(int slice,int stack,int last);
-    void addCircle(int last,int slice,int stack);
-    void addSquare(int last,int slice,int stack);
+    std::vector<Triangle*> faces;
+    std::map<std::pair<int,int>,Point3D*> points;
+    void addTopSlice(int slice,int stack,int not_last);
+    void addCircleSlice(int slice,int stack,int not_last);
+    void addSquareSlice(int slice,int stack,int not_last);
 };

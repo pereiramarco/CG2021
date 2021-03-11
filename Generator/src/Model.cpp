@@ -1,4 +1,4 @@
-#include "../../Utils/Triangulo.h"
+#include "../../Utils/Triangle.h"
 #include "../include/Model.h"
 #include <vector>
 #include <string>
@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Model::Model(std::vector<Ponto3D*> vertixesG,std::vector<Triangulo*> facesG) {
+Model::Model(std::vector<Point3D*> vertixesG,std::vector<Triangle*> facesG) {
     nVertices=vertixesG.size();
     nTriangulos=facesG.size();
     vertixes=vertixesG;

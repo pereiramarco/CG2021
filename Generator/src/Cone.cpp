@@ -1,5 +1,5 @@
 #include "../include/Cone.h"
-#include "../../Utils/Ponto3D.h"
+#include "../../Utils/Point3D.h"
 #include "../include/Model.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -26,31 +26,31 @@ Cone::Cone(int radiusG,int heightG,int slicesG,int stacksG) {
 }
 
 
-void Cone::addTop(int slice,int stack,int last) { //last será um se for última slice e 0 caso contrário
-    Ponto3D *top=new Ponto3D(0.0f,height,0.0f,1);
+void Cone::addTopSlice(int slice,int stack,int not_last) {
+    Point3D *top=new Point3D(0.0f,height,0.0f,1);
     static int special=1;
-    Triangulo *t;
-    pair<int,int> point_before(slice-last,stack);
-    pair<int,int> point_now(slice*last+(1-last),stack);
-    Ponto3D *second=points[point_before];
-    Ponto3D *third=points[point_now]; 
-    t = new Triangulo(top,second,third);
+    Triangle *t;
+    pair<int,int> point_before(slice-not_last,stack);
+    pair<int,int> point_after(slice*not_last+(1-not_last),stack);
+    Point3D *before=points[point_before];
+    Point3D *after=points[point_after]; 
+    t = new Triangle(top,before,after);
     this->faces.push_back(t);
     special=1-special;
 }
-void Cone::addCircle(int last,int slice,int stack) {
-    Ponto3D * middle=new Ponto3D();
-    pair<int,int> before(slice-last,stack),now(slice*last+(1-last),stack);
-    Ponto3D* beforePoint=points[before],*nowPoint=points[now];
-    Triangulo *t=new Triangulo(beforePoint,middle,nowPoint);
+void Cone::addCircleSlice(int slice,int stack,int not_last) {
+    Point3D * middle=new Point3D();
+    pair<int,int> before(slice-not_last,stack),after(slice*not_last+(1-not_last),stack);
+    Point3D* afterPoint=points[after],*beforePoint=points[before];
+    Triangle *t=new Triangle(middle,afterPoint,beforePoint); //é visto debaixo logo está mudada a ordem
     faces.push_back(t);
 }
 
-void Cone::addSquare(int last,int slice,int stack) {//last=0 se for última, last=1 caso contrário;
-    pair<int,int> topleft(slice-last,stack-1),topright(slice*last+(1-last),stack-1),bottomleft(slice-last,stack),bottomright(slice*last+(1-last),stack);
-    Ponto3D * topRight=points[topright],*topLeft=points[topleft],*bottomLeft=points[bottomleft],*bottomRight=points[bottomright];
-    Triangulo *t1=new Triangulo(topRight,bottomLeft,topLeft);
-    Triangulo *t2=new Triangulo(topRight,bottomRight,bottomLeft);
+void Cone::addSquareSlice(int slice,int stack,int not_last) {
+    pair<int,int> bottomleft(slice-not_last,stack-1),bottomright(slice*not_last+(1-not_last),stack-1),topleft(slice-not_last,stack),topright(slice*not_last+(1-not_last),stack);
+    Point3D * topRight=points[topright],*topLeft=points[topleft],*bottomLeft=points[bottomleft],*bottomRight=points[bottomright];
+    Triangle *t1=new Triangle(topRight,topLeft,bottomLeft);
+    Triangle *t2=new Triangle(topRight,bottomLeft,bottomRight);
     faces.push_back(t1);
     faces.push_back(t2);
 }
@@ -59,43 +59,43 @@ Model* Cone::generate() {
     bool first;
     double slice_angle_increment=M_PI*2.0/nSlices;
     double height_increment=height/(1.0*(nStacks+1));
-    vector<Ponto3D*> vertixes;
+    vector<Point3D*> vertixes;
     int index=2;
-    Ponto3D *top=new Ponto3D(0.0f,height,0.0f,1);
-    vertixes.push_back(new Ponto3D());
+    Point3D *top=new Point3D(0.0f,height,0.0f,1);
+    vertixes.push_back(new Point3D());
     vertixes.push_back(top);
 
     for (int stack=0;stack<=nStacks;stack++) {
         float y=height_increment*stack;
-        float xz=((height-y)*radiusBase)/height;
+        float stackRadius=((height-y)*radiusBase)/height;
         first=true;
 
         for (int slice=1;slice<=nSlices;slice++) {
-            float x=cos(slice_angle_increment*slice)*xz;
-            float z=-sinf(slice_angle_increment*slice)*xz;
+            float x=cos(slice_angle_increment*slice)*stackRadius;
+            float z=-sinf(slice_angle_increment*slice)*stackRadius;
 
-            Ponto3D * ponto = new Ponto3D(x,y,z,index++);
+            Point3D * ponto = new Point3D(x,y,z,index++);
             vertixes.push_back(ponto);
             pair<int,int> sliceAndStack(slice,stack);
             points[sliceAndStack]=ponto;
 
             if (first) {first=false;continue;}
             if (stack==0) {
-                addCircle(1,slice,stack);
+                addCircleSlice(slice,stack,1);
                 if (slice==nSlices) {
-                    addCircle(0,slice,stack);
+                    addCircleSlice(slice,stack,0);
                 }
             }
             else {
-                addSquare(1,slice,stack);
+                addSquareSlice(slice,stack,1);
                 if (slice==nSlices) {
-                    addSquare(0,slice,stack);
+                    addSquareSlice(slice,stack,0);
                 }
             }
             if (stack==nStacks) {
-                addTop(slice,stack,1);
+                addTopSlice(slice,stack,1);
                 if (slice==nSlices) {
-                    addTop(slice,stack,0);
+                    addTopSlice(slice,stack,0);
                 }
             }
         }

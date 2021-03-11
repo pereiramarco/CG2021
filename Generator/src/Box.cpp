@@ -1,5 +1,5 @@
 #include "../include/Box.h"
-#include "../../Utils/Ponto3D.h"
+#include "../../Utils/Point3D.h"
 #include <vector>
 #include <string>
 #define _USE_MATH_DEFINES
@@ -22,15 +22,15 @@ Box::Box(int widthG,int depthG,int heightG,int nDivisionsG) {
     nDivisions=nDivisionsG;
 }
 
-void Box::addSquare(bool top,Ponto3D * topRight,Ponto3D * topLeft,Ponto3D * bellowLeft,Ponto3D * bellowRight) {
-    Triangulo *t1,*t2;
+void Box::addSquare(bool top,Point3D * topRight,Point3D * topLeft,Point3D * bellowLeft,Point3D * bellowRight) {
+    Triangle *t1,*t2;
     if (top) {
-        t1=new Triangulo(topRight,topLeft,bellowLeft);
-        t2=new Triangulo(topRight,bellowLeft,bellowRight);
+        t1=new Triangle(topRight,topLeft,bellowLeft);
+        t2=new Triangle(topRight,bellowLeft,bellowRight);
     }
     else {
-        t1=new Triangulo(topRight,bellowLeft,topLeft);
-        t2=new Triangulo(topRight,bellowRight,bellowLeft);
+        t1=new Triangle(topRight,bellowLeft,topLeft);
+        t2=new Triangle(topRight,bellowRight,bellowLeft);
     }
     faces.push_back(t1);
     faces.push_back(t2);
@@ -40,10 +40,10 @@ void Box::addYLayer(bool top) {
     int y=top?nDivisions:0;
     for (int x=0;x<nDivisions;x++) {
         for (int z=0;z<nDivisions;z++) {
-            Ponto3D * topLeft=points[tuple<int,int,int>(x,y,z)];
-            Ponto3D * topRight=points[tuple<int,int,int>(x+1,y,z)];
-            Ponto3D * bellowLeft=points[tuple<int,int,int>(x,y,z+1)];
-            Ponto3D * bellowRight=points[tuple<int,int,int>(x+1,y,z+1)];
+            Point3D * topLeft=points[tuple<int,int,int>(x,y,z)];
+            Point3D * topRight=points[tuple<int,int,int>(x+1,y,z)];
+            Point3D * bellowLeft=points[tuple<int,int,int>(x,y,z+1)];
+            Point3D * bellowRight=points[tuple<int,int,int>(x+1,y,z+1)];
             addSquare(top,topRight,topLeft,bellowLeft,bellowRight);
         }
     }
@@ -53,10 +53,10 @@ void Box::addXLayer(bool top) {
     int x=top?nDivisions:0;
     for (int y=0;y<nDivisions;y++) {
         for (int z=0;z<nDivisions;z++) {
-            Ponto3D * topLeft=points[tuple<int,int,int>(x,y,z)];
-            Ponto3D * topRight=points[tuple<int,int,int>(x,y,z+1)];
-            Ponto3D * bellowLeft=points[tuple<int,int,int>(x,y+1,z)];
-            Ponto3D * bellowRight=points[tuple<int,int,int>(x,y+1,z+1)];
+            Point3D * topLeft=points[tuple<int,int,int>(x,y,z)];
+            Point3D * topRight=points[tuple<int,int,int>(x,y,z+1)];
+            Point3D * bellowLeft=points[tuple<int,int,int>(x,y+1,z)];
+            Point3D * bellowRight=points[tuple<int,int,int>(x,y+1,z+1)];
             addSquare(top,topRight,topLeft,bellowLeft,bellowRight);
         }
     }
@@ -66,10 +66,10 @@ void Box::addZLayer(bool top) {
     int z=top?nDivisions:0;
     for (int x=0;x<nDivisions;x++) {
         for (int y=0;y<nDivisions;y++) {
-            Ponto3D * topLeft=points[tuple<int,int,int>(x,y,z)];
-            Ponto3D * topRight=points[tuple<int,int,int>(x+1,y,z)];
-            Ponto3D * bellowLeft=points[tuple<int,int,int>(x,y+1,z)];
-            Ponto3D * bellowRight=points[tuple<int,int,int>(x+1,y+1,z)];
+            Point3D * topLeft=points[tuple<int,int,int>(x,y,z)];
+            Point3D * topRight=points[tuple<int,int,int>(x+1,y,z)];
+            Point3D * bellowLeft=points[tuple<int,int,int>(x,y+1,z)];
+            Point3D * bellowRight=points[tuple<int,int,int>(x+1,y+1,z)];
             addSquare(!top,topRight,topLeft,bellowLeft,bellowRight);
         }
     }
@@ -80,12 +80,12 @@ Model* Box::generate() {
     float y_increment=1.0*height/(1.0*nDivisions);
     float z_increment=1.0*depth/(1.0*nDivisions);
     int index=0;
-    vector<Ponto3D*> vertixes;
+    vector<Point3D*> vertixes;
     for (int y=0;y<=nDivisions;y++) {
         for (int x=0;x<=nDivisions;x++) {
             for (int z=0;z<=nDivisions;z++) {
                 if (y==0 || y==nDivisions || x==0 || x==nDivisions || z==0 || z==nDivisions) { 
-                    Ponto3D * p = new Ponto3D(x*x_increment,y*y_increment,z*z_increment,index++);
+                    Point3D * p = new Point3D(x*x_increment,y*y_increment,z*z_increment,index++);
                     vertixes.push_back(p);
                     tuple<int,int,int> t(x,y,z);
                     points[t]=p;
