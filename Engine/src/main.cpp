@@ -18,7 +18,7 @@ using namespace std;
 
 float rotationAngle=1.0f,rotationAngle2=1.0f;
 int profundidade=1;
-bool axis=false;
+bool axis=false,wire=true;
 std::unordered_map<std::string,std::vector<Triangle*> > polygons;
 
 void meteAxis() {
@@ -122,6 +122,10 @@ void keyboardInput(unsigned char key, int x, int y) {
 		case ' ':
 			axis=!axis;
 			break;
+		case 'p':
+			glPolygonMode( GL_FRONT_AND_BACK, wire?GL_LINE:GL_FILL );
+			wire=!wire;
+			break;
 		default:
             break;
 	}
@@ -200,13 +204,11 @@ int main(int argc, char **argv) {
 // put here the registration of the keyboard callbacks
 	glutKeyboardFunc(keyboardInput);
 	glutMotionFunc(mouseControls);
-	glutPassiveMotionFunc(mouseControls);
 
 
 //  OpenGL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	
 	
 // enter GLUT's main cycle
 	glutMainLoop();
