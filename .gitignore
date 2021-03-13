@@ -1,8 +1,6 @@
 *.o
 *.3d
 .vscode
-generator
-engine
 Generator/build/
 Engine/build/
 !Generator/build/.gitkeep

@@ -179,14 +179,27 @@ void readFile3D(std::string filename) {
 	polygons[filename] = triangles;
 }
 
-int main(int argc, char **argv) {
-	xmlContent parser;
-	parser.parse();
-	std::vector<std::string> files = parser.getModels();
+void readConfig(int argc, char **argv) {
+	std::string name;
+	xmlContent * parser;
+	if(argc == 2) {
+		name = "../configs/" + std::string(argv[1]);
+		parser = new xmlContent(name);
+	}
+	else {
+		name = "../configs/config.xml";
+		parser = new xmlContent();
+	}
+	parser->parse();
+	std::vector<std::string> files = parser->getModels();
 	for(int i = 0; i < files.size();i++) {
-		std::string model = "../" + files[i];
+		std::string model = "../models/" + files[i];
 		readFile3D(model);
 	}
+}
+
+int main(int argc, char **argv) {
+	readConfig(argc,argv);
 	
 // init GLUT and the window
 	glutInit(&argc, argv);

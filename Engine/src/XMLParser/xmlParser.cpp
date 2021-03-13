@@ -1,7 +1,7 @@
 #include "xmlParser.h"
 
 xmlContent::xmlContent() {
-    filename = "../config.xml";
+    filename = "../configs/config.xml";
 }
 
 xmlContent::xmlContent(char* st) {

@@ -1,0 +1,4 @@
+<scene>
+    <model file="plane.3d" />
+    <model file="sphere.3d" />
+</scene>
