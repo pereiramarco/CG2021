@@ -5,3 +5,4 @@ Generator/build/
 Engine/build/
 !Generator/build/.gitkeep
 !Engine/build/.gitkeep
+!Engine/build/*.3d
