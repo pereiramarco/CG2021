@@ -1,3 +1,4 @@
+#include <cstdlib>
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -12,7 +13,6 @@
 #include <fstream>
 #include <sstream>
 #include <unordered_map>
-#include <cstdlib>
 
 using namespace std;
 
@@ -170,9 +170,9 @@ void readFile3D(std::string filename) {
 			std::cout << "Erro! \n";
 			break;
 		}
-		float redValue=(1.0*rand())/INT_MAX;
-		float greenValue=(1.0*rand())/INT_MAX;
-		float blueValue=(1.0*rand())/INT_MAX;
+		float redValue=(1.0*rand())/RAND_MAX;
+		float greenValue=(1.0*rand())/RAND_MAX;
+		float blueValue=(1.0*rand())/RAND_MAX;
 		triangle = new Triangle(vertices.at(indicePonto1),vertices.at(indicePonto2),vertices.at(indicePonto3),redValue,greenValue,blueValue);
 		triangles.push_back(triangle);
 	}

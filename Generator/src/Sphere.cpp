@@ -49,13 +49,13 @@ void Sphere::addSquareSlice(int slice,int stack,int not_last) {//last=0 se for �
 
 Model* Sphere::generate() {
     double slice_angle_increment=M_PI*2.0/nSlices;
-    double stack_angle_increment=M_PI/(nStacks+1);
+    double stack_angle_increment=M_PI/nStacks;
     int index=2;
     vector<Point3D*> vertixes;
     Point3D *top=new Point3D(0.0f,radius,0.0f,0),*bottom=new Point3D(0.0f,-radius,0.0f,1);
     vertixes.push_back(top);
     vertixes.push_back(bottom);
-    for (int stack=1;stack<=nStacks;stack++) {
+    for (int stack=1;stack<nStacks;stack++) {
 
         double stack_angle=stack*stack_angle_increment;
         float y=radius*cosf(stack_angle);
@@ -85,7 +85,7 @@ Model* Sphere::generate() {
                 if (slice==nSlices) //une quando está na última slice
                     addSquareSlice(slice,stack,0);
             }
-            if (stack==nStacks) {
+            if (stack==nStacks-1) {
                 addTopOrBottomSlice(false,slice,stack,1);
                 if (slice==nSlices)
                     addTopOrBottomSlice(false,slice,stack,0);

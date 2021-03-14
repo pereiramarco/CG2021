@@ -58,14 +58,14 @@ void Cone::addSquareSlice(int slice,int stack,int not_last) {
 Model* Cone::generate() {
     bool first;
     double slice_angle_increment=M_PI*2.0/nSlices;
-    double height_increment=height/(1.0*(nStacks+1));
+    double height_increment=height/(1.0*nStacks);
     vector<Point3D*> vertixes;
     int index=2;
     Point3D *top=new Point3D(0.0f,height,0.0f,1);
     vertixes.push_back(new Point3D());
     vertixes.push_back(top);
 
-    for (int stack=0;stack<=nStacks;stack++) {
+    for (int stack=0;stack<nStacks;stack++) {
         float y=height_increment*stack;
         float stackRadius=((height-y)*radiusBase)/height;
         first=true;
@@ -92,7 +92,7 @@ Model* Cone::generate() {
                     addSquareSlice(slice,stack,0);
                 }
             }
-            if (stack==nStacks) {
+            if (stack==nStacks-1) {
                 addTopSlice(slice,stack,1);
                 if (slice==nSlices) {
                     addTopSlice(slice,stack,0);
