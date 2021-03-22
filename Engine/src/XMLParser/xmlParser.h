@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "tinyxml2.h"
+#include "../Group.h"
 #include <string>
 #include <vector>
 
@@ -12,10 +13,11 @@ class xmlContent {
         xmlContent();
         xmlContent(char* st);
         xmlContent(std::string st);
-        void parse();
-        std::vector<std::string> getModels();
+        Group * parseGroup(XMLElement * group);
+        std::vector<Group*> parse();
+        std::unordered_set<std::string> getModels();
     private:
         std::string filename;
-        std::vector<const char*> files;
+        std::vector<Group*> groups;
 
 };

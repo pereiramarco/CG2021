@@ -5,7 +5,7 @@ PROJECT(engine)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(${PROJECT_NAME} src/main.cpp ../Utils/Point3D.cpp ../Utils/Point3D.h ../Utils/Triangle.cpp ../Utils/Triangle.h)
+add_executable(${PROJECT_NAME} src/main.cpp ../Utils/Point3D.cpp ../Utils/Point3D.h ../Utils/Triangle.cpp ../Utils/Triangle.h src/Group.h src/Group.cpp)
 
 add_library(xmlParser src/XMLParser/xmlParser.cpp src/XMLParser/xmlParser.h src/XMLParser/tinyxml2.cpp src/XMLParser/tinyxml2.h)
 

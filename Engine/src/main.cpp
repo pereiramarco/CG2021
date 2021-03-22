@@ -7,6 +7,7 @@
 
 #include "../../Utils/Point3D.h"
 #include "../../Utils/Triangle.h"
+#include "Group.h"
 #include "XMLParser/xmlParser.h"
 #include <string>
 #include <math.h>
@@ -18,8 +19,13 @@ using namespace std;
 
 float rotationAngle=1.0f,rotationAngle2=1.0f;
 int profundidade=1;
-bool axis=false,wire=true;
+bool axis=false,wire=true,firstCursor=true;
 std::unordered_map<std::string,std::vector<Triangle*> > polygons;
+std::vector<Group*> groups;
+int xMouseB4,yMouseB4;
+float yaw=-90.0f,pitch=0; //yaw horizontal turn//pitch vertical turn
+Point3D * lookingAtPoint= new Point3D(-2,-2,-2);
+Point3D camPosition(2,2,2);
 
 void meteAxis() {
 	glBegin(GL_LINES);
@@ -40,19 +46,62 @@ void meteAxis() {
 	glEnd();
 }
 
-void drawFigures() {
+void drawFigure(std::string filename,float cr,float cg,float cb) {	
+	glBegin(GL_TRIANGLES);
 	Triangle * triangle;
-	for(auto value : polygons) {
-		for(int i = 0; i < value.second.size(); i++) {
-			triangle = value.second.at(i);
-			glBegin(GL_TRIANGLES);
-			glColor3f(triangle->redValue,triangle->greenValue,triangle->blueValue);
-			glVertex3f(triangle->ponto1->x,triangle->ponto1->y,triangle->ponto1->z);
-    		glVertex3f(triangle->ponto2->x,triangle->ponto2->y,triangle->ponto2->z);
-    		glVertex3f(triangle->ponto3->x,triangle->ponto3->y,triangle->ponto3->z);
-			glEnd();
-		}
+	auto& figure = polygons["../models/"+filename];
+	for(int i = 0; i < figure.size(); i++) {
+		triangle = figure.at(i);
+		glColor3f(cr,cg,cb);
+		glVertex3f(triangle->ponto1->x,triangle->ponto1->y,triangle->ponto1->z);
+		glVertex3f(triangle->ponto2->x,triangle->ponto2->y,triangle->ponto2->z);
+		glVertex3f(triangle->ponto3->x,triangle->ponto3->y,triangle->ponto3->z);
 	}
+	glEnd();
+}
+
+void drawFigures(Group *g,int spaceBodyCount) {
+	float cr,cg,cb;
+	switch(spaceBodyCount) {
+		case 0:
+			cr=1;cg=1;cb=0;
+		break;
+		case 1:
+			cr=1;cg=0;cb=0;
+		break;
+		case 2:
+			cr=204.0/255;cg=102.0/255;cb=0;
+		break;
+		case 3:
+			cr=0;cg=0;cb=204.0/255;
+		break;
+		case 4:
+			cr=153.0/255;cg=0;cb=0;
+		break;
+		case 5:
+			cr=179/255.0;cg=151/255.0;cb=122/255.0;
+		break;
+		case 6:
+			cr=1;cg=204/255.0;cb=153/255.0;
+		break;
+		case 7:
+			cr=102/255.0;cg=178/255.0;cb=1;
+		break;
+		case 8:
+			cr=0;cg=102/255.0;cb=204/255.0;
+		break;
+	}
+	glPushMatrix();
+	for (auto& transform : g->transformations) {
+		transform->applyTransform();
+	}
+	for (auto& modelFileName : g->files) {
+		drawFigure(modelFileName,cr,cg,cb);
+	}
+	for (auto& group : g->nestedGroups) {
+		drawFigures(group,spaceBodyCount);
+	}
+	glPopMatrix();
 }
 
 void renderScene(void) {
@@ -62,8 +111,8 @@ void renderScene(void) {
 
 	// set the camera
 	glLoadIdentity();
-	gluLookAt(profundidade*2,profundidade*2,profundidade*2, 
-		      0.0,0.0,0.0,
+	gluLookAt(camPosition.x,camPosition.y,camPosition.z, 
+		      lookingAtPoint->x+camPosition.x,lookingAtPoint->y+camPosition.y,lookingAtPoint->z+camPosition.z,
 			  0.0f,1.0f,0.0f);
 
 // put the geometric transformations here
@@ -72,8 +121,10 @@ void renderScene(void) {
 
 // put drawing instructions here
 	if (axis) meteAxis();
-
-	drawFigures();
+	int i=0;
+	for (auto& g : groups) {
+		drawFigures(g,i++);
+	}
 
 	// End of frame
 	glutSwapBuffers();
@@ -106,18 +157,21 @@ void changeSize(int w, int h) {
 
 // write function to process keyboard events
 void keyboardInput(unsigned char key, int x, int y) {
+	Point3D look = lookingAtPoint->clone();
+	Point3D ylook(-look.z,0,look.x);
+	float speed=0.1f;
 	switch(key) {
-		case 'd':
-			rotationAngle+=10;
+		case 'w':
+			camPosition+=look*speed;
 			break;
 		case 'a':
-			rotationAngle-=10;
-			break;
+			camPosition-=ylook*speed;
+			break;	
 		case 's':
-			profundidade+=1;
+			camPosition-=look*speed;
 			break;
-		case 'w':
-			profundidade=profundidade==1?1:profundidade-1;
+		case 'd':
+			camPosition+=ylook*speed;
 			break;
 		case ' ':
 			axis=!axis;
@@ -131,10 +185,39 @@ void keyboardInput(unsigned char key, int x, int y) {
 	}
 }
 
+double radians(double degree)
+{
+    return (degree * (M_PI / 180));
+}
 
 void mouseControls(int x,int y) {
-	rotationAngle=x/2%360;
-    rotationAngle2=y/2%360;
+
+	if (firstCursor)
+    {
+        xMouseB4 = x;
+        yMouseB4 = y;
+        firstCursor = false;
+    }
+
+	float xoffset = x - xMouseB4;
+	float yoffset = yMouseB4 - y; // reversed since y-coordinates range from bottom to top
+	xMouseB4=x;
+	yMouseB4=y;
+
+	const float sensitivity = 0.3f;
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+	yaw+=xoffset;
+	pitch+=yoffset;
+	
+	if(pitch > 89.0f)
+        pitch = 89.0f;
+    if(pitch < -89.0f)
+        pitch = -89.0f;
+
+    lookingAtPoint->x = cosf(radians(yaw)) * cosf(radians(pitch));
+    lookingAtPoint->y = sinf(radians(pitch));
+    lookingAtPoint->z = sinf(radians(yaw)) * cosf(radians(pitch));
 }
 
 void readFile3D(std::string filename) {
@@ -187,13 +270,12 @@ void readConfig(int argc, char **argv) {
 		parser = new xmlContent(name);
 	}
 	else {
-		name = "../configs/config.xml";
 		parser = new xmlContent();
 	}
-	parser->parse();
-	std::vector<std::string> files = parser->getModels();
-	for(int i = 0; i < files.size();i++) {
-		std::string model = "../models/" + files[i];
+	groups=parser->parse();
+	std::unordered_set<std::string> files = parser->getModels(); //é um set para evitar repetidos
+	for(auto& filename : files) {
+		std::string model = "../models/" + filename;
 		readFile3D(model);
 	}
 }
@@ -216,8 +298,7 @@ int main(int argc, char **argv) {
 	
 // put here the registration of the keyboard callbacks
 	glutKeyboardFunc(keyboardInput);
-	glutMotionFunc(mouseControls);
-
+	glutPassiveMotionFunc(mouseControls);
 
 //  OpenGL settings
 	glEnable(GL_DEPTH_TEST);

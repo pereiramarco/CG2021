@@ -1,4 +1,71 @@
 <scene>
-    <model file="plane.3d" />
-    <model file="sphere.3d" />
+    <group>
+        <models>
+            <model file="sphere.3d" />
+        </models>
+    </group>
+    <group>
+        <translate Z="1.1"/>
+        <scale scaleX="0.005" scaleY="0.005" scaleZ="0.005"/>
+        <models>
+            <model file="sphere.3d" />
+        </models>
+    </group>
+    <group>
+        <translate Z="1.2"/>
+        <scale scaleX="0.0089" scaleY="0.0089" scaleZ="0.0089"/>
+        <models>
+            <model file="sphere.3d" />
+        </models>
+    </group>
+    <group>
+        <translate Z="1.25"/>
+        <scale scaleX="0.0092" scaleY="0.0092" scaleZ="0.0092"/>
+        <models>
+            <model file="sphere.3d" />
+        </models>
+        <group>
+            <translate Y="3"/>
+            <scale scaleX="0.2" scaleY="0.2" scaleZ="0.2"/>
+            <models>
+                <model file="sphere.3d" />
+            </models>
+        </group>
+    </group>
+    <group>
+        <translate Z="1.4"/>
+        <scale scaleX="0.0046" scaleY="0.0046" scaleZ="0.0046"/>
+        <models>
+            <model file="sphere.3d" />
+        </models>
+    </group>
+    <group>
+        <translate Z="2.3"/>
+        <scale scaleX="0.103" scaleY="0.103" scaleZ="0.103"/>
+        <models>
+            <model file="sphere.3d" />
+        </models>
+    </group>
+    <group>
+        <translate Z="3.4"/>
+        <scale scaleX="0.0865" scaleY="0.0865" scaleZ="0.0865"/>
+        <models>
+            <model file="sphere.3d" />
+        </models>
+    </group>
+    <group>
+        <translate Z="5.9"/>
+        <scale scaleX="0.037" scaleY="0.037" scaleZ="0.037"/>
+        <models>
+            <model file="sphere.3d" />
+        </models>
+    </group>
+    <group>
+        <translate Z="8.6"/>
+        <scale scaleX="0.0356" scaleY="0.0356" scaleZ="0.0356"/>
+        <models>
+            <model file="sphere.3d" />
+        </models>
+    </group>
+
 </scene>
