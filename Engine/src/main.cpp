@@ -2,12 +2,13 @@
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
+#include <GL/glew.h>
 #include <GL/glut.h>
 #endif
 
 #include "../../Utils/Point3D.h"
-#include "../../Utils/Triangle.h"
 #include "Group.h"
+#include "VBO.h"
 #include "XMLParser/xmlParser.h"
 #include <string>
 #include <math.h>
@@ -15,15 +16,12 @@
 #include <sstream>
 #include <unordered_map>
 
-using namespace std;
-
-float rotationAngle=1.0f,rotationAngle2=1.0f;
-int profundidade=1;
 bool axis=false,wire=true,firstCursor=true;
-std::unordered_map<std::string,std::vector<Triangle*> > polygons;
+std::unordered_map<std::string,VBO*> buffers;
 std::vector<Group*> groups;
 int xMouseB4,yMouseB4;
 float yaw=-90.0f,pitch=0; //yaw horizontal turn//pitch vertical turn
+float sensitivity = 0.3f; //sensibilidade do rato
 Point3D * lookingAtPoint= new Point3D(-2,-2,-2);
 Point3D camPosition(2,2,2);
 
@@ -32,32 +30,29 @@ void meteAxis() {
 	
 	// X axis in red
 	glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(-100.0f, 0.0f, 0.0f);
-	glVertex3f( 100.0f, 0.0f, 0.0f);
+	glVertex3f(-200.0f, 0.0f, 0.0f);
+	glVertex3f( 200.0f, 0.0f, 0.0f);
 	// Y Axis in Green
 	glColor3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, -100.0f, 0.0f);
-	glVertex3f(0.0f,  100.0f, 0.0f);
+	glVertex3f(0.0f, -200.0f, 0.0f);
+	glVertex3f(0.0f,  200.0f, 0.0f);
 	// Z Axis in Blue
 	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, -100.0f);
-	glVertex3f(0.0f, 0.0f,  100.0f);
+	glVertex3f(0.0f, 0.0f, -200.0f);
+	glVertex3f(0.0f, 0.0f,  200.0f);
 	
 	glEnd();
 }
 
-void drawFigure(std::string filename,float cr,float cg,float cb) {	
-	glBegin(GL_TRIANGLES);
-	Triangle * triangle;
-	auto& figure = polygons["../models/"+filename];
-	for(int i = 0; i < figure.size(); i++) {
-		triangle = figure.at(i);
-		glColor3f(cr,cg,cb);
-		glVertex3f(triangle->ponto1->x,triangle->ponto1->y,triangle->ponto1->z);
-		glVertex3f(triangle->ponto2->x,triangle->ponto2->y,triangle->ponto2->z);
-		glVertex3f(triangle->ponto3->x,triangle->ponto3->y,triangle->ponto3->z);
-	}
-	glEnd();
+void drawFigure(std::string filename) {
+	VBO * vbo = buffers["../models/"+filename];
+	glBindBuffer(GL_ARRAY_BUFFER,vbo->vertixes);
+ 	glVertexPointer(3,GL_FLOAT,0,0);
+ 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo->indexes);
+ 	glDrawElements(GL_TRIANGLES,
+ 		vbo->indexCount, // número de índices a desenhar
+ 		GL_UNSIGNED_INT, // tipo de dados dos índices
+ 		0);// parâmetro não utilizado
 }
 
 void drawFigures(Group *g,int spaceBodyCount) {
@@ -91,12 +86,13 @@ void drawFigures(Group *g,int spaceBodyCount) {
 			cr=0;cg=102/255.0;cb=204/255.0;
 		break;
 	}
+	glColor3f(cr,cg,cb);
 	glPushMatrix();
 	for (auto& transform : g->transformations) {
 		transform->applyTransform();
 	}
 	for (auto& modelFileName : g->files) {
-		drawFigure(modelFileName,cr,cg,cb);
+		drawFigure(modelFileName);
 	}
 	for (auto& group : g->nestedGroups) {
 		drawFigures(group,spaceBodyCount);
@@ -114,11 +110,6 @@ void renderScene(void) {
 	gluLookAt(camPosition.x,camPosition.y,camPosition.z, 
 		      lookingAtPoint->x+camPosition.x,lookingAtPoint->y+camPosition.y,lookingAtPoint->z+camPosition.z,
 			  0.0f,1.0f,0.0f);
-
-// put the geometric transformations here
-	glRotatef(rotationAngle,0.0,1.0,0.0);
-    glRotatef(rotationAngle2,1.0,0.0,1.0);
-
 // put drawing instructions here
 	if (axis) meteAxis();
 	int i=0;
@@ -158,7 +149,7 @@ void changeSize(int w, int h) {
 // write function to process keyboard events
 void keyboardInput(unsigned char key, int x, int y) {
 	Point3D look = lookingAtPoint->clone();
-	Point3D ylook(-look.z,0,look.x);
+	Point3D ylook(-look.z,0,look.x); // cross product entre o look e o eixo y de modo a ter apenas o ponto para onde se deve dirigir horizontalmente
 	float speed=0.1f;
 	switch(key) {
 		case 'w':
@@ -204,24 +195,27 @@ void mouseControls(int x,int y) {
 	xMouseB4=x;
 	yMouseB4=y;
 
-	const float sensitivity = 0.3f;
+	//modifica o offset consoante a sensibilidade
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;
+	//modifica o ângulo do ponto para o qual está a olhar
 	yaw+=xoffset;
 	pitch+=yoffset;
 	
+	// manter o pitch dentro de -90 a 90
 	if(pitch > 89.0f)
         pitch = 89.0f;
     if(pitch < -89.0f)
         pitch = -89.0f;
 
+	//calcula o novo ponto para o qual está a olhar de forma normalizada
     lookingAtPoint->x = cosf(radians(yaw)) * cosf(radians(pitch));
     lookingAtPoint->y = sinf(radians(pitch));
     lookingAtPoint->z = sinf(radians(yaw)) * cosf(radians(pitch));
 }
 
 void readFile3D(std::string filename) {
-	srand(time(NULL)); //dá seed à aleatoriedade de forma a ter sempre cores diferentes.
+	VBO * vbo = new VBO();
 	std::ifstream fp(filename);
 	int numVertexes, numTriangles;
 	float x,y,z;
@@ -229,40 +223,47 @@ void readFile3D(std::string filename) {
 	std::getline(fp,line);
 	std::istringstream iss(line);
 	iss >> numVertexes >> numTriangles;
+	std::vector<float> vertixes;
+	std::vector<unsigned int> indexes;
 	int i;
-	std::vector<Point3D*> vertices;
-	std::vector<Triangle*> triangles;
-	Triangle * triangle;
 	// Aquisição dos Pontos de Desenho dos Triangles do ficheiro
 	for(i = 0; i < numVertexes; i++) {
 		std::getline(fp,line);
 		std::istringstream iss(line);
 		if(!(iss >> x >> y >> z)) {
-			std::cout << "Erro! \n";
+			std::cout << "Erro a ler vértices do ficheiro! \n";
 			break;
 		}
-		Point3D * ponto = new Point3D(x,y,z);
-		vertices.push_back(ponto);
+		//adição dos valores x y e z de cada ponto a vetor de vértices
+		vertixes.push_back(x);
+		vertixes.push_back(y);
+		vertixes.push_back(z);
 	}
+	glBindBuffer(GL_ARRAY_BUFFER,vbo->vertixes); //liga o buffer pontos ao array
+	glBufferData(GL_ARRAY_BUFFER,sizeof(float)*vertixes.size(), vertixes.data(), GL_STATIC_DRAW);
+	vbo->vertixCount=vertixes.size();
 	// Aquisição dos Triangles a partir de 3 Pontos do Ficheiro
 	int indicePonto1, indicePonto2, indicePonto3;
 	for(i = 0; i < numTriangles; i++) {
 		std::getline(fp,line);
 		std::istringstream iss(line);
 		if(!(iss >> indicePonto1 >> indicePonto2 >> indicePonto3)) {
-			std::cout << "Erro! \n";
+			std::cout << "Erro a ler índices do triangulo do ficheiro! \n";
 			break;
 		}
-		float redValue=(1.0*rand())/RAND_MAX;
-		float greenValue=(1.0*rand())/RAND_MAX;
-		float blueValue=(1.0*rand())/RAND_MAX;
-		triangle = new Triangle(vertices.at(indicePonto1),vertices.at(indicePonto2),vertices.at(indicePonto3),redValue,greenValue,blueValue);
-		triangles.push_back(triangle);
+		//adição do índice de cada ponto do triângulo ao vetor de índices
+		indexes.push_back(indicePonto1);
+		indexes.push_back(indicePonto2);
+		indexes.push_back(indicePonto3);
 	}
-	polygons[filename] = triangles;
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,vbo->indexes); //liga o buffer indices ao array
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(unsigned int) * indexes.size(),indexes.data(),GL_STATIC_DRAW);
+ 	vbo->indexCount = indexes.size();
+	buffers[filename]=vbo;
 }
 
 void readConfig(int argc, char **argv) {
+	glEnableClientState(GL_VERTEX_ARRAY);
 	std::string name;
 	xmlContent * parser;
 	if(argc == 2) {
@@ -281,8 +282,6 @@ void readConfig(int argc, char **argv) {
 }
 
 int main(int argc, char **argv) {
-	readConfig(argc,argv);
-	
 // init GLUT and the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
@@ -294,11 +293,13 @@ int main(int argc, char **argv) {
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
 	glutIdleFunc(renderScene);
-
+	glewInit();
 	
 // put here the registration of the keyboard callbacks
 	glutKeyboardFunc(keyboardInput);
 	glutPassiveMotionFunc(mouseControls);
+
+	readConfig(argc,argv); //lê o xml e configura os VBO's
 
 //  OpenGL settings
 	glEnable(GL_DEPTH_TEST);

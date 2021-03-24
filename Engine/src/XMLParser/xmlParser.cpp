@@ -1,4 +1,8 @@
 #include "../Group.h"
+#include "../Transformations/Transform.h"
+#include "../Transformations/Scale.h"
+#include "../Transformations/Translation.h"
+#include "../Transformations/Rotation.h"
 #include "xmlParser.h"
 #include "unordered_set"
 
@@ -26,7 +30,7 @@ Group * xmlContent::parseGroup(XMLElement * group) {
         float x=readX?atof(readX):0;
         float y=readY?atof(readY):0;
         float z=readZ?atof(readZ):0;
-        Translation* t = new Translation(Transformation::TranslateType,x,y,z);
+        Translation* t = new Translation(x,y,z);
         g->addTransform(t);
     }
     if (rotation) {
@@ -38,7 +42,7 @@ Group * xmlContent::parseGroup(XMLElement * group) {
         float axisx=readX?atof(readX):0;
         float axisy=readY?atof(readY):0;
         float axisz=readZ?atof(readZ):0;
-        Rotation* r = new Rotation(Transformation::RotateType,angle,axisx,axisy,axisz);
+        Rotation* r = new Rotation(angle,axisx,axisy,axisz);
         g->addTransform(r);
     }
     if (scale) {
@@ -48,7 +52,7 @@ Group * xmlContent::parseGroup(XMLElement * group) {
         float scalex=readX?atof(readX):0;
         float scaley=readY?atof(readY):0;
         float scalez=readZ?atof(readZ):0;
-        Scale* s = new Scale(Transformation::ScaleType,scalex,scaley,scalez);
+        Scale* s = new Scale(scalex,scaley,scalez);
         g->addTransform(s);
     }
     XMLElement * models = group->FirstChildElement("models");
@@ -75,7 +79,6 @@ std::vector<Group*> xmlContent::parse() {
         XMLElement * group;
         for(group = scene->FirstChildElement();group != NULL;group = group->NextSiblingElement()) {
             Group *g = parseGroup(group);
-            //g->print(0); //testar o conteúdo do grupo
             groups.push_back(g);
         }
     }
