@@ -49,9 +49,9 @@ Group * xmlContent::parseGroup(XMLElement * group) {
         const char * readX=scale->Attribute("scaleX");
         const char * readY=scale->Attribute("scaleY");
         const char * readZ=scale->Attribute("scaleZ");
-        float scalex=readX?atof(readX):0;
-        float scaley=readY?atof(readY):0;
-        float scalez=readZ?atof(readZ):0;
+        float scalex=readX?atof(readX):1;
+        float scaley=readY?atof(readY):1;
+        float scalez=readZ?atof(readZ):1;
         Scale* s = new Scale(scalex,scaley,scalez);
         g->addTransform(s);
     }
