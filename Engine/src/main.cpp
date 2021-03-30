@@ -22,8 +22,9 @@ std::vector<Group*> groups;
 int xMouseB4,yMouseB4;
 float yaw=-90.0f,pitch=0; //yaw horizontal turn//pitch vertical turn
 float sensitivity = 0.3f; //sensibilidade do rato
-Point3D * lookingAtPoint= new Point3D(-2,-2,-2);
-Point3D camPosition(2,2,2);
+float speed=1.0f;
+Point3D * lookingAtPoint= new Point3D(-200,0,-109.5);
+Point3D camPosition(200,0,109.5);
 
 void meteAxis() {
 	glBegin(GL_LINES);
@@ -148,9 +149,8 @@ void changeSize(int w, int h) {
 
 // write function to process keyboard events
 void keyboardInput(unsigned char key, int x, int y) {
-	Point3D look = lookingAtPoint->clone();
+	Point3D look = *lookingAtPoint;
 	Point3D ylook(-look.z,0,look.x); // cross product entre o look e o eixo y de modo a ter apenas o ponto para onde se deve dirigir horizontalmente
-	float speed=0.1f;
 	switch(key) {
 		case 'w':
 			camPosition+=look*speed;
@@ -170,6 +170,12 @@ void keyboardInput(unsigned char key, int x, int y) {
 		case 'p':
 			glPolygonMode( GL_FRONT_AND_BACK, wire?GL_LINE:GL_FILL );
 			wire=!wire;
+			break;
+		case 'g':
+			speed+=0.1f;
+			break;
+		case 'f':
+			speed-=0.1f;
 			break;
 		default:
             break;

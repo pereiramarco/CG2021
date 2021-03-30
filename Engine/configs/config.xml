@@ -1,31 +1,31 @@
 <scene>
     <group>
+        <scale scaleX="109" scaleY="109" scaleZ="109"/>
         <models>
             <model file="sphere.3d" />
         </models>
     </group>
     <group>
-        <translate Z="1.1"/>
-        <scale scaleX="0.005" scaleY="0.005" scaleZ="0.005"/>
+        <translate Z="110"/>
+        <scale scaleX="0.33" scaleY="0.33" scaleZ="0.33"/>
         <models>
             <model file="sphere.3d" />
         </models>
     </group>
     <group>
-        <translate Z="1.2"/>
-        <scale scaleX="0.0089" scaleY="0.0089" scaleZ="0.0089"/>
+        <translate Z="112"/>
+        <scale scaleX="0.95" scaleY="0.95" scaleZ="0.95"/>
         <models>
             <model file="sphere.3d" />
         </models>
     </group>
     <group>
-        <translate Z="1.25"/>
-        <scale scaleX="0.0092" scaleY="0.0092" scaleZ="0.0092"/>
+        <translate Z="114.5"/>
         <models>
             <model file="sphere.3d" />
         </models>
         <group>
-            <translate Y="3"/>
+            <translate X="1.5" Y="1.5"/>
             <scale scaleX="0.2" scaleY="0.2" scaleZ="0.2"/>
             <models>
                 <model file="sphere.3d" />
@@ -33,36 +33,36 @@
         </group>
     </group>
     <group>
-        <translate Z="1.4"/>
-        <scale scaleX="0.0046" scaleY="0.0046" scaleZ="0.0046"/>
+        <translate Z="116.6"/>
+        <scale scaleX="0.5" scaleY="0.5" scaleZ="0.5"/>
+            <models>
+                <model file="sphere.3d" />
+            </models>
+    </group>
+    <group>
+        <translate Z="157.1"/>
+        <scale scaleX="11" scaleY="11" scaleZ="11"/>
         <models>
             <model file="sphere.3d" />
         </models>
     </group>
     <group>
-        <translate Z="2.3"/>
-        <scale scaleX="0.103" scaleY="0.103" scaleZ="0.103"/>
+        <translate Z="185"/>
+        <scale scaleX="9" scaleY="9" scaleZ="9"/>
         <models>
             <model file="sphere.3d" />
         </models>
     </group>
     <group>
-        <translate Z="3.4"/>
-        <scale scaleX="0.0865" scaleY="0.0865" scaleZ="0.0865"/>
+        <translate Z="250"/>
+        <scale scaleX="4" scaleY="4" scaleZ="4"/>
         <models>
             <model file="sphere.3d" />
         </models>
     </group>
     <group>
-        <translate Z="5.9"/>
-        <scale scaleX="0.037" scaleY="0.037" scaleZ="0.037"/>
-        <models>
-            <model file="sphere.3d" />
-        </models>
-    </group>
-    <group>
-        <translate Z="8.6"/>
-        <scale scaleX="0.0356" scaleY="0.0356" scaleZ="0.0356"/>
+        <translate Z="400"/>
+        <scale scaleX="3.8" scaleY="3.8" scaleZ="3.8"/>
         <models>
             <model file="sphere.3d" />
         </models>
