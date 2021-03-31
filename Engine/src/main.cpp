@@ -268,7 +268,9 @@ int main(int argc, char **argv) {
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
 	glutIdleFunc(renderScene);
+	#ifndef __APPLE__
 	glewInit();
+	#endif
 	
 // put here the registration of the keyboard callbacks
 	glutKeyboardFunc(keyboardInput);
