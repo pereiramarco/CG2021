@@ -45,8 +45,9 @@ void meteAxis() {
 	glEnd();
 }
 
-void drawFigure(std::string filename) {
-	VBO * vbo = buffers["../models/"+filename];
+void drawFigure(Figure* figure) {
+	VBO * vbo = buffers["../models/"+figure->filename];
+	glColor3f(figure->red,figure->green,figure->blue);
 	glBindBuffer(GL_ARRAY_BUFFER,vbo->vertixes);
  	glVertexPointer(3,GL_FLOAT,0,0);
  	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo->indexes);
@@ -56,47 +57,16 @@ void drawFigure(std::string filename) {
  		0);// parâmetro não utilizado
 }
 
-void drawFigures(Group *g,int spaceBodyCount) {
-	float cr,cg,cb;
-	switch(spaceBodyCount) {
-		case 0:
-			cr=1;cg=1;cb=0;
-		break;
-		case 1:
-			cr=1;cg=0;cb=0;
-		break;
-		case 2:
-			cr=204.0/255;cg=102.0/255;cb=0;
-		break;
-		case 3:
-			cr=0;cg=0;cb=204.0/255;
-		break;
-		case 4:
-			cr=153.0/255;cg=0;cb=0;
-		break;
-		case 5:
-			cr=179/255.0;cg=151/255.0;cb=122/255.0;
-		break;
-		case 6:
-			cr=1;cg=204/255.0;cb=153/255.0;
-		break;
-		case 7:
-			cr=102/255.0;cg=178/255.0;cb=1;
-		break;
-		case 8:
-			cr=0;cg=102/255.0;cb=204/255.0;
-		break;
-	}
-	glColor3f(cr,cg,cb);
+void drawFigures(Group *g) {
 	glPushMatrix();
 	for (auto& transform : g->transformations) {
 		transform->applyTransform();
 	}
-	for (auto& modelFileName : g->files) {
-		drawFigure(modelFileName);
+	for (auto& modelFileName : g->models) {
+		drawFigure(modelFileName.second);
 	}
 	for (auto& group : g->nestedGroups) {
-		drawFigures(group,spaceBodyCount);
+		drawFigures(group);
 	}
 	glPopMatrix();
 }
@@ -113,9 +83,8 @@ void renderScene(void) {
 			  0.0f,1.0f,0.0f);
 // put drawing instructions here
 	if (axis) meteAxis();
-	int i=0;
 	for (auto& g : groups) {
-		drawFigures(g,i++);
+		drawFigures(g);
 	}
 
 	// End of frame

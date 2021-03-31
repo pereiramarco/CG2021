@@ -2,33 +2,33 @@
     <group>
         <scale scaleX="109" scaleY="109" scaleZ="109"/>
         <models>
-            <model file="sphere.3d" />
+            <model file="sphere.3d" redColor="1" greenColor="1" blueColor="0"/>
         </models>
     </group>
     <group>
         <translate Z="110"/>
         <scale scaleX="0.33" scaleY="0.33" scaleZ="0.33"/>
         <models>
-            <model file="sphere.3d" />
+            <model file="sphere.3d" redColor="1" greenColor="0" blueColor="0"/>
         </models>
     </group>
     <group>
         <translate Z="112"/>
         <scale scaleX="0.95" scaleY="0.95" scaleZ="0.95"/>
         <models>
-            <model file="sphere.3d" />
+            <model file="sphere.3d" redColor="0.8" greenColor="0.4" blueColor="0" />
         </models>
     </group>
     <group>
         <translate Z="114.5"/>
         <models>
-            <model file="sphere.3d" />
+            <model file="sphere.3d" redColor="0" greenColor="0" blueColor="0.8"/>
         </models>
         <group>
             <translate X="1.5" Y="1.5"/>
             <scale scaleX="0.2" scaleY="0.2" scaleZ="0.2"/>
             <models>
-                <model file="sphere.3d" />
+                <model file="sphere.3d" redColor="0.75" greenColor="0.75" blueColor="0.75"/>
             </models>
         </group>
     </group>
@@ -36,35 +36,42 @@
         <translate Z="116.6"/>
         <scale scaleX="0.5" scaleY="0.5" scaleZ="0.5"/>
             <models>
-                <model file="sphere.3d" />
+                <model file="sphere.3d" redColor="0.6" greenColor="0" blueColor="0"/>
             </models>
     </group>
     <group>
         <translate Z="157.1"/>
         <scale scaleX="11" scaleY="11" scaleZ="11"/>
         <models>
-            <model file="sphere.3d" />
+            <model file="sphere.3d" redColor="0.7" greenColor="0.59" blueColor="0.478"/>
         </models>
     </group>
     <group>
-        <translate Z="185"/>
+        <translate Z="200"/>
         <scale scaleX="9" scaleY="9" scaleZ="9"/>
+        <rotate angle="-26" axisX="1" axisY="0" axisZ="0"/>
         <models>
-            <model file="sphere.3d" />
+            <model file="sphere.3d" redColor="1" greenColor="0.8" blueColor="0.6"/>
         </models>
+        <group>
+            <scale scaleX="0.5" scaleY="0.5" scaleZ="0.5"/>
+            <models>
+                <model file="torus.3d" redColor="0.75" greenColor="0.75" blueColor="0.75"/>
+            </models>
+        </group>
     </group>
     <group>
-        <translate Z="250"/>
+        <translate Z="270"/>
         <scale scaleX="4" scaleY="4" scaleZ="4"/>
         <models>
-            <model file="sphere.3d" />
+            <model file="sphere.3d" redColor="0.4" greenColor="0.69" blueColor="1"/>
         </models>
     </group>
     <group>
-        <translate Z="400"/>
+        <translate Z="430"/>
         <scale scaleX="3.8" scaleY="3.8" scaleZ="3.8"/>
         <models>
-            <model file="sphere.3d" />
+            <model file="sphere.3d" redColor="0.4" greenColor="0.4" blueColor="0.8"/>
         </models>
     </group>
 

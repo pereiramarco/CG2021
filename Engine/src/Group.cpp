@@ -5,8 +5,8 @@ void Group::addTransform(Transform * t) {
     transformations.push_back(t);
 }
 
-void Group::addFile(std::string filename) {
-    files.push_back(filename);
+void Group::addFile(std::string filename,float red,float green,float blue) {
+    models[filename]=new Figure(red,green,blue,filename);
 }
 
 void Group::addGroup(Group * group) {
@@ -15,8 +15,8 @@ void Group::addGroup(Group * group) {
 
 std::unordered_set<std::string> Group::getModels() {
     std::unordered_set<std::string> ret;
-    for (auto& f : files) {
-            ret.insert(f);
+    for (auto& m : models) {
+            ret.insert(m.first);
         }
     for (auto& gg : nestedGroups) {
         std::unordered_set<std::string> models = gg->getModels();

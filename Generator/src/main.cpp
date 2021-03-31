@@ -6,6 +6,7 @@
 #include "../include/Box.h"
 #include "../include/Plane.h"
 #include "../include/Model.h"
+#include "../include/Torus.h"
 
 
 using namespace std;
@@ -33,6 +34,16 @@ int main(int argc, char **argv) {
             int radiusBase=atoi(argv[2]), height=atoi(argv[3]),slices=atoi(argv[4]),stacks=atoi(argv[5]);
             Cone *c = new Cone(radiusBase,height,slices,stacks);
             m=c->generate();
+            filename=string(argv[6]);
+        }
+        else if (type=="torus") {
+            if (argc!=7) {
+                cout<< "Not enough arguments\n";
+                return 1;
+            }
+            int widenessRadius=atoi(argv[2]), thicknessRadius=atoi(argv[3]),rings=atoi(argv[4]),sides=atoi(argv[5]);
+            Torus *t = new Torus(widenessRadius,thicknessRadius,rings,sides);
+            m=t->generate();
             filename=string(argv[6]);
         }
         else if (type=="box") {

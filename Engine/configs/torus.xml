@@ -1,0 +1,7 @@
+<scene>
+    <group>
+        <models>
+            <model file="torus.3d" redColor="1" greenColor="1" blueColor="1"/>
+        </models>
+    </group>
+</scene>

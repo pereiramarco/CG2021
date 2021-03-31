@@ -3,6 +3,7 @@
 #include <iostream>
 #include "tinyxml2.h"
 #include "../Group.h"
+#include "../Figure.h"
 #include <string>
 #include <vector>
 

@@ -59,7 +59,13 @@ Group * xmlContent::parseGroup(XMLElement * group) {
     if (models) {
         XMLElement * model;
         for (model=models->FirstChildElement();model;model=model->NextSiblingElement()) {
-            g->addFile(std::string(model->Attribute("file")));
+            const char * rr = model->Attribute("redColor");
+            const char * gg = model->Attribute("greenColor");
+            const char * bb = model->Attribute("blueColor");
+            float red = rr?atof(rr):1;
+            float green = gg?atof(gg):1;
+            float blue = bb?atof(bb):1;
+            g->addFile(std::string(model->Attribute("file")),red,green,blue);
         }
     }
     XMLElement *groupChild;
