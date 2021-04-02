@@ -13,7 +13,7 @@ Model::Model(std::vector<std::shared_ptr<Point3D>> vertixesG,std::vector<std::sh
 }
 
 void Model::saveToFile(std::string filename) {
-    std::ofstream fout("../../Engine/models/"+filename, std::ios::out); 
+    std::ofstream fout(filename, std::ios::out); 
     fout<< std::to_string(nVertices) << " " << std::to_string(nTriangulos) << "\n";
     for (int i=0;i<nVertices;i++) {
         fout << std::to_string(vertixes[i]->x) << " " << std::to_string(vertixes[i]->y) << " " << std::to_string(vertixes[i]->z) << "\n"; 
