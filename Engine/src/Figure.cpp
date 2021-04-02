@@ -1,4 +1,4 @@
-#include "Figure.h"
+#include "../include/Figure.h"
 
 Figure::Figure(float redG,float greenG,float blueG,std::string filenameG) {
     red=redG;

@@ -1,19 +1,20 @@
 #pragma once
 #include <vector>
 #include <map>
+#include <memory>
 #include "../../Utils/Point3D.h"
 #include <string>
-#include "../../Utils/Triangle.h"
+#include "Triangle.h"
 #include "Model.h"
 
 class Torus {
 private:
     int widenessRadius,thicknessRadius,nRings,nSides;
-    std::vector<Triangle*> faces;
-    std::map<std::pair<int,int>,Point3D*> points;
+    std::vector<std::shared_ptr<Triangle>> faces;
+    std::map<std::pair<int,int>,std::shared_ptr<Point3D>> points;
 public:
     Torus();
     Torus(int widenessRadiusG,int thicknessRadiusG,int ringsG,int sidesG);
     void addSquare(int ring,int side,int not_last_ring,int not_last_side);
-    Model* generate();
+    std::shared_ptr<Model> generate();
 };

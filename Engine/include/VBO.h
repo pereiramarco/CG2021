@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdlib>
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
 #else

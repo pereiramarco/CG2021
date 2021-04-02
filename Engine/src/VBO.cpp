@@ -1,4 +1,4 @@
-#include "VBO.h"
+#include "../include/VBO.h"
 #ifndef __APPLE__
 #include <GL/glew.h>
 #endif

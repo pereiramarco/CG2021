@@ -1,7 +1,8 @@
 #pragma once
-#include "../../Utils/Triangle.h"
+#include "Triangle.h"
 #include "../../Utils/Point3D.h"
 #include "Model.h"
+#include <memory>
 #include <tuple>
 #include <vector>
 #include <string>
@@ -11,9 +12,9 @@ class Plane{
 public:
     Plane();
     Plane(int sideG);
-    Model* generate();
+    std::shared_ptr<Model> generate();
 private:
     int side;
-    Triangle * t1,*t2;
-    Point3D * topRight,*topLeft,*bottomLeft,*bottomRight;
+    std::shared_ptr<Triangle> t1,t2;
+    std::shared_ptr<Point3D> topRight,topLeft,bottomLeft,bottomRight;
 };

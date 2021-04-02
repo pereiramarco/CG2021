@@ -1,10 +1,12 @@
 #pragma once
+#include <cstdlib>
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
 #endif
 
+#include <memory>
 #include <vector>
 #include <string>
 #include <unordered_set>
@@ -17,17 +19,17 @@
 
 class Group {
 public:
-    std::vector<Transform*> transformations;
-    std::unordered_map<std::string,Figure*> models;
-    std::vector<Group*> nestedGroups;
+    std::vector<std::shared_ptr<Transform>> transformations;
+    std::unordered_map<std::string,std::shared_ptr<Figure>> models;
+    std::vector<std::shared_ptr<Group>> nestedGroups;
 
     Group()=default;
 
-    void addTransform(Transform * t);
+    void addTransform(std::shared_ptr<Transform> t);
 
     void addFile(std::string filename,float red,float green,float blue);
 
-    void addGroup(Group * group);
+    void addGroup(std::shared_ptr<Group> group);
 
     std::unordered_set<std::string> getModels();
 };

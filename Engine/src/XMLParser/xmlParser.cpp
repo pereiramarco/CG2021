@@ -1,9 +1,9 @@
-#include "../Group.h"
-#include "../Transformations/Transform.h"
-#include "../Transformations/Scale.h"
-#include "../Transformations/Translation.h"
-#include "../Transformations/Rotation.h"
-#include "xmlParser.h"
+#include "../../include/Group.h"
+#include "../../include/Transformations/Transform.h"
+#include "../../include/Transformations/Scale.h"
+#include "../../include/Transformations/Translation.h"
+#include "../../include/Transformations/Rotation.h"
+#include "../../include/XMLParser/xmlParser.h"
 #include "unordered_set"
 
 xmlContent::xmlContent() {
@@ -18,8 +18,8 @@ xmlContent::xmlContent(std::string st) {
     filename = st;
 }
 
-Group * xmlContent::parseGroup(XMLElement * group) {
-    Group * g= new Group();
+std::shared_ptr<Group> xmlContent::parseGroup(XMLElement * group) {
+    std::shared_ptr<Group> g= std::make_shared<Group>();
     XMLElement * translation = group->FirstChildElement("translate");
     XMLElement * rotation = group->FirstChildElement("rotate");
     XMLElement * scale = group->FirstChildElement("scale");
@@ -30,7 +30,7 @@ Group * xmlContent::parseGroup(XMLElement * group) {
         float x=readX?atof(readX):0;
         float y=readY?atof(readY):0;
         float z=readZ?atof(readZ):0;
-        Translation* t = new Translation(x,y,z);
+        std::shared_ptr<Translation> t = std::make_shared<Translation>(x,y,z);
         g->addTransform(t);
     }
     if (rotation) {
@@ -42,7 +42,7 @@ Group * xmlContent::parseGroup(XMLElement * group) {
         float axisx=readX?atof(readX):0;
         float axisy=readY?atof(readY):0;
         float axisz=readZ?atof(readZ):0;
-        Rotation* r = new Rotation(angle,axisx,axisy,axisz);
+        std::shared_ptr<Rotation> r = std::make_shared<Rotation>(angle,axisx,axisy,axisz);
         g->addTransform(r);
     }
     if (scale) {
@@ -52,7 +52,7 @@ Group * xmlContent::parseGroup(XMLElement * group) {
         float scalex=readX?atof(readX):1;
         float scaley=readY?atof(readY):1;
         float scalez=readZ?atof(readZ):1;
-        Scale* s = new Scale(scalex,scaley,scalez);
+        std::shared_ptr<Scale> s = std::make_shared<Scale>(scalex,scaley,scalez);
         g->addTransform(s);
     }
     XMLElement * models = group->FirstChildElement("models");
@@ -70,13 +70,13 @@ Group * xmlContent::parseGroup(XMLElement * group) {
     }
     XMLElement *groupChild;
     for (groupChild = group->FirstChildElement("group");groupChild;groupChild=groupChild->NextSiblingElement()) {
-        Group * groupR = parseGroup(groupChild);
+        std::shared_ptr<Group> groupR = parseGroup(groupChild);
         g->addGroup(groupR); 
     }
     return g;
 }
 
-std::vector<Group*> xmlContent::parse() {
+std::vector<std::shared_ptr<Group>> xmlContent::parse() {
     XMLDocument doc;
     int err = doc.LoadFile(filename.c_str());
     if(err == 0) {
@@ -84,7 +84,7 @@ std::vector<Group*> xmlContent::parse() {
         XMLElement * scene = doc.FirstChildElement("scene");
         XMLElement * group;
         for(group = scene->FirstChildElement();group != NULL;group = group->NextSiblingElement()) {
-            Group *g = parseGroup(group);
+            std::shared_ptr<Group> g = parseGroup(group);
             groups.push_back(g);
         }
     }

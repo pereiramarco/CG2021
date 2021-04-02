@@ -7,23 +7,24 @@
 #endif
 
 #include "../../Utils/Point3D.h"
-#include "Group.h"
-#include "VBO.h"
-#include "XMLParser/xmlParser.h"
+#include "../include/Group.h"
+#include "../include/VBO.h"
+#include "../include/XMLParser/xmlParser.h"
 #include <string>
 #include <math.h>
 #include <fstream>
 #include <sstream>
 #include <unordered_map>
+#include <memory>
 
 bool axis=false,wire=true,firstCursor=true;
-std::unordered_map<std::string,VBO*> buffers;
-std::vector<Group*> groups;
+std::unordered_map<std::string,std::shared_ptr<VBO>> buffers;
+std::vector<std::shared_ptr<Group>> groups;
 int xMouseB4,yMouseB4;
 float yaw=-90.0f,pitch=0; //yaw horizontal turn//pitch vertical turn
 float sensitivity = 0.3f; //sensibilidade do rato
 float speed=1.0f;
-Point3D * lookingAtPoint= new Point3D(-200,0,-109.5);
+std::shared_ptr<Point3D> lookingAtPoint= std::make_shared<Point3D>(-200,0,-109.5);
 Point3D camPosition(200,0,109.5);
 
 void meteAxis() {
@@ -45,8 +46,8 @@ void meteAxis() {
 	glEnd();
 }
 
-void drawFigure(Figure* figure) {
-	VBO * vbo = buffers["../models/"+figure->filename];
+void drawFigure(std::shared_ptr<Figure> figure) {
+	std::shared_ptr<VBO> vbo = buffers["../models/"+figure->filename];
 	glColor3f(figure->red,figure->green,figure->blue);
 	glBindBuffer(GL_ARRAY_BUFFER,vbo->vertixes);
  	glVertexPointer(3,GL_FLOAT,0,0);
@@ -57,7 +58,7 @@ void drawFigure(Figure* figure) {
  		0);// parâmetro não utilizado
 }
 
-void drawFigures(Group *g) {
+void drawFigures(std::shared_ptr<Group> g) {
 	glPushMatrix();
 	for (auto& transform : g->transformations) {
 		transform->applyTransform();
@@ -190,7 +191,7 @@ void mouseControls(int x,int y) {
 }
 
 void readFile3D(std::string filename) {
-	VBO * vbo = new VBO();
+	std::shared_ptr<VBO> vbo = std::make_shared<VBO>();
 	std::ifstream fp(filename);
 	int numVertexes, numTriangles;
 	float x,y,z;
@@ -240,13 +241,13 @@ void readFile3D(std::string filename) {
 void readConfig(int argc, char **argv) {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	std::string name;
-	xmlContent * parser;
+	std::shared_ptr<xmlContent> parser;
 	if(argc == 2) {
 		name = "../configs/" + std::string(argv[1]);
-		parser = new xmlContent(name);
+		parser = std::make_shared<xmlContent>(name);
 	}
 	else {
-		parser = new xmlContent();
+		parser = std::make_shared<xmlContent>();
 	}
 	groups=parser->parse();
 	std::unordered_set<std::string> files = parser->getModels(); //é um set para evitar repetidos

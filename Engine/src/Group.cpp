@@ -1,15 +1,15 @@
-#include "Group.h" 
+#include "../include/Group.h" 
 #include "iostream"
 
-void Group::addTransform(Transform * t) {
+void Group::addTransform(std::shared_ptr<Transform> t) {
     transformations.push_back(t);
 }
 
 void Group::addFile(std::string filename,float red,float green,float blue) {
-    models[filename]=new Figure(red,green,blue,filename);
+    models[filename]=std::make_shared<Figure>(red,green,blue,filename);
 }
 
-void Group::addGroup(Group * group) {
+void Group::addGroup(std::shared_ptr<Group> group) {
     nestedGroups.push_back(group);
 }
 

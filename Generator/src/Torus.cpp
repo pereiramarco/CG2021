@@ -24,20 +24,20 @@ Torus:: Torus(int widenessRadiusG,int thicknessRadiusG,int ringsG,int sidesG) {
 void Torus::addSquare(int ring,int side,int not_last_ring,int not_last_side) {
     std::pair<int,int> topleft(ring-not_last_ring,side-not_last_side),topright(ring*not_last_ring,side-not_last_side);
     std::pair<int,int> bottomleft(ring-not_last_ring,side*not_last_side),bottomright(ring*not_last_ring,side*not_last_side);
-    Point3D * topRight=points[topright],*topLeft=points[topleft];
-    Point3D *bottomLeft=points[bottomleft],*bottomRight=points[bottomright];
-    Triangle *t1=new Triangle(topRight,topLeft,bottomLeft);
-    Triangle *t2=new Triangle(topRight,bottomLeft,bottomRight);
+    std::shared_ptr<Point3D> topRight=points[topright],topLeft=points[topleft];
+    std::shared_ptr<Point3D> bottomLeft=points[bottomleft],bottomRight=points[bottomright];
+    std::shared_ptr<Triangle> t1=std::make_shared<Triangle>(topRight,topLeft,bottomLeft);
+    std::shared_ptr<Triangle> t2=std::make_shared<Triangle>(topRight,bottomLeft,bottomRight);
     faces.push_back(t1);
     faces.push_back(t2);
 }
 
-Model* Torus::generate() {
+std::shared_ptr<Model> Torus::generate() {
     float ring_angle_increment=M_PI*2/nRings;
     float side_angle_increment=M_PI*2/nSides;
     int index=0;
 
-    std::vector<Point3D*> vertixes;
+    std::vector<std::shared_ptr<Point3D>> vertixes;
     for (int ring=0;ring<nRings;ring++) {
 
         double ring_angle=ring*ring_angle_increment;
@@ -46,12 +46,13 @@ Model* Torus::generate() {
         for (int side=0;side<nSides;side++) {
 
             double side_angle=M_PI/2.0+side*side_angle_increment;
+            
             float y=thicknessRadius*cosf(side_angle);
             float distHorizontal=thicknessRadius*sinf(side_angle);
             float z=(widenessRadius-distHorizontal)*sinf(ring_angle);
             float x=(widenessRadius-distHorizontal)*cosf(ring_angle);
 
-            Point3D * ponto=new Point3D(x,y,z,index++);
+            std::shared_ptr<Point3D> ponto=std::make_shared<Point3D>(x,y,z,index++);
             vertixes.push_back(ponto);
 
             //addPoint
@@ -71,5 +72,5 @@ Model* Torus::generate() {
             }
         }
     }
-    return new Model(vertixes,faces);
+    return std::make_shared<Model>(vertixes,faces);
 }

@@ -35,9 +35,23 @@
     <group>
         <translate Z="116.6"/>
         <scale scaleX="0.5" scaleY="0.5" scaleZ="0.5"/>
+        <models>
+            <model file="sphere.3d" redColor="0.6" greenColor="0" blueColor="0"/>
+        </models>
+        <group>
+            <translate X="1.5" Y="1.5"/>
+            <scale scaleX="0.2" scaleY="0.2" scaleZ="0.2"/>
             <models>
-                <model file="sphere.3d" redColor="0.6" greenColor="0" blueColor="0"/>
+                <model file="sphere.3d" redColor="0.75" greenColor="0.75" blueColor="0.75"/>
             </models>
+        </group>
+        <group>
+            <translate X="-1.5" Y="-1.5"/>
+            <scale scaleX="0.1" scaleY="0.1" scaleZ="0.1"/>
+            <models>
+                <model file="sphere.3d" redColor="0.4" greenColor="0.75" blueColor="0.75"/>
+            </models>
+        </group>
     </group>
     <group>
         <translate Z="157.1"/>
