@@ -14,7 +14,7 @@ Torus::Torus() {
     nRings=10;
 }
 
-Torus:: Torus(int widenessRadiusG,int thicknessRadiusG,int ringsG,int sidesG) {
+Torus::Torus(int widenessRadiusG,int thicknessRadiusG,int ringsG,int sidesG) {
     widenessRadius=widenessRadiusG;
     thicknessRadius=thicknessRadiusG;
     nSides=sidesG;

@@ -58,6 +58,7 @@ void drawFigure(std::shared_ptr<Figure> figure) {
  		vbo->indexCount, // número de índices a desenhar
  		GL_UNSIGNED_INT, // tipo de dados dos índices
  		0);// parâmetro não utilizado
+	glColor3f(0,0,0);
 }
 
 void drawFigures(std::shared_ptr<Group> g) {
