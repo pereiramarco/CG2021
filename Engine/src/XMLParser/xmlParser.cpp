@@ -76,7 +76,7 @@ std::shared_ptr<Group> xmlContent::parseGroup(XMLElement * group) {
     return g;
 }
 
-std::vector<std::shared_ptr<Group>> xmlContent::parse() {
+std::vector<std::shared_ptr<Group> > xmlContent::parse() {
     XMLDocument doc;
     int err = doc.LoadFile(filename.c_str());
     if(err == 0) {

@@ -19,9 +19,9 @@
 
 class Group {
 public:
-    std::vector<std::shared_ptr<Transform>> transformations;
-    std::unordered_map<std::string,std::shared_ptr<Figure>> models;
-    std::vector<std::shared_ptr<Group>> nestedGroups;
+    std::vector<std::shared_ptr<Transform> > transformations;
+    std::unordered_map<std::string,std::shared_ptr<Figure> > models;
+    std::vector<std::shared_ptr<Group> > nestedGroups;
 
     Group()=default;
 
