@@ -34,16 +34,16 @@ void meteAxis() {
 	
 	// X axis in red
 	glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(-200.0f, 0.0f, 0.0f);
-	glVertex3f( 200.0f, 0.0f, 0.0f);
+	glVertex3f(-500.0f, 0.0f, 0.0f);
+	glVertex3f( 500.0f, 0.0f, 0.0f);
 	// Y Axis in Green
 	glColor3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, -200.0f, 0.0f);
-	glVertex3f(0.0f,  200.0f, 0.0f);
+	glVertex3f(0.0f, -500.0f, 0.0f);
+	glVertex3f(0.0f,  500.0f, 0.0f);
 	// Z Axis in Blue
 	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, -200.0f);
-	glVertex3f(0.0f, 0.0f,  200.0f);
+	glVertex3f(0.0f, 0.0f, -500.0f);
+	glVertex3f(0.0f, 0.0f,  500.0f);
 	
 	glEnd();
 }
@@ -154,16 +154,15 @@ double radians(double degree)
 }
 
 void mouseControls(int x,int y) {
-
 	if (firstCursor)
     {
         xMouseB4 = x;
         yMouseB4 = y;
         firstCursor = false;
     }
-
 	float xoffset = x - xMouseB4;
 	float yoffset = yMouseB4 - y; // reversed since y-coordinates range from bottom to top
+	
 	xMouseB4=x;
 	yMouseB4=y;
 
