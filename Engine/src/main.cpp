@@ -27,6 +27,7 @@ float sensitivity = 0.3f; //sensibilidade do rato
 float speed=1.0f;
 std::shared_ptr<Point3D> lookingAtPoint= std::make_shared<Point3D>(-200,0,-109.5);
 Point3D camPosition(200,0,109.5);
+bool key_states[256];
 
 void meteAxis() {
 	glBegin(GL_LINES);
@@ -73,7 +74,33 @@ void drawFigures(std::shared_ptr<Group> g) {
 	glPopMatrix();
 }
 
+Point3D crossProduct(Point3D v1,Point3D v2) {
+	float x = v1.y * v2.z - v1.z * v2.y;
+    float y = v1.z * v2.x - v1.x * v2.z;
+    float z = v1.x * v2.y - v1.y * v2.x;
+	return Point3D(x,y,z);
+}
+
+void processKeyboardInput() {
+	Point3D look = *lookingAtPoint;
+	Point3D horizontal_look=crossProduct(look,Point3D(0,1,0)); // cross product entre o look e o eixo y de modo a ter apenas o ponto para onde se deve dirigir horizontalmente
+	if (key_states['w'])
+			camPosition+=look*speed;
+	if (key_states['a'])
+			camPosition-=horizontal_look*speed;
+	if (key_states['s'])
+			camPosition-=look*speed;
+	if (key_states['d'])
+			camPosition+=horizontal_look*speed;
+	if (key_states['g'])
+			speed+=0.1f;
+	if (key_states['f'])
+			speed=speed>0.1?-0.1f:speed;
+}
+
 void renderScene(void) {
+
+	processKeyboardInput();
 
 	// clear buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -119,39 +146,7 @@ void changeSize(int w, int h) {
 }
 
 // write function to process keyboard events
-void keyboardInput(unsigned char key, int x, int y) {
-	Point3D look = *lookingAtPoint;
-	Point3D ylook(-look.z,0,look.x); // cross product entre o look e o eixo y de modo a ter apenas o ponto para onde se deve dirigir horizontalmente
-	switch(key) {
-		case 'w':
-			camPosition+=look*speed;
-			break;
-		case 'a':
-			camPosition-=ylook*speed;
-			break;	
-		case 's':
-			camPosition-=look*speed;
-			break;
-		case 'd':
-			camPosition+=ylook*speed;
-			break;
-		case ' ':
-			axis=!axis;
-			break;
-		case 'p':
-			glPolygonMode( GL_FRONT_AND_BACK, wire?GL_LINE:GL_FILL );
-			wire=!wire;
-			break;
-		case 'g':
-			speed+=0.1f;
-			break;
-		case 'f':
-			speed-=0.1f;
-			break;
-		default:
-            break;
-	}
-}
+
 
 double radians(double degree)
 {
@@ -258,6 +253,20 @@ void readConfig(int argc, char **argv) {
 	}
 }
 
+void registerKeyDown(unsigned char key, int x, int y) {
+	key_states[key]=true;
+	if (key==' ')
+		axis=!axis;
+	if (key=='p') {
+		glPolygonMode( GL_FRONT_AND_BACK, wire?GL_LINE:GL_FILL );
+		wire=!wire;
+	}
+}
+
+void registerKeyUp(unsigned char key, int x, int y) {
+	key_states[key]=false;
+}
+
 int main(int argc, char **argv) {
 // init GLUT and the window
 	glutInit(&argc, argv);
@@ -275,7 +284,9 @@ int main(int argc, char **argv) {
 	#endif
 	
 // put here the registration of the keyboard callbacks
-	glutKeyboardFunc(keyboardInput);
+	glutIgnoreKeyRepeat(GL_TRUE);
+	glutKeyboardFunc(registerKeyDown);
+	glutKeyboardUpFunc(registerKeyUp);
 	glutPassiveMotionFunc(mouseControls);
 
 	readConfig(argc,argv); //lê o xml e configura os VBO's
