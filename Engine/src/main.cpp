@@ -95,7 +95,7 @@ void processKeyboardInput() {
 	if (key_states['g'])
 			speed+=0.1f;
 	if (key_states['f'])
-			speed=speed>0.1?-0.1f:speed;
+			speed-=speed>0.1?0.1f:0;
 }
 
 void renderScene(void) {
