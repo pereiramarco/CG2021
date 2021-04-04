@@ -11,7 +11,7 @@
 #include "../include/VBO.h"
 #include "../include/XMLParser/xmlParser.h"
 #include <string>
-#define USE_MATH_DEFINES
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include <fstream>
 #include <sstream>
