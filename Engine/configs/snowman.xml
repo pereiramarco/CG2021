@@ -1,0 +1,37 @@
+<scene>
+    <group>
+        <translate Y="2"/>
+        <scale scaleX="2" scaleY="2" scaleZ="2"/>
+        <models>
+            <model file="sphere.3d" />
+        </models>
+    </group>
+    <group>
+        <translate Y="5"/>
+        <models>
+            <model file="sphere.3d" />
+        </models>
+        <group>
+            <translate X="1"/>
+            <scale scaleX="0.2" scaleY="0.5" scaleZ="0.2"/>
+            <rotate angle="-90" axisZ="1"/>
+            <models>
+                <model file="cone.3d" redColor="1" greenColor="0.647" blueColor="0"/>
+            </models>
+        </group>
+        <group>
+            <translate X="1" Y="0.7" Z="0.4"/>
+            <scale scaleX="0.2" scaleY="0.2" scaleZ="0.2"/>
+            <models>
+                <model file="sphere.3d" redColor="0" greenColor="0" blueColor="0"/>
+            </models>
+        </group>
+        <group>
+            <translate X="1" Y="0.7" Z="-0.4"/>
+            <scale scaleX="0.2" scaleY="0.2" scaleZ="0.2"/>
+            <models>
+                <model file="sphere.3d" redColor="0" greenColor="0" blueColor="0"/>
+            </models>
+        </group>
+    </group>
+</scene>

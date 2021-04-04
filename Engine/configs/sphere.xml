@@ -1,3 +1,7 @@
 <scene>
-    <model file="sphere.3d" />
+    <group>
+        <models>
+            <model file="sphere.3d" />
+        </models>
+    </group>
 </scene>
