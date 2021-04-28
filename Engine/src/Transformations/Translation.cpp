@@ -60,7 +60,7 @@ Translation::Translation(float xG, float yG, float zG) {
     z=zG;
     time=0;
     showCurves=false;
-} 
+}
 
 Translation::Translation(float timeG,std::vector<Point3D> curve_pointsG) {
     time=timeG;
@@ -147,7 +147,7 @@ void Translation::applyTransform() {
         glTranslatef(x,y,z);
     else {
         if (showCurves) drawCatmullRomCurve();
-        Point3D res,XX,YY={1,1,1},ZZ;
+        Point3D res,XX(1,1,1),YY(1,1,1),ZZ;
 	    getGlobalCatmullRomPoint(currentPos,res,XX);
 	    float len=length(XX);
 

@@ -351,6 +351,7 @@
 			<point X="-53.868206944552455" Y="0" Z="148.00157526384262" />
 			<point X="-27.34962941353896" Y="0" Z="155.10721379401437" />
 		</translate>
+		<rotate time="5" clockwise="CW" axisY="1" />
         <scale scaleX="11" scaleY="11" scaleZ="11"/>
         <models>
             <model file="sphere.3d" redColor="0.7" greenColor="0.59" blueColor="0.478"/>

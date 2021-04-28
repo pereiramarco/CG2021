@@ -50,13 +50,10 @@ Group xmlContent::parseGroup(XMLElement * group) {
         g.addTransform(t);
     }
     if (rotation) {
-        int type=2;
-        const char * readAngleOrTime;
-        if (readAngleOrTime=rotation->Attribute("angle")) type=1;
-        else 
-            readAngleOrTime=rotation->Attribute("time");
-        if (type==2) std::cout<<"I read time on rotate\n";
-        float angleOrTime=atof(readAngleOrTime);
+        std::shared_ptr<Rotation> r;
+        const char * readAngle;
+        const char * readTime;
+
         const char * readX=rotation->Attribute("axisX");
         const char * readY=rotation->Attribute("axisY");
         const char * readZ=rotation->Attribute("axisZ");
@@ -64,7 +61,15 @@ Group xmlContent::parseGroup(XMLElement * group) {
         float axisx=readX?atof(readX):0;
         float axisy=readY?atof(readY):0;
         float axisz=readZ?atof(readZ):0;
-        std::shared_ptr<Rotation> r = std::make_shared<Rotation>(type,angleOrTime,axisx,axisy,axisz);
+
+        if (readTime=rotation->Attribute("time")) {
+            const char * clockwise = rotation->Attribute("clockwise");
+            r = std::make_shared<Rotation>(atof(readTime),std::string(clockwise).size(),axisx,axisy,axisz);
+        }
+        else {
+            readAngle=rotation->Attribute("angle");
+            r = std::make_shared<Rotation>(atof(readAngle),axisx,axisy,axisz);
+        }
         g.addTransform(r);
     }
     if (scale) {
