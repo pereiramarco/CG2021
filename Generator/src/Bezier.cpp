@@ -7,6 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include "iostream"
+#include <stdlib.h>
 
 void printMatrix(std::vector<std::vector<Point3D>> auxMatrix) {
 	for (int i=0;i<auxMatrix.size();i++) {
@@ -66,52 +67,43 @@ std::vector<std::vector<Point3D>> Bezier::multiplyMatrix(std::vector<std::vector
 
 void Bezier::read_patches() {
     int numPoints;
-	float x,y,z;
+	std::string p;
+	std::string x,y,z;
+	std::string comma;
 	std::map<int,std::vector<int>> index_patches;
 	std::vector<Point3D> patch_points;
     
     std::ifstream fp("../patches/" + patch_file);
-	std::string line;
-	std::getline(fp,line);
-	std::istringstream iss(line);
-	iss >> numPatches;
 
-	std::string delimiter = ", ";
+	fp >> numPatches;
 	for (int i=0;i<numPatches;i++) {
-		std::getline(fp,line);
-
-		size_t pos = 0;
-		std::string token;
-
 		for (int j=0;j<16;j++) {
-			pos = line.find(delimiter);
-		    token = line.substr(0, pos);
-		    index_patches[i].push_back(std::stoi(token));
-			line.erase(0, pos + delimiter.length());
+			fp >> p;
+			if (j!=15) p.pop_back();
+			index_patches[i].push_back(std::stoi(p));
 		}
     }
-	std::getline(fp,line);
-	std::istringstream points(line);
-	points >> numPoints;
-	std::string comma;
+
+	fp >> numPoints;
+
 	for (int i=0;i<numPoints;i++) {
-		std::getline(fp,line);
-		std::istringstream p(line);
-		p >> x >> comma >> y >> comma >> z;
-		Point3D point = Point3D(x,y,z);
+		fp >> x >> y >> z;
+		x.pop_back();
+		y.pop_back();
+ 		Point3D point = Point3D(strtof(x.c_str(),NULL),strtof(y.c_str(),NULL),strtof(z.c_str(),NULL));
 		patch_points.push_back(point);
     }
 
+	//ESTE ciclo demora muito tempo, vai ser mudado(acho que é os pushs no vetor for some reason, will make it a  map)
 	for (int i=0;i<numPatches;i++) {
-		
 		Patch patch = Patch();
 		for (int j=0;j<4;j++) {
 			std::vector<Point3D> row;
+			patch.points.push_back(row);
 			for (int k=0;k<4;k++) {
 				int index=index_patches[i][j*4+k];
-				row.push_back(patch_points[index]);
+				patch.points[j].push_back(patch_points[index]);
 			}
-			patch.points.push_back(row);
 		}
 		patches.push_back(patch);
 	}
@@ -159,7 +151,6 @@ std::shared_ptr<Model> Bezier::generate() {
 	int indexPoint=0;
 	std::vector<Point3D> vertixes;
 	std::vector<Triangle> triangs;
-	std::cout<<"im done reading patches";
 	for (int i=0;i<numPatches;i++) {
 		Patch p = patches[i];
 
@@ -167,6 +158,5 @@ std::shared_ptr<Model> Bezier::generate() {
 		auto preCalculatedMatrix = multiplyMatrix(auxMatrix,bezier_matrix);
 		calculatePoints(preCalculatedMatrix,indexPoint,vertixes,triangs);
 	}
-	std::cout<<"im done makig points";
 	return std::make_shared<Model>(vertixes,triangs);
 }

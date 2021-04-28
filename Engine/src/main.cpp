@@ -18,6 +18,7 @@
 #include <unordered_map>
 #include <memory>
 
+bool Translation::showCurves=false;
 bool axis=false,wire=true,firstCursor=true;
 std::unordered_map<std::string,std::shared_ptr<VBO>> buffers;
 std::vector<std::shared_ptr<Group>> groups;
@@ -260,6 +261,9 @@ void registerKeyDown(unsigned char key, int x, int y) {
 	if (key=='p') {
 		glPolygonMode( GL_FRONT_AND_BACK, wire?GL_LINE:GL_FILL );
 		wire=!wire;
+	}
+	if (key=='c') {
+		Translation::showCurves=!Translation::showCurves;
 	}
 }
 

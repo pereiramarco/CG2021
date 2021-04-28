@@ -10,10 +10,17 @@ public:
     float y;
     float z;
     float time;
-    std::vector<std::shared_ptr<Point3D>> curve_points;
+    float currentPos=0;
+    int t_before=0;
+    static bool showCurves;
+    std::vector<Point3D> curve_points;
 
     Translation(float xG, float yG, float zG);
     Translation(float timeG,std::vector<std::shared_ptr<Point3D>> curve_pointsG);
     void applyTransform();
-
+private:
+    void multMatrixVector(float *m, Point3D *v, Point3D *res);
+    void getCatmullRomPoint(float t, Point3D p0, Point3D p1, Point3D p2, Point3D p3, Point3D& pos, Point3D& deriv);
+    void getGlobalCatmullRomPoint(float gt, Point3D& pos, Point3D& deriv);
+    void drawCatmullRomCurve();
 };

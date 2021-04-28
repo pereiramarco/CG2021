@@ -36,13 +36,12 @@ std::shared_ptr<Group> xmlContent::parseGroup(XMLElement * group) {
     if (translation) {
         std::shared_ptr<Translation> t;
         if (const char * timeString = translation->Attribute("time")) {
-            std::cout<<"I read time on translate\n";
             float time = atoi(timeString);
             std::vector<std::shared_ptr<Point3D>> vector_points;
             for (XMLElement * point = translation->FirstChildElement("point");point;point = point->NextSiblingElement()) {
-                std::cout<<"I read a point\n";
                 vector_points.push_back(readPoint(point));
             }
+            t = std::make_shared<Translation>(time,vector_points);
         }
         else {
             std::shared_ptr<Point3D> point = readPoint(translation);

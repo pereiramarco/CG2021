@@ -12,8 +12,10 @@ public:
 	Point3D(float x1,float y1, float z1);
 	Point3D(float x1,float y1, float z1,int indexG);
 	Point3D(const Point3D& p);
+	void zero();
 
 	Point3D& operator*(const float& r);
+	Point3D& operator+(Point3D& p);
 	void operator+=(Point3D& p);
 	void operator-=(Point3D& p);
 	std::string getCoords();

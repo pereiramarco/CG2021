@@ -13,6 +13,12 @@ Point3D::Point3D(float x1,float y1, float z1,int indexG) {
 	x=x1;y=y1;z=z1;index=indexG;
 }
 
+void Point3D::zero() {
+	x=0;
+	y=0;
+	z=0;
+}
+
 Point3D::Point3D(const Point3D& p) {
 	x=p.x;
 	y=p.y;
@@ -29,6 +35,11 @@ void Point3D::operator+=(Point3D& p) {
 	x+=p.x;
 	y+=p.y;
 	z+=p.z;
+}
+
+Point3D& Point3D::operator+(Point3D& p) {
+	std::shared_ptr<Point3D> res = std::make_shared<Point3D>(this->x+p.x,this->y+p.y,this->z+p.z);
+    return *res;
 }
 
 Point3D& Point3D::operator*(const float& r) {
