@@ -40,6 +40,20 @@ void normalize(Point3D& a) {
 	a.z = a.z/l;
 }
 
+Translation::Translation() {
+	time=0;
+}
+
+Translation::Translation(const Translation& t) {
+	x=t.x;
+	y=t.y;
+	z=t.z;
+	time=t.time;
+	curve_points=t.curve_points;
+	currentPos=t.currentPos;
+	t_before=t.t_before;
+}
+
 Translation::Translation(float xG, float yG, float zG) {
     x=xG;
     y=yG;
@@ -48,11 +62,9 @@ Translation::Translation(float xG, float yG, float zG) {
     showCurves=false;
 } 
 
-Translation::Translation(float timeG,std::vector<std::shared_ptr<Point3D>> curve_pointsG) {
+Translation::Translation(float timeG,std::vector<Point3D> curve_pointsG) {
     time=timeG;
-    for (int i=0;i<curve_pointsG.size();i++) {
-        curve_points.push_back(*curve_pointsG[i]);
-    }
+    curve_points=curve_pointsG;
 }
 
 void Translation::multMatrixVector(float *m, Point3D *v, Point3D *res) {

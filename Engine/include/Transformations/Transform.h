@@ -1,6 +1,8 @@
 #pragma once
 
+#include <memory>
+
 class Transform {
-public:    
+public:
      virtual void applyTransform()=0;
 };

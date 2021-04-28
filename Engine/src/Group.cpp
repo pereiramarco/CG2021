@@ -1,15 +1,21 @@
 #include "../include/Group.h" 
 #include "iostream"
 
+Group::Group(const Group& g1) {
+    transformations = g1.transformations;
+    models=g1.models;
+    nestedGroups=g1.nestedGroups;
+}
+
 void Group::addTransform(std::shared_ptr<Transform> t) {
     transformations.push_back(t);
 }
 
 void Group::addFile(std::string filename,float red,float green,float blue) {
-    models[filename]=std::make_shared<Figure>(red,green,blue,filename);
+    models[filename]=Figure(red,green,blue,filename);
 }
 
-void Group::addGroup(std::shared_ptr<Group> group) {
+void Group::addGroup(Group group) {
     nestedGroups.push_back(group);
 }
 
@@ -19,7 +25,7 @@ std::unordered_set<std::string> Group::getModels() {
             ret.insert(m.first);
         }
     for (auto& gg : nestedGroups) {
-        std::unordered_set<std::string> models = gg->getModels();
+        std::unordered_set<std::string> models = gg.getModels();
         for (auto& file : models) {
             ret.insert(file);
         }

@@ -14,4 +14,5 @@ public:
 	int indexCount;
 
     VBO();
+	VBO(const VBO& vbo);
 };

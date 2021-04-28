@@ -9,3 +9,10 @@ VBO::VBO() {
 	glGenBuffers(1,&vertixes);
 	glGenBuffers(1,&indexes);
 }	
+
+VBO::VBO(const VBO& vbo) {
+	vertixCount=vbo.vertixCount;
+	indexCount=vbo.indexCount;
+	indexes=vbo.indexes;
+	vertixes=vbo.vertixes;
+}

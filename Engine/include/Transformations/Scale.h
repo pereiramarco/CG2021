@@ -7,6 +7,8 @@ public:
     float yScale;
     float zScale;
 
+    Scale(const Scale& s);
+
     Scale(float xG, float yG, float zG);
     void applyTransform();
 

@@ -14,11 +14,11 @@ class xmlContent {
         xmlContent();
         xmlContent(char* st);
         xmlContent(std::string st);
-        std::shared_ptr<Group> parseGroup(XMLElement * group);
-        std::vector<std::shared_ptr<Group> > parse();
+        Group parseGroup(XMLElement * group);
+        std::vector<Group> parse();
         std::unordered_set<std::string> getModels();
     private:
         std::string filename;
-        std::vector<std::shared_ptr<Group> > groups;
+        std::vector<Group> groups;
 
 };

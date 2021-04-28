@@ -2,7 +2,6 @@
 #include "Transform.h"
 #include "../../../Utils/Point3D.h"
 #include <vector>
-#include <memory>
 
 class Translation : public Transform {
 public:
@@ -15,8 +14,10 @@ public:
     static bool showCurves;
     std::vector<Point3D> curve_points;
 
+    Translation();
+    Translation(const Translation& t);
     Translation(float xG, float yG, float zG);
-    Translation(float timeG,std::vector<std::shared_ptr<Point3D>> curve_pointsG);
+    Translation(float timeG,std::vector<Point3D> curve_pointsG);
     void applyTransform();
 private:
     void multMatrixVector(float *m, Point3D *v, Point3D *res);

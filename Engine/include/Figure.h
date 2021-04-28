@@ -8,5 +8,8 @@ public:
     float blue;
     std::string filename;
 
+    Figure();
+    Figure(const Figure& fig);
     Figure(float redG,float greenG,float blueG,std::string filenameG);
+
 };

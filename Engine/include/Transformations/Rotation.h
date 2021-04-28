@@ -9,6 +9,7 @@ public:
     float axisZ;
     float time;
 
+    Rotation(const Rotation& r);
     Rotation(int type,float degreesOrTimeG, float axisXG, float axisYG, float axisZG);
     void applyTransform();
 

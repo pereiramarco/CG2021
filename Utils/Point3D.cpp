@@ -1,6 +1,7 @@
 #include "Point3D.h"
 #include <string>
 
+
 Point3D::Point3D(){
 	x=0;y=0;z=0;index=0;
 }
@@ -13,17 +14,17 @@ Point3D::Point3D(float x1,float y1, float z1,int indexG) {
 	x=x1;y=y1;z=z1;index=indexG;
 }
 
-void Point3D::zero() {
-	x=0;
-	y=0;
-	z=0;
-}
-
 Point3D::Point3D(const Point3D& p) {
 	x=p.x;
 	y=p.y;
 	z=p.z;
 	index=p.index;
+}
+
+void Point3D::zero() {
+	x=0;
+	y=0;
+	z=0;
 }
 
 void Point3D::operator-=(Point3D& p) {

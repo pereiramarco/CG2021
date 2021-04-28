@@ -6,7 +6,6 @@
 #include <GL/glut.h>
 #endif
 
-#include <memory>
 #include <vector>
 #include <string>
 #include <unordered_set>
@@ -19,17 +18,18 @@
 
 class Group {
 public:
-    std::vector<std::shared_ptr<Transform> > transformations;
-    std::unordered_map<std::string,std::shared_ptr<Figure> > models;
-    std::vector<std::shared_ptr<Group> > nestedGroups;
+    std::vector<std::shared_ptr<Transform>> transformations;
+    std::unordered_map<std::string,Figure> models;
+    std::vector<Group> nestedGroups;
 
     Group()=default;
+    Group(const Group& g);
 
     void addTransform(std::shared_ptr<Transform> t);
 
     void addFile(std::string filename,float red,float green,float blue);
 
-    void addGroup(std::shared_ptr<Group> group);
+    void addGroup(Group group);
 
     std::unordered_set<std::string> getModels();
 };

@@ -20,13 +20,13 @@
 
 bool Translation::showCurves=false;
 bool axis=false,wire=true,firstCursor=true;
-std::unordered_map<std::string,std::shared_ptr<VBO>> buffers;
-std::vector<std::shared_ptr<Group>> groups;
+std::unordered_map<std::string,VBO> buffers;
+std::vector<Group> groups;
 int xMouseB4,yMouseB4;
 float yaw=-90.0f,pitch=0; //yaw horizontal turn//pitch vertical turn
 float sensitivity = 0.3f; //sensibilidade do rato
 float speed=1.0f;
-std::shared_ptr<Point3D> lookingAtPoint= std::make_shared<Point3D>(-200,0,-109.5);
+Point3D lookingAtPoint= Point3D(-200,0,-109.5);
 Point3D camPosition(200,0,109.5);
 bool key_states[256];
 
@@ -49,28 +49,28 @@ void meteAxis() {
 	glEnd();
 }
 
-void drawFigure(std::shared_ptr<Figure> figure) {
-	std::shared_ptr<VBO> vbo = buffers["../models/"+figure->filename];
-	glColor3f(figure->red,figure->green,figure->blue);
-	glBindBuffer(GL_ARRAY_BUFFER,vbo->vertixes);
+void drawFigure(Figure figure) {
+	VBO vbo = buffers["../models/"+figure.filename];
+	glColor3f(figure.red,figure.green,figure.blue);
+	glBindBuffer(GL_ARRAY_BUFFER,vbo.vertixes);
  	glVertexPointer(3,GL_FLOAT,0,0);
- 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo->indexes);
+ 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo.indexes);
  	glDrawElements(GL_TRIANGLES,
- 		vbo->indexCount, // número de índices a desenhar
+ 		vbo.indexCount, // número de índices a desenhar
  		GL_UNSIGNED_INT, // tipo de dados dos índices
  		0);// parâmetro não utilizado
 	glColor3f(0,0,0);
 }
 
-void drawFigures(std::shared_ptr<Group> g) {
+void drawFigures(Group g) {
 	glPushMatrix();
-	for (auto& transform : g->transformations) {
+	for (auto& transform : g.transformations) {
 		transform->applyTransform();
 	}
-	for (auto& modelFileName : g->models) {
+	for (auto& modelFileName : g.models) {
 		drawFigure(modelFileName.second);
 	}
-	for (auto& group : g->nestedGroups) {
+	for (auto& group : g.nestedGroups) {
 		drawFigures(group);
 	}
 	glPopMatrix();
@@ -84,14 +84,13 @@ Point3D crossProduct(Point3D v1,Point3D v2) {
 }
 
 void processKeyboardInput() {
-	Point3D look = *lookingAtPoint;
-	Point3D horizontal_look=crossProduct(look,Point3D(0,1,0)); // cross product entre o look e o eixo y de modo a ter apenas o ponto para onde se deve dirigir horizontalmente
+	Point3D horizontal_look=crossProduct(lookingAtPoint,Point3D(0,1,0)); // cross product entre o look e o eixo y de modo a ter apenas o ponto para onde se deve dirigir horizontalmente
 	if (key_states['w'])
-			camPosition+=look*speed;
+			camPosition+=lookingAtPoint*speed;
 	if (key_states['a'])
 			camPosition-=horizontal_look*speed;
 	if (key_states['s'])
-			camPosition-=look*speed;
+			camPosition-=lookingAtPoint*speed;
 	if (key_states['d'])
 			camPosition+=horizontal_look*speed;
 	if (key_states['g'])
@@ -110,7 +109,7 @@ void renderScene(void) {
 	// set the camera
 	glLoadIdentity();
 	gluLookAt(camPosition.x,camPosition.y,camPosition.z, 
-		      lookingAtPoint->x+camPosition.x,lookingAtPoint->y+camPosition.y,lookingAtPoint->z+camPosition.z,
+		      lookingAtPoint.x+camPosition.x,lookingAtPoint.y+camPosition.y,lookingAtPoint.z+camPosition.z,
 			  0.0f,1.0f,0.0f);
 // put drawing instructions here
 	if (axis) meteAxis();
@@ -147,9 +146,6 @@ void changeSize(int w, int h) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
-// write function to process keyboard events
-
-
 double radians(double degree)
 {
     return (degree * (M_PI / 180));
@@ -182,13 +178,13 @@ void mouseControls(int x,int y) {
         pitch = -89.0f;
 
 	//calcula o novo ponto para o qual está a olhar de forma normalizada
-    lookingAtPoint->x = cosf(radians(yaw)) * cosf(radians(pitch));
-    lookingAtPoint->y = sinf(radians(pitch));
-    lookingAtPoint->z = sinf(radians(yaw)) * cosf(radians(pitch));
+    lookingAtPoint.x = cosf(radians(yaw)) * cosf(radians(pitch));
+    lookingAtPoint.y = sinf(radians(pitch));
+    lookingAtPoint.z = sinf(radians(yaw)) * cosf(radians(pitch));
 }
 
 void readFile3D(std::string filename) {
-	std::shared_ptr<VBO> vbo = std::make_shared<VBO>();
+	VBO vbo = VBO();
 	std::ifstream fp(filename);
 	int numVertexes, numTriangles;
 	float x,y,z;
@@ -212,9 +208,9 @@ void readFile3D(std::string filename) {
 		vertixes.push_back(y);
 		vertixes.push_back(z);
 	}
-	glBindBuffer(GL_ARRAY_BUFFER,vbo->vertixes); //liga o buffer pontos ao array
+	glBindBuffer(GL_ARRAY_BUFFER,vbo.vertixes); //liga o buffer pontos ao array
 	glBufferData(GL_ARRAY_BUFFER,sizeof(float)*vertixes.size(), vertixes.data(), GL_STATIC_DRAW);
-	vbo->vertixCount=vertixes.size();
+	vbo.vertixCount=vertixes.size();
 	// Aquisição dos Triangles a partir de 3 Pontos do Ficheiro
 	int indicePonto1, indicePonto2, indicePonto3;
 	for(i = 0; i < numTriangles; i++) {
@@ -229,25 +225,25 @@ void readFile3D(std::string filename) {
 		indexes.push_back(indicePonto2);
 		indexes.push_back(indicePonto3);
 	}
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,vbo->indexes); //liga o buffer indices ao array
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,vbo.indexes); //liga o buffer indices ao array
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(unsigned int) * indexes.size(),indexes.data(),GL_STATIC_DRAW);
- 	vbo->indexCount = indexes.size();
+ 	vbo.indexCount = indexes.size();
 	buffers[filename]=vbo;
 }
 
 void readConfig(int argc, char **argv) {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	std::string name;
-	std::shared_ptr<xmlContent> parser;
+	xmlContent parser;
 	if(argc == 2) {
 		name = "../configs/" + std::string(argv[1]);
-		parser = std::make_shared<xmlContent>(name);
+		parser = xmlContent(name);
 	}
 	else {
-		parser = std::make_shared<xmlContent>();
+		parser = xmlContent();
 	}
-	groups=parser->parse();
-	std::unordered_set<std::string> files = parser->getModels(); //é um set para evitar repetidos
+	groups=parser.parse();
+	std::unordered_set<std::string> files = parser.getModels(); //é um set para evitar repetidos
 	for(auto& filename : files) {
 		std::string model = "../models/" + filename;
 		readFile3D(model);

@@ -18,36 +18,36 @@ xmlContent::xmlContent(std::string st) {
     filename = st;
 }
 
-std::shared_ptr<Point3D> readPoint(XMLElement* info) {
+Point3D readPoint(XMLElement* info) {
     const char * readX=info->Attribute("X");
     const char * readY=info->Attribute("Y");
     const char * readZ=info->Attribute("Z");
     float x=readX?atof(readX):0;
     float y=readY?atof(readY):0;
     float z=readZ?atof(readZ):0;
-    return std::make_shared<Point3D>(x,y,z);
+    return Point3D(x,y,z);
 }
 
-std::shared_ptr<Group> xmlContent::parseGroup(XMLElement * group) {
-    std::shared_ptr<Group> g= std::make_shared<Group>();
+Group xmlContent::parseGroup(XMLElement * group) {
+    Group g = Group();
     XMLElement * translation = group->FirstChildElement("translate");
     XMLElement * rotation = group->FirstChildElement("rotate");
     XMLElement * scale = group->FirstChildElement("scale");
     if (translation) {
-        std::shared_ptr<Translation> t;
+        std::shared_ptr<Transform> t;
         if (const char * timeString = translation->Attribute("time")) {
             float time = atoi(timeString);
-            std::vector<std::shared_ptr<Point3D>> vector_points;
+            std::vector<Point3D> vector_points;
             for (XMLElement * point = translation->FirstChildElement("point");point;point = point->NextSiblingElement()) {
                 vector_points.push_back(readPoint(point));
             }
             t = std::make_shared<Translation>(time,vector_points);
         }
         else {
-            std::shared_ptr<Point3D> point = readPoint(translation);
-            t = std::make_shared<Translation>(point->x,point->y,point->z);
+            Point3D point = readPoint(translation);
+            t = std::make_shared<Translation>(point.x,point.y,point.z);
         }
-        g->addTransform(t);
+        g.addTransform(t);
     }
     if (rotation) {
         int type=2;
@@ -65,7 +65,7 @@ std::shared_ptr<Group> xmlContent::parseGroup(XMLElement * group) {
         float axisy=readY?atof(readY):0;
         float axisz=readZ?atof(readZ):0;
         std::shared_ptr<Rotation> r = std::make_shared<Rotation>(type,angleOrTime,axisx,axisy,axisz);
-        g->addTransform(r);
+        g.addTransform(r);
     }
     if (scale) {
         const char * readX=scale->Attribute("scaleX");
@@ -75,7 +75,7 @@ std::shared_ptr<Group> xmlContent::parseGroup(XMLElement * group) {
         float scaley=readY?atof(readY):1;
         float scalez=readZ?atof(readZ):1;
         std::shared_ptr<Scale> s = std::make_shared<Scale>(scalex,scaley,scalez);
-        g->addTransform(s);
+        g.addTransform(s);
     }
     XMLElement * models = group->FirstChildElement("models");
     if (models) {
@@ -87,18 +87,18 @@ std::shared_ptr<Group> xmlContent::parseGroup(XMLElement * group) {
             float red = rr?atof(rr):1;
             float green = gg?atof(gg):1;
             float blue = bb?atof(bb):1;
-            g->addFile(std::string(model->Attribute("file")),red,green,blue);
+            g.addFile(std::string(model->Attribute("file")),red,green,blue);
         }
     }
     XMLElement *groupChild;
     for (groupChild = group->FirstChildElement("group");groupChild;groupChild=groupChild->NextSiblingElement()) {
-        std::shared_ptr<Group> groupR = parseGroup(groupChild);
-        g->addGroup(groupR); 
+        Group groupR = parseGroup(groupChild);
+        g.addGroup(groupR); 
     }
     return g;
 }
 
-std::vector<std::shared_ptr<Group> > xmlContent::parse() {
+std::vector<Group> xmlContent::parse() {
     XMLDocument doc;
     int err = doc.LoadFile(filename.c_str());
     if(err == 0) {
@@ -106,7 +106,7 @@ std::vector<std::shared_ptr<Group> > xmlContent::parse() {
         XMLElement * scene = doc.FirstChildElement("scene");
         XMLElement * group;
         for(group = scene->FirstChildElement();group != NULL;group = group->NextSiblingElement()) {
-            std::shared_ptr<Group> g = parseGroup(group);
+            Group g = parseGroup(group);
             groups.push_back(g);
         }
     }
@@ -119,7 +119,7 @@ std::vector<std::shared_ptr<Group> > xmlContent::parse() {
 std::unordered_set<std::string> xmlContent::getModels() {
     std::unordered_set<std::string> ret;
     for (auto& g : groups) {
-        std::unordered_set<std::string> models=g->getModels();
+        std::unordered_set<std::string> models=g.getModels();
         for (auto& file : models) {
             ret.insert(file);
         }
