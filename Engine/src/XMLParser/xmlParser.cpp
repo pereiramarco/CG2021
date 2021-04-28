@@ -18,31 +18,54 @@ xmlContent::xmlContent(std::string st) {
     filename = st;
 }
 
+std::shared_ptr<Point3D> readPoint(XMLElement* info) {
+    const char * readX=info->Attribute("X");
+    const char * readY=info->Attribute("Y");
+    const char * readZ=info->Attribute("Z");
+    float x=readX?atof(readX):0;
+    float y=readY?atof(readY):0;
+    float z=readZ?atof(readZ):0;
+    return std::make_shared<Point3D>(x,y,z);
+}
+
 std::shared_ptr<Group> xmlContent::parseGroup(XMLElement * group) {
     std::shared_ptr<Group> g= std::make_shared<Group>();
     XMLElement * translation = group->FirstChildElement("translate");
     XMLElement * rotation = group->FirstChildElement("rotate");
     XMLElement * scale = group->FirstChildElement("scale");
     if (translation) {
-        const char * readX=translation->Attribute("X");
-        const char * readY=translation->Attribute("Y");
-        const char * readZ=translation->Attribute("Z");
-        float x=readX?atof(readX):0;
-        float y=readY?atof(readY):0;
-        float z=readZ?atof(readZ):0;
-        std::shared_ptr<Translation> t = std::make_shared<Translation>(x,y,z);
+        std::shared_ptr<Translation> t;
+        if (const char * timeString = translation->Attribute("time")) {
+            std::cout<<"I read time on translate\n";
+            float time = atoi(timeString);
+            std::vector<std::shared_ptr<Point3D>> vector_points;
+            for (XMLElement * point = translation->FirstChildElement("point");point;point = point->NextSiblingElement()) {
+                std::cout<<"I read a point\n";
+                vector_points.push_back(readPoint(point));
+            }
+        }
+        else {
+            std::shared_ptr<Point3D> point = readPoint(translation);
+            t = std::make_shared<Translation>(point->x,point->y,point->z);
+        }
         g->addTransform(t);
     }
     if (rotation) {
-        const char * readDegrees=rotation->Attribute("angle");
+        int type=2;
+        const char * readAngleOrTime;
+        if (readAngleOrTime=rotation->Attribute("angle")) type=1;
+        else 
+            readAngleOrTime=rotation->Attribute("time");
+        if (type==2) std::cout<<"I read time on rotate\n";
+        float angleOrTime=atof(readAngleOrTime);
         const char * readX=rotation->Attribute("axisX");
         const char * readY=rotation->Attribute("axisY");
         const char * readZ=rotation->Attribute("axisZ");
-        float angle=readDegrees?atof(readDegrees):0;
+        
         float axisx=readX?atof(readX):0;
         float axisy=readY?atof(readY):0;
         float axisz=readZ?atof(readZ):0;
-        std::shared_ptr<Rotation> r = std::make_shared<Rotation>(angle,axisx,axisy,axisz);
+        std::shared_ptr<Rotation> r = std::make_shared<Rotation>(type,angleOrTime,axisx,axisy,axisz);
         g->addTransform(r);
     }
     if (scale) {

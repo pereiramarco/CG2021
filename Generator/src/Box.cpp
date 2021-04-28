@@ -23,12 +23,12 @@ Box::Box(int widthG,int depthG,int heightG,int nDivisionsG) {
 void Box::addSquare(bool top,std::shared_ptr<Point3D> topRight,std::shared_ptr<Point3D> topLeft,std::shared_ptr<Point3D> bellowLeft,std::shared_ptr<Point3D> bellowRight) {
     std::shared_ptr<Triangle>t1,t2;
     if (top) {
-        t1=std::make_shared<Triangle>(topRight,topLeft,bellowLeft);
-        t2=std::make_shared<Triangle>(topRight,bellowLeft,bellowRight);
+        t1=std::make_shared<Triangle>(topRight->index,topLeft->index,bellowLeft->index);
+        t2=std::make_shared<Triangle>(topRight->index,bellowLeft->index,bellowRight->index);
     }
     else {
-        t1=std::make_shared<Triangle>(topRight,bellowLeft,topLeft);
-        t2=std::make_shared<Triangle>(topRight,bellowRight,bellowLeft);
+        t1=std::make_shared<Triangle>(topRight->index,bellowLeft->index,topLeft->index);
+        t2=std::make_shared<Triangle>(topRight->index,bellowRight->index,bellowLeft->index);
     }
     faces.push_back(t1);
     faces.push_back(t2);

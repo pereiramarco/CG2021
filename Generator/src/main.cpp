@@ -7,6 +7,7 @@
 #include "../include/Plane.h"
 #include "../include/Model.h"
 #include "../include/Torus.h"
+#include "../include/Bezier.h"
 
 int main(int argc, char **argv) {
 	std::string filename;
@@ -62,6 +63,17 @@ int main(int argc, char **argv) {
             std::shared_ptr<Plane> p = std::make_shared<Plane>(side);
             m=p->generate();
             filename=std::string(argv[3]);
+        }
+        else if (type=="bezier") {
+            if (argc!=5) {
+                std::cout<< "Not enough arguments\n";
+                return 1;
+            }
+            std::string patch_file=std::string(argv[2]);
+            int tesselation_level = atoi(argv[3]);
+            std::shared_ptr<Bezier> b = std::make_shared<Bezier>(patch_file,tesselation_level);
+            m=b->generate();
+            filename=std::string(argv[4]);
         }
 		else return 1;
         m->saveToFile(filename);

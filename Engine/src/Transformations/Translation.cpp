@@ -13,6 +13,12 @@ Translation::Translation(float xG, float yG, float zG) {
     z=zG;
 } 
 
+
+Translation::Translation(float timeG,std::vector<std::shared_ptr<Point3D>> curve_pointsG) {
+    time=timeG;
+    curve_points=curve_pointsG;
+}
+
 void Translation::applyTransform() {
     glTranslatef(x,y,z);
 }

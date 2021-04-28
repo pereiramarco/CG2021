@@ -7,8 +7,13 @@
 
 #include "../../include/Transformations/Rotation.h"
 
-Rotation::Rotation(float degreesG, float axisXG, float axisYG, float axisZG) {
-    degrees=degreesG;
+Rotation::Rotation(int type,float degreesOrTimeG, float axisXG, float axisYG, float axisZG) {
+    if (type) {
+        degrees=degreesOrTimeG;
+    }
+    else {
+        time=degreesOrTimeG;
+    }
     axisX=axisXG;
     axisY=axisYG;
     axisZ=axisZG;

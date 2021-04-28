@@ -1,0 +1,8 @@
+<scene>
+    <group>
+        <rotate angle="-90" axisX="1"/>
+        <models>
+            <model file="bezier.3d" />
+        </models>
+    </group>
+</scene>

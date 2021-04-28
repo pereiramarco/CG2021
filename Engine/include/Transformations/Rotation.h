@@ -7,8 +7,9 @@ public:
     float axisX;
     float axisY;
     float axisZ;
+    float time;
 
-    Rotation(float degreesG, float axisXG, float axisYG, float axisZG);
+    Rotation(int type,float degreesOrTimeG, float axisXG, float axisYG, float axisZG);
     void applyTransform();
 
 };

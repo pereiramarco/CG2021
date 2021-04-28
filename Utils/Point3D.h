@@ -11,10 +11,10 @@ public:
 	Point3D();
 	Point3D(float x1,float y1, float z1);
 	Point3D(float x1,float y1, float z1,int indexG);
+	Point3D(const Point3D& p);
 
 	Point3D& operator*(const float& r);
 	void operator+=(Point3D& p);
 	void operator-=(Point3D& p);
-	Point3D clone();
 	std::string getCoords();
 };
