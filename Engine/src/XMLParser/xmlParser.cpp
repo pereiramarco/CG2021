@@ -36,7 +36,7 @@ Group xmlContent::parseGroup(XMLElement * group) {
     if (translation) {
         std::shared_ptr<Transform> t;
         if (const char * timeString = translation->Attribute("time")) {
-            float time = atoi(timeString);
+            float time = atof(timeString);
             std::vector<Point3D> vector_points;
             for (XMLElement * point = translation->FirstChildElement("point");point;point = point->NextSiblingElement()) {
                 vector_points.push_back(readPoint(point));

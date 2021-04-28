@@ -10,8 +10,8 @@
 class Torus {
 private:
     int widenessRadius,thicknessRadius,nRings,nSides;
-    std::vector<std::shared_ptr<Triangle>> faces;
-    std::map<std::pair<int,int>,std::shared_ptr<Point3D>> points;
+    std::vector<Triangle> faces;
+    std::map<std::pair<int,int>,Point3D> points;
 public:
     Torus();
     Torus(int widenessRadiusG,int thicknessRadiusG,int ringsG,int sidesG);

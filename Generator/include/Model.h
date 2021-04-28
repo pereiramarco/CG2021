@@ -8,13 +8,10 @@
 
 class Model{
 public:
-    Model(std::vector<std::shared_ptr<Point3D>> vertixesG,std::vector<std::shared_ptr<Triangle>> faces);
     Model(std::vector<Point3D> vertixesG,std::vector<Triangle> faces);
     void saveToFile(std::string filename);
 private:
     int nVertices,nTriangulos;
-    std::vector<std::shared_ptr<Triangle>> faces;
-    std::vector<std::shared_ptr<Point3D>> vertixes;
     std::vector<Triangle> facesT;
     std::vector<Point3D> vertixesT;
 };

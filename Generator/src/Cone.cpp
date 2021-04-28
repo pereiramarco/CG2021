@@ -24,30 +24,30 @@ Cone::Cone(int radiusG,int heightG,int slicesG,int stacksG) {
 
 
 void Cone::addTopSlice(int slice,int stack,int not_last) {
-    std::shared_ptr<Point3D> top=std::make_shared<Point3D>(0.0f,height,0.0f,1);
+    Point3D top=Point3D(0.0f,height,0.0f,1);
     static int special=1;
-    std::shared_ptr<Triangle> t;
+    Triangle t;
     std::pair<int,int> point_before(slice-not_last,stack);
     std::pair<int,int> point_after(slice*not_last+(1-not_last),stack);
-    std::shared_ptr<Point3D> before=points[point_before];
-    std::shared_ptr<Point3D> after=points[point_after]; 
-    t =std::make_shared<Triangle>(top,before,after);
+    Point3D before=points[point_before];
+    Point3D after=points[point_after]; 
+    t = Triangle(top.index,before.index,after.index);
     this->faces.push_back(t);
     special=1-special;
 }
 void Cone::addCircleSlice(int slice,int stack,int not_last) {
-    std::shared_ptr<Point3D> middle=std::make_shared<Point3D>();
+    Point3D middle=Point3D();
     std::pair<int,int> before(slice-not_last,stack),after(slice*not_last+(1-not_last),stack);
-    std::shared_ptr<Point3D> afterPoint=points[after],beforePoint=points[before];
-    std::shared_ptr<Triangle> t=std::make_shared<Triangle>(middle,afterPoint,beforePoint); //é visto debaixo logo está mudada a ordem
+    Point3D afterPoint=points[after],beforePoint=points[before];
+    Triangle t=Triangle(middle.index,afterPoint.index,beforePoint.index); //é visto debaixo logo está mudada a ordem
     faces.push_back(t);
 }
 
 void Cone::addSquareSlice(int slice,int stack,int not_last) {
     std::pair<int,int> bottomleft(slice-not_last,stack-1),bottomright(slice*not_last+(1-not_last),stack-1),topleft(slice-not_last,stack),topright(slice*not_last+(1-not_last),stack);
-    std::shared_ptr<Point3D> topRight=points[topright],topLeft=points[topleft],bottomLeft=points[bottomleft],bottomRight=points[bottomright];
-    std::shared_ptr<Triangle> t1=std::make_shared<Triangle>(topRight,topLeft,bottomLeft);
-    std::shared_ptr<Triangle> t2=std::make_shared<Triangle>(topRight,bottomLeft,bottomRight);
+    Point3D topRight=points[topright],topLeft=points[topleft],bottomLeft=points[bottomleft],bottomRight=points[bottomright];
+    Triangle t1=Triangle(topRight.index,topLeft.index,bottomLeft.index);
+    Triangle t2=Triangle(topRight.index,bottomLeft.index,bottomRight.index);
     faces.push_back(t1);
     faces.push_back(t2);
 }
@@ -56,10 +56,10 @@ std::shared_ptr<Model> Cone::generate() {
     bool first;
     double slice_angle_increment=M_PI*2.0/nSlices;
     double height_increment=height/(1.0*nStacks);
-    std::vector<std::shared_ptr<Point3D>> vertixes;
+    std::vector<Point3D> vertixes;
     int index=2;
-    std::shared_ptr<Point3D> top=std::make_shared<Point3D>(0.0f,height,0.0f,1);
-    vertixes.push_back(std::make_shared<Point3D>());
+    Point3D top=Point3D(0.0f,height,0.0f,1);
+    vertixes.push_back(Point3D());
     vertixes.push_back(top);
 
     for (int stack=0;stack<nStacks;stack++) {
@@ -71,7 +71,7 @@ std::shared_ptr<Model> Cone::generate() {
             float x=cos(slice_angle_increment*slice)*stackRadius;
             float z=-sinf(slice_angle_increment*slice)*stackRadius;
 
-            std::shared_ptr<Point3D> ponto =std::make_shared<Point3D>(x,y,z,index++);
+            Point3D ponto =Point3D(x,y,z,index++);
             vertixes.push_back(ponto);
             std::pair<int,int> sliceAndStack(slice,stack);
             points[sliceAndStack]=ponto;

@@ -15,6 +15,6 @@ public:
     std::shared_ptr<Model> generate();
 private:
     int side;
-    std::shared_ptr<Triangle> t1,t2;
-    std::shared_ptr<Point3D> topRight,topLeft,bottomLeft,bottomRight;
+    Triangle t1,t2;
+    Point3D topRight,topLeft,bottomLeft,bottomRight;
 };

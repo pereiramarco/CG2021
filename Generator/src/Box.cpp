@@ -20,15 +20,15 @@ Box::Box(int widthG,int depthG,int heightG,int nDivisionsG) {
     nDivisions=nDivisionsG;
 }
 
-void Box::addSquare(bool top,std::shared_ptr<Point3D> topRight,std::shared_ptr<Point3D> topLeft,std::shared_ptr<Point3D> bellowLeft,std::shared_ptr<Point3D> bellowRight) {
-    std::shared_ptr<Triangle>t1,t2;
+void Box::addSquare(bool top,Point3D topRight,Point3D topLeft,Point3D bellowLeft,Point3D bellowRight) {
+    Triangle t1,t2;
     if (top) {
-        t1=std::make_shared<Triangle>(topRight->index,topLeft->index,bellowLeft->index);
-        t2=std::make_shared<Triangle>(topRight->index,bellowLeft->index,bellowRight->index);
+        t1=Triangle(topRight.index,topLeft.index,bellowLeft.index);
+        t2=Triangle(topRight.index,bellowLeft.index,bellowRight.index);
     }
     else {
-        t1=std::make_shared<Triangle>(topRight->index,bellowLeft->index,topLeft->index);
-        t2=std::make_shared<Triangle>(topRight->index,bellowRight->index,bellowLeft->index);
+        t1=Triangle(topRight.index,bellowLeft.index,topLeft.index);
+        t2=Triangle(topRight.index,bellowRight.index,bellowLeft.index);
     }
     faces.push_back(t1);
     faces.push_back(t2);
@@ -38,10 +38,10 @@ void Box::addYLayer(bool top) {
     int y=top?nDivisions:0;
     for (int x=0;x<nDivisions;x++) {
         for (int z=0;z<nDivisions;z++) {
-            std::shared_ptr<Point3D> topLeft=points[std::tuple<int,int,int>(x,y,z)];
-            std::shared_ptr<Point3D> topRight=points[std::tuple<int,int,int>(x+1,y,z)];
-            std::shared_ptr<Point3D> bellowLeft=points[std::tuple<int,int,int>(x,y,z+1)];
-            std::shared_ptr<Point3D> bellowRight=points[std::tuple<int,int,int>(x+1,y,z+1)];
+            Point3D topLeft=points[std::tuple<int,int,int>(x,y,z)];
+            Point3D topRight=points[std::tuple<int,int,int>(x+1,y,z)];
+            Point3D bellowLeft=points[std::tuple<int,int,int>(x,y,z+1)];
+            Point3D bellowRight=points[std::tuple<int,int,int>(x+1,y,z+1)];
             addSquare(top,topRight,topLeft,bellowLeft,bellowRight);
         }
     }
@@ -51,10 +51,10 @@ void Box::addXLayer(bool top) {
     int x=top?nDivisions:0;
     for (int y=0;y<nDivisions;y++) {
         for (int z=0;z<nDivisions;z++) {
-            std::shared_ptr<Point3D> topLeft=points[std::tuple<int,int,int>(x,y,z)];
-            std::shared_ptr<Point3D> topRight=points[std::tuple<int,int,int>(x,y,z+1)];
-            std::shared_ptr<Point3D> bellowLeft=points[std::tuple<int,int,int>(x,y+1,z)];
-            std::shared_ptr<Point3D> bellowRight=points[std::tuple<int,int,int>(x,y+1,z+1)];
+            Point3D topLeft=points[std::tuple<int,int,int>(x,y,z)];
+            Point3D topRight=points[std::tuple<int,int,int>(x,y,z+1)];
+            Point3D bellowLeft=points[std::tuple<int,int,int>(x,y+1,z)];
+            Point3D bellowRight=points[std::tuple<int,int,int>(x,y+1,z+1)];
             addSquare(top,topRight,topLeft,bellowLeft,bellowRight);
         }
     }
@@ -64,10 +64,10 @@ void Box::addZLayer(bool top) {
     int z=top?nDivisions:0;
     for (int x=0;x<nDivisions;x++) {
         for (int y=0;y<nDivisions;y++) {
-            std::shared_ptr<Point3D> topLeft=points[std::tuple<int,int,int>(x,y,z)];
-            std::shared_ptr<Point3D> topRight=points[std::tuple<int,int,int>(x+1,y,z)];
-            std::shared_ptr<Point3D> bellowLeft=points[std::tuple<int,int,int>(x,y+1,z)];
-            std::shared_ptr<Point3D> bellowRight=points[std::tuple<int,int,int>(x+1,y+1,z)];
+            Point3D topLeft=points[std::tuple<int,int,int>(x,y,z)];
+            Point3D topRight=points[std::tuple<int,int,int>(x+1,y,z)];
+            Point3D bellowLeft=points[std::tuple<int,int,int>(x,y+1,z)];
+            Point3D bellowRight=points[std::tuple<int,int,int>(x+1,y+1,z)];
             addSquare(!top,topRight,topLeft,bellowLeft,bellowRight);
         }
     }
@@ -78,12 +78,12 @@ std::shared_ptr<Model> Box::generate() {
     float y_increment=1.0*height/(1.0*nDivisions);
     float z_increment=1.0*depth/(1.0*nDivisions);
     int index=0;
-    std::vector<std::shared_ptr<Point3D>> vertixes;
+    std::vector<Point3D> vertixes;
     for (int y=0;y<=nDivisions;y++) {
         for (int x=0;x<=nDivisions;x++) {
             for (int z=0;z<=nDivisions;z++) {
                 if (y==0 || y==nDivisions || x==0 || x==nDivisions || z==0 || z==nDivisions) { 
-                    std::shared_ptr<Point3D> p = std::make_shared<Point3D>(x*x_increment,y*y_increment,z*z_increment,index++);
+                    Point3D p = Point3D (x*x_increment,y*y_increment,z*z_increment,index++);
                     vertixes.push_back(p);
                     std::tuple<int,int,int> t(x,y,z);
                     points[t]=p;

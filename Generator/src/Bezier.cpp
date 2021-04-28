@@ -9,16 +9,6 @@
 #include "iostream"
 #include <stdlib.h>
 
-void printMatrix(std::vector<std::vector<Point3D>> auxMatrix) {
-	for (int i=0;i<auxMatrix.size();i++) {
-		for (int j=0;j<auxMatrix[0].size();j++) {
-			std::cout<<" " << auxMatrix[i][j].z;
-		}
-		std::cout<<"\n";
-	}
-	std::cout<<"rows: "<< auxMatrix.size() << " cols: " << auxMatrix[0].size()<<"\n";
-}
-
 Bezier::Bezier(std::string patch_fileG,int tesselation_levelG) {
 	patch_file=patch_fileG;
 	vertical_tesselation=tesselation_levelG;

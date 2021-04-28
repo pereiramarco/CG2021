@@ -14,10 +14,10 @@ public:
     std::shared_ptr<Model> generate();
 private:
     int width,depth,height,nDivisions;
-    std::vector<std::shared_ptr<Triangle>> faces;
-    std::map<std::tuple<int,int,int>,std::shared_ptr<Point3D>> points;
+    std::vector<Triangle> faces;
+    std::map<std::tuple<int,int,int>,Point3D> points;
     void addYLayer(bool top);
     void addXLayer(bool top);
     void addZLayer(bool top);
-    void addSquare(bool top,std::shared_ptr<Point3D> topRight,std::shared_ptr<Point3D> topLeft,std::shared_ptr<Point3D> bellowLeft,std::shared_ptr<Point3D> bellowRight);
+    void addSquare(bool top,Point3D topRight,Point3D topLeft,Point3D bellowLeft,Point3D bellowRight);
 };

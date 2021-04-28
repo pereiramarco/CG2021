@@ -10,8 +10,8 @@
 class Sphere {
 private:
     int radius,nStacks,nSlices;
-    std::vector<std::shared_ptr<Triangle>> faces;
-    std::map<std::pair<int,int>,std::shared_ptr<Point3D>> points;
+    std::vector<Triangle> faces;
+    std::map<std::pair<int,int>,Point3D> points;
     void addTopOrBottomSlice(bool top,int slice,int stack,int not_last);
     void addSquareSlice(int slice,int stack,int not_last);
 public:

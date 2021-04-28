@@ -24,10 +24,10 @@ Torus::Torus(int widenessRadiusG,int thicknessRadiusG,int ringsG,int sidesG) {
 void Torus::addSquare(int ring,int side,int not_last_ring,int not_last_side) {
     std::pair<int,int> topleft(ring-not_last_ring,side-not_last_side),topright(ring*not_last_ring,side-not_last_side);
     std::pair<int,int> bottomleft(ring-not_last_ring,side*not_last_side),bottomright(ring*not_last_ring,side*not_last_side);
-    std::shared_ptr<Point3D> topRight=points[topright],topLeft=points[topleft];
-    std::shared_ptr<Point3D> bottomLeft=points[bottomleft],bottomRight=points[bottomright];
-    std::shared_ptr<Triangle> t1=std::make_shared<Triangle>(topRight,topLeft,bottomLeft);
-    std::shared_ptr<Triangle> t2=std::make_shared<Triangle>(topRight,bottomLeft,bottomRight);
+    Point3D topRight=points[topright],topLeft=points[topleft];
+    Point3D bottomLeft=points[bottomleft],bottomRight=points[bottomright];
+    Triangle t1=Triangle(topRight.index,topLeft.index,bottomLeft.index);
+    Triangle t2=Triangle(topRight.index,bottomLeft.index,bottomRight.index);
     faces.push_back(t1);
     faces.push_back(t2);
 }
@@ -37,7 +37,7 @@ std::shared_ptr<Model> Torus::generate() {
     float side_angle_increment=M_PI*2/nSides;
     int index=0;
 
-    std::vector<std::shared_ptr<Point3D>> vertixes;
+    std::vector<Point3D> vertixes;
     for (int ring=0;ring<nRings;ring++) {
 
         double ring_angle=ring*ring_angle_increment;
@@ -52,7 +52,7 @@ std::shared_ptr<Model> Torus::generate() {
             float z=(widenessRadius-distHorizontal)*sinf(ring_angle);
             float x=(widenessRadius-distHorizontal)*cosf(ring_angle);
 
-            std::shared_ptr<Point3D> ponto=std::make_shared<Point3D>(x,y,z,index++);
+            Point3D ponto=Point3D(x,y,z,index++);
             vertixes.push_back(ponto);
 
             //addPoint

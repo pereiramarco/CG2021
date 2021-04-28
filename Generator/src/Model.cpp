@@ -5,13 +5,6 @@
 #include <map>
 #include <fstream>
 
-Model::Model(std::vector<std::shared_ptr<Point3D>> vertixesG,std::vector<std::shared_ptr<Triangle>> facesG) {
-    nVertices=vertixesG.size();
-    nTriangulos=facesG.size();
-    vertixes=vertixesG;
-    faces=facesG;
-}
-
 Model::Model(std::vector<Point3D> vertixesG,std::vector<Triangle> facesG) {
     nVertices=vertixesG.size();
     nTriangulos=facesG.size();
@@ -22,21 +15,11 @@ Model::Model(std::vector<Point3D> vertixesG,std::vector<Triangle> facesG) {
 void Model::saveToFile(std::string filename) {
     std::ofstream fout("../../Engine/models/" + filename, std::ios::out); 
     fout<< std::to_string(nVertices) << " " << std::to_string(nTriangulos) << "\n";
-    if (faces.empty()) {
-        for (int i=0;i<nVertices;i++) {
-            fout << std::to_string(vertixesT[i].x) << " " << std::to_string(vertixesT[i].y) << " " << std::to_string(vertixesT[i].z) << "\n"; 
-        }
-        for (int j=0;j<nTriangulos;j++) {
-            fout << std::to_string(facesT[j].indexP1) << " " << std::to_string(facesT[j].indexP2) << " " << std::to_string(facesT[j].indexP3) << "\n"; 
-        }
+    for (int i=0;i<nVertices;i++) {
+        fout << std::to_string(vertixesT[i].x) << " " << std::to_string(vertixesT[i].y) << " " << std::to_string(vertixesT[i].z) << "\n"; 
     }
-    else {
-        for (int i=0;i<nVertices;i++) {
-            fout << std::to_string(vertixes[i]->x) << " " << std::to_string(vertixes[i]->y) << " " << std::to_string(vertixes[i]->z) << "\n"; 
-        }
-        for (int j=0;j<nTriangulos;j++) {
-            fout << std::to_string(faces[j]->indexP1) << " " << std::to_string(faces[j]->indexP2) << " " << std::to_string(faces[j]->indexP3) << "\n"; 
-        }
+    for (int j=0;j<nTriangulos;j++) {
+        fout << std::to_string(facesT[j].indexP1) << " " << std::to_string(facesT[j].indexP2) << " " << std::to_string(facesT[j].indexP3) << "\n"; 
     }
 }
 
