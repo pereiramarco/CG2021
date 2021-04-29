@@ -19,14 +19,19 @@
 #include <memory>
 
 bool Translation::showCurves=false;
-bool axis=false,wire=true,firstCursor=true;
+bool Rotation::paused=false;
+bool Translation::paused=false;
+float Rotation::time_multiplier=1;
+float Translation::time_multiplier=1;
+float time_multiplier=1;
+bool axis=false,wire=true,firstCursor=true,paused=false;
 std::unordered_map<std::string,VBO> buffers;
 std::vector<Group> groups;
 int xMouseB4,yMouseB4;
 float yaw=-90.0f,pitch=0; //yaw horizontal turn//pitch vertical turn
 float sensitivity = 0.3f; //sensibilidade do rato
 float speed=1.0f;
-Point3D lookingAtPoint= Point3D(-200,0,-109.5);
+Point3D lookingAtPoint(-200,0,-109.5);
 Point3D camPosition(200,0,109.5);
 bool key_states[256];
 
@@ -97,6 +102,14 @@ void processKeyboardInput() {
 			speed+=0.1f;
 	if (key_states['f'])
 			speed-=speed>0.1?0.1f:0;
+	if (key_states['-']) {
+			time_multiplier+=0.01;
+			Translation::time_multiplier=Rotation::time_multiplier=time_multiplier;
+	}
+	if (key_states['+']) {
+			time_multiplier-=time_multiplier>0.02?0.01:0;
+			Translation::time_multiplier=Rotation::time_multiplier=time_multiplier;
+	}
 }
 
 void renderScene(void) {
@@ -252,7 +265,7 @@ void readConfig(int argc, char **argv) {
 
 void registerKeyDown(unsigned char key, int x, int y) {
 	key_states[key]=true;
-	if (key==' ')
+	if (key=='q')
 		axis=!axis;
 	if (key=='p') {
 		glPolygonMode( GL_FRONT_AND_BACK, wire?GL_LINE:GL_FILL );
@@ -260,6 +273,10 @@ void registerKeyDown(unsigned char key, int x, int y) {
 	}
 	if (key=='c') {
 		Translation::showCurves=!Translation::showCurves;
+	}
+	if (key==' ') {
+		paused=!paused;
+		Translation::paused=Rotation::paused=paused;
 	}
 }
 

@@ -13,6 +13,8 @@ public:
     int t_before=0;
     static bool showCurves;
     std::vector<Point3D> curve_points;
+    static float time_multiplier;
+    static bool paused;
 
     Translation();
     Translation(const Translation& t);

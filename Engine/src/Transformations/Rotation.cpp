@@ -14,6 +14,7 @@ Rotation::Rotation(const Rotation& r) {
     axisX=r.axisX;
     axisY=r.axisY;
     axisZ=r.axisZ;
+    cc=r.cc;
 }
 
 Rotation::Rotation(float degreesG, float axisXG, float axisYG, float axisZG) {
@@ -36,7 +37,7 @@ void Rotation::applyTransform() {
     int t=glutGet(GLUT_ELAPSED_TIME);
     if (time) {
         float delta_time = t-t_before;
-        degrees+=(float)(360.0/time)*delta_time;
+        degrees+=(float)(360.0/(time*time_multiplier))*delta_time*!paused;
     }
     glRotatef(degrees*cc,axisX,axisY,axisZ);
     t_before=t;

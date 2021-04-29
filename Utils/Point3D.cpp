@@ -43,6 +43,11 @@ Point3D& Point3D::operator+(Point3D& p) {
     return *res;
 }
 
+Point3D& Point3D::operator*(Point3D& r) {
+	std::shared_ptr<Point3D> res = std::make_shared<Point3D>(x*r.x,y*r.y,z*r.z);
+    return *res;
+}
+
 Point3D& Point3D::operator*(const float& r) {
 	std::shared_ptr<Point3D> res = std::make_shared<Point3D>(x*r,y*r,z*r);
     return *res;

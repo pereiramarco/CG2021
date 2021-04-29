@@ -10,6 +10,8 @@ public:
     float time;
     int t_before;
     int cc;
+    static float time_multiplier;
+    static bool paused;
 
     Rotation(const Rotation& r);
     Rotation(float degreesG, float axisXG, float axisYG, float axisZG);

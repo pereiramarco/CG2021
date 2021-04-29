@@ -16,6 +16,7 @@ public:
 
 	Point3D& operator*(const float& r);
 	Point3D& operator+(Point3D& p);
+	Point3D& operator*(Point3D& p);
 	void operator+=(Point3D& p);
 	void operator-=(Point3D& p);
 	std::string getCoords();

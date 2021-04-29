@@ -63,7 +63,7 @@ Translation::Translation(float xG, float yG, float zG) {
 }
 
 Translation::Translation(float timeG,std::vector<Point3D> curve_pointsG) {
-    time=timeG;
+    time=timeG*1000;
     curve_points=curve_pointsG;
 }
 
@@ -127,7 +127,7 @@ void Translation::drawCatmullRomCurve() {
 	}
 	glEnd();
 	
-    /*
+    /* //Mostrar derivadas 
     glBegin(GL_LINES);
     for (int i=0;i<100;i++) {
         res.zero();
@@ -147,11 +147,10 @@ void Translation::applyTransform() {
         glTranslatef(x,y,z);
     else {
         if (showCurves) drawCatmullRomCurve();
-        Point3D res,XX(1,1,1),YY(1,1,1),ZZ;
-	    getGlobalCatmullRomPoint(currentPos,res,XX);
-	    float len=length(XX);
+        Point3D res,XX(1,0,0),YY(0,1,0),ZZ(0,0,1);
+	    getGlobalCatmullRomPoint(currentPos,res,ZZ);
 
-        cross(XX,YY,ZZ);
+        cross(YY,ZZ,XX);
 	    cross(ZZ,XX,YY);
 
 	    normalize(ZZ);
@@ -169,6 +168,6 @@ void Translation::applyTransform() {
         int delta_time = t-t_before;
         t_before=t;
 
-        currentPos+=delta_time/(time*1000);
+        currentPos+=(delta_time/(time*time_multiplier)*!paused);
     }
 }

@@ -38,16 +38,12 @@ std::vector<std::vector<Point3D>> Bezier::multiplyMatrix(std::vector<std::vector
 	std::vector<std::vector<Point3D>> returnMatrix;
 	for(int i=0;i<m1.size();i++) {    
 		std::vector<Point3D> row;
-		for(int j=0;j<m2[0].size();j++) {
-			float x;
-			float y;
-			float z;   
-			for(int k=0;k<m1[0].size();k++) {    
-				x+=m1[i][k].x*m2[k][j].x; 
-				y+=m1[i][k].y*m2[k][j].y;   
-				z+=m1[i][k].z*m2[k][j].z;      
+		for(int j=0;j<m2[0].size();j++) {  
+			Point3D point=Point3D(0,0,0);
+			for(int k=0;k<m1[0].size();k++) { 
+				point+=m1[i][k]*m2[k][j];    
 			}
-			row.push_back(Point3D(x,y,z));    
+			row.push_back(point);    
 		}
 		returnMatrix.push_back(row);    
 	}
@@ -125,6 +121,10 @@ void Bezier::calculatePoints(std::vector<std::vector<Point3D>> preCalculatedMatr
 		for (int j=0;j<=horizontal_tesselation;j++) {
 			auto point = calculatePoint(preCalculatedMatrix,i,j);
 			point.index=indexPoint;
+			//troca pontos para manter os eixos na engine
+			float y=point.y;float x=point.x;
+			point.y=point.z;point.x=y;
+			point.z=x;
 			vertixes.push_back(point);
 			if (i && j) {
 			    triangs.push_back(Triangle(indexPoint-horizontal_tesselation-2,indexPoint-horizontal_tesselation-1,indexPoint));
