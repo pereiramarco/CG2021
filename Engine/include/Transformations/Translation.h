@@ -8,18 +8,17 @@ public:
     float x;
     float y;
     float z;
-    float time;
+    double time;
     float currentPos=0;
     int t_before=0;
     static bool showCurves;
     std::vector<Point3D> curve_points;
-    static float time_multiplier;
-    static bool paused;
+    int type;
 
     Translation();
     Translation(const Translation& t);
     Translation(float xG, float yG, float zG);
-    Translation(float timeG,std::vector<Point3D> curve_pointsG);
+    Translation(double timeG,std::vector<Point3D> curve_pointsG);
     void applyTransform();
 private:
     void multMatrixVector(float *m, Point3D *v, Point3D *res);

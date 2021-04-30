@@ -19,12 +19,10 @@
 #include <memory>
 
 bool Translation::showCurves=false;
-bool Rotation::paused=false;
-bool Translation::paused=false;
-float Rotation::time_multiplier=1;
-float Translation::time_multiplier=1;
-float time_multiplier=1;
-bool axis=false,wire=true,firstCursor=true,paused=false;
+bool Transform::paused=false;
+float Transform::time_multiplier=1;
+int Transform::retroceder=1;
+bool axis=false,wire=true,firstCursor=true;
 std::unordered_map<std::string,VBO> buffers;
 std::vector<Group> groups;
 int xMouseB4,yMouseB4;
@@ -102,14 +100,10 @@ void processKeyboardInput() {
 			speed+=0.1f;
 	if (key_states['f'])
 			speed-=speed>0.1?0.1f:0;
-	if (key_states['-']) {
-			time_multiplier+=0.01;
-			Translation::time_multiplier=Rotation::time_multiplier=time_multiplier;
-	}
-	if (key_states['+']) {
-			time_multiplier-=time_multiplier>0.02?0.01:0;
-			Translation::time_multiplier=Rotation::time_multiplier=time_multiplier;
-	}
+	if (key_states['-']) 
+			Transform::time_multiplier+=0.01;		
+	if (key_states['+']) 
+			Transform::time_multiplier-=Transform::time_multiplier>0.02?0.01:0;
 }
 
 void renderScene(void) {
@@ -274,10 +268,10 @@ void registerKeyDown(unsigned char key, int x, int y) {
 	if (key=='c') {
 		Translation::showCurves=!Translation::showCurves;
 	}
-	if (key==' ') {
-		paused=!paused;
-		Translation::paused=Rotation::paused=paused;
-	}
+	if (key==' ')
+		Transform::paused=!Transform::paused;
+	if (key=='r')
+		Transform::retroceder=-1*Transform::retroceder;
 }
 
 void registerKeyUp(unsigned char key, int x, int y) {

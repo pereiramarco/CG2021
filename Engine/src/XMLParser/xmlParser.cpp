@@ -36,7 +36,7 @@ Group xmlContent::parseGroup(XMLElement * group) {
     if (translation) {
         std::shared_ptr<Transform> t;
         if (const char * timeString = translation->Attribute("time")) {
-            float time = atof(timeString);
+            double time = atof(timeString);
             std::vector<Point3D> vector_points;
             for (XMLElement * point = translation->FirstChildElement("point");point;point = point->NextSiblingElement()) {
                 vector_points.push_back(readPoint(point));
@@ -58,9 +58,9 @@ Group xmlContent::parseGroup(XMLElement * group) {
         const char * readY=rotation->Attribute("axisY");
         const char * readZ=rotation->Attribute("axisZ");
         
-        float axisx=readX?atof(readX):0;
-        float axisy=readY?atof(readY):0;
-        float axisz=readZ?atof(readZ):0;
+        double axisx=readX?atof(readX):0;
+        double axisy=readY?atof(readY):0;
+        double axisz=readZ?atof(readZ):0;
 
         if (readTime=rotation->Attribute("time")) {
             const char * clockwise = rotation->Attribute("clockwise");
@@ -76,9 +76,9 @@ Group xmlContent::parseGroup(XMLElement * group) {
         const char * readX=scale->Attribute("scaleX");
         const char * readY=scale->Attribute("scaleY");
         const char * readZ=scale->Attribute("scaleZ");
-        float scalex=readX?atof(readX):1;
-        float scaley=readY?atof(readY):1;
-        float scalez=readZ?atof(readZ):1;
+        double scalex=readX?atof(readX):1;
+        double scaley=readY?atof(readY):1;
+        double scalez=readZ?atof(readZ):1;
         std::shared_ptr<Scale> s = std::make_shared<Scale>(scalex,scaley,scalez);
         g.addTransform(s);
     }
@@ -89,9 +89,9 @@ Group xmlContent::parseGroup(XMLElement * group) {
             const char * rr = model->Attribute("redColor");
             const char * gg = model->Attribute("greenColor");
             const char * bb = model->Attribute("blueColor");
-            float red = rr?atof(rr):1;
-            float green = gg?atof(gg):1;
-            float blue = bb?atof(bb):1;
+            double red = rr?atof(rr):1;
+            double green = gg?atof(gg):1;
+            double blue = bb?atof(bb):1;
             g.addFile(std::string(model->Attribute("file")),red,green,blue);
         }
     }

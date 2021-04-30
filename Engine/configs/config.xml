@@ -1,12 +1,13 @@
 <scene>
     <group>
         <scale scaleX="109" scaleY="109" scaleZ="109"/>
+		<rotate time="4.438" clockwise="CW" axisY="1"/>
         <models>
             <model file="sphere.3d" redColor="1" greenColor="1" blueColor="0"/>
         </models>
     </group>
-    <group>
-		<rotate angle="0.1" axisX="1" axisZ="1"/>
+    <group><!--Mercurio-->
+		<rotate angle="-0.1" axisZ="1"/>
         <translate time="14.466" >
             <point X="0.0" Y= "0" Z= "110.0" />
             <point X="19.10129899334573" Y= "0" Z= "108.32885292832565" />
@@ -53,8 +54,8 @@
         	</models>
 		</group>
     </group>
-    <group>
-		<rotate angle="177" axisX="1" axisZ="1"/>
+    <group><!--Venus-->
+		<rotate angle="-177" axisZ="1"/>
 		<translate time="36.986" >
             <point X="0.0" Y="0" Z="112.0" />
             <point X="19.44859533867929" Y="0" Z="110.29846843611338" />
@@ -101,8 +102,8 @@
         	</models>
 		</group>
     </group>
-    <group>
-		<rotate angle="23" axisX="1" axisZ="1"/>
+    <group><!--Terra-->
+		<rotate angle="-23" axisZ="1"/>
 		<translate time="60" >
 			<point X="0.0" Y="0" Z="114.5" />
 			<point X="19.882715770346238" Y="0" Z="112.76048782084806" />
@@ -147,7 +148,7 @@
             	<model file="sphere.3d" redColor="0" greenColor="0" blueColor="0.8"/>
         	</models>
 		</group>
-        <group>
+        <group><!--Lua-->
 		    <translate time="0.165" >
 			    <point X="0.0" Y="0" Z="1.5" />
 			    <point X="0.26047225900016907" Y="0" Z="1.4772116308408043" />
@@ -192,8 +193,8 @@
             </models>
         </group>
     </group>
-    <group>
-		<rotate angle="25" axisX="1" axisZ="1"/>
+    <group><!--Marte-->
+		<rotate angle="-25" axisZ="1"/>
 		<translate time="112.93" >
 			<point X="0.0" Y="0" Z="116.5999984741211" />
 			<point X="20.24737666798039" Y="0" Z="114.82858260132781" />
@@ -239,7 +240,7 @@
         	    <model file="sphere.3d" redColor="0.6" greenColor="0" blueColor="0"/>
         	</models>
 		</group>
-        <group>
+        <group><!--Fobos-->
 			<translate time="3.616" >
 				<point X="0.0" Y="0" Z="2.5" />
 				<point X="0.4341204316669484" Y="0" Z="2.462019384734674" />
@@ -283,7 +284,7 @@
                 <model file="sphere.3d" redColor="0.75" greenColor="0.75" blueColor="0.75"/>
             </models>
         </group>
-        <group>
+        <group><!--Deimos-->
 			<translate time="1.315" >
 			    <point X="0.0" Y="0" Z="1.5" />
 			    <point X="0.26047225900016907" Y="0" Z="1.4772116308408043" />
@@ -328,8 +329,8 @@
             </models>
         </group>
     </group>
-    <group>
-		<rotate time="0.06849" clockwise="CW" axisY="1"/>
+    <group><!--Jupiter -->
+		<rotate angle="-3" axisZ="1"/>
 		<translate time="720" >
 			<point X="0.0" Y="0" Z="157.5" />
 			<point X="27.34958719501775" Y="0" Z="155.10722123828447" />
@@ -368,13 +369,16 @@
 			<point X="-53.868206944552455" Y="0" Z="148.00157526384262" />
 			<point X="-27.34962941353896" Y="0" Z="155.10721379401437" />
 		</translate>
-        <scale scaleX="11" scaleY="11" scaleZ="11"/>
-    	<models>
-    	    <model file="sphere.3d" redColor="0.7" greenColor="0.59" blueColor="0.478"/>
-    	</models>
+		<scale scaleX="11" scaleY="11" scaleZ="11"/>
+        <group>
+			<rotate time="0.06849" clockwise="CW" axisY="1"/>
+    		<models>
+    		    <model file="sphere.3d" redColor="0.7" greenColor="0.59" blueColor="0.478"/>
+    		</models>
+		</group>
     </group>
-    <group>
-		<rotate angle="27" axisX="1" axisZ="1"/>
+    <group><!--Saturno -->
+		<rotate angle="-27" axisZ="1" />
 		<translate time="1740" >
 			<point X="0.0" Y="0" Z="200.0" />
 			<point X="34.72963453335588" Y="0" Z="196.9615507787739" />
@@ -419,7 +423,7 @@
         	<models>
         	    <model file="sphere.3d" redColor="1" greenColor="0.8" blueColor="0.6"/>
         	</models>
-        	<group>
+        	<group><!--Anel de saturno -->
         	    <scale scaleX="0.5" scaleY="0.5" scaleZ="0.5"/>
         	    <models>
         	        <model file="torus.3d" redColor="0.75" greenColor="0.75" blueColor="0.75"/>
@@ -427,8 +431,8 @@
         	</group>
 		</group>
     </group>
-    <group>
-		<rotate angle="98" axisX="1" axisZ="1" />
+    <group><!--Urano -->
+		<rotate angle="-98" axisZ="1" />
 		<translate time="5040" >
 			<point X="0.0" Y="0" Z="270.0" />
 			<point X="46.88500662003043" Y="0" Z="265.8980935513448" />
@@ -475,8 +479,8 @@
         	</models>
 		</group>
     </group>
-    <group>
-		<rotate angle="30" axisX="1" axisZ="1" />
+    <group><!--Neptuno -->
+		<rotate angle="-30" axisZ="1" />
 		<translate time="9900" >
 			<point X="0.0" Y="0" Z="430.0" />
 			<point X="74.66871424671513" Y="0" Z="423.4673341743639" />
@@ -523,8 +527,8 @@
         	</models>
 		</group>
     </group>
-	<group>
-		<translate time="10" >
+	<group><!-- Comet -->
+		<translate time="30" >
 			<point X="-550.0" Y="0" Z="0.0" />
 			<point X="-536.0" Y="0" Z="42.000008" />
 			<point X="-522.0" Y="0" Z="58.78775" />
