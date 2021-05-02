@@ -13,7 +13,7 @@ Model::Model(std::vector<Point3D> vertixesG,std::vector<Triangle> facesG) {
 }
 
 void Model::saveToFile(std::string filename) {
-    std::ofstream fout("../../Engine/models/" + filename, std::ios::out); 
+    std::ofstream fout(filename, std::ios::out); 
     fout<< std::to_string(nVertices) << " " << std::to_string(nTriangulos) << "\n";
     for (int i=0;i<nVertices;i++) {
         fout << std::to_string(vertixesT[i].x) << " " << std::to_string(vertixesT[i].y) << " " << std::to_string(vertixesT[i].z) << "\n"; 
