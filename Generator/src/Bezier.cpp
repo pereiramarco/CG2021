@@ -148,5 +148,6 @@ std::shared_ptr<Model> Bezier::generate() {
 		auto preCalculatedMatrix = multiplyMatrix(auxMatrix,bezier_matrix);
 		calculatePoints(preCalculatedMatrix,indexPoint,vertixes,triangs);
 	}
-	return std::make_shared<Model>(vertixes,triangs);
+	std::vector<Point3D> temp;
+	return std::make_shared<Model>(vertixes,triangs,temp);
 }

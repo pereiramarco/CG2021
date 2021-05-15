@@ -36,21 +36,28 @@ std::shared_ptr<Model> Torus::generate() {
     float ring_angle_increment=M_PI*2/nRings;
     float side_angle_increment=M_PI*2/nSides;
     int index=0;
+    std::vector<Point3D> normals;
 
     std::vector<Point3D> vertixes;
     for (int ring=0;ring<nRings;ring++) {
 
         double ring_angle=ring*ring_angle_increment;
         bool first=true;
+        float centerY = 0;
+        float centerX = widenessRadius*cosf(ring_angle);
+        float centerZ = widenessRadius*sin(ring_angle);
 
         for (int side=0;side<nSides;side++) {
 
-            double side_angle=M_PI/2.0+side*side_angle_increment;
-            
-            float y=thicknessRadius*cosf(side_angle);
-            float distHorizontal=thicknessRadius*sinf(side_angle);
-            float z=(widenessRadius-distHorizontal)*sinf(ring_angle);
-            float x=(widenessRadius-distHorizontal)*cosf(ring_angle);
+            double side_angle=side*side_angle_increment;
+            float y=thicknessRadius*sinf(side_angle);
+            float distHorizontal=thicknessRadius*cosf(side_angle);
+            float z=(widenessRadius+distHorizontal)*sinf(ring_angle);
+            float x=(widenessRadius+distHorizontal)*cosf(ring_angle);
+
+            Point3D normal = Point3D(x-centerX,y,z-centerZ);
+            normal.normalize();
+            normals.push_back(normal);
 
             Point3D ponto=Point3D(x,y,z,index++);
             vertixes.push_back(ponto);
@@ -72,5 +79,5 @@ std::shared_ptr<Model> Torus::generate() {
             }
         }
     }
-    return std::make_shared<Model>(vertixes,faces);
+    return std::make_shared<Model>(vertixes,faces,normals);
 }

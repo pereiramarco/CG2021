@@ -8,6 +8,7 @@ VBO::VBO() {
 	indexCount=0;
 	glGenBuffers(1,&vertixes);
 	glGenBuffers(1,&indexes);
+	glGenBuffers(1,&normals);
 }	
 
 VBO::VBO(const VBO& vbo) {
@@ -15,4 +16,5 @@ VBO::VBO(const VBO& vbo) {
 	indexCount=vbo.indexCount;
 	indexes=vbo.indexes;
 	vertixes=vbo.vertixes;
+	normals=vbo.normals;
 }

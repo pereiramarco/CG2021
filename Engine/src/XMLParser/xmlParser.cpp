@@ -4,6 +4,10 @@
 #include "../../include/Transformations/Translation.h"
 #include "../../include/Transformations/Rotation.h"
 #include "../../include/XMLParser/xmlParser.h"
+#include "../../include/Lights/Light.h"
+#include "../../include/Lights/DirectionalLight.h"
+#include "../../include/Lights/PointLight.h"
+#include "../../include/Lights/SpotLight.h"
 #include "unordered_set"
 
 xmlContent::xmlContent() {
@@ -26,6 +30,73 @@ Point3D readPoint(XMLElement* info) {
     float y=readY?atof(readY):0;
     float z=readZ?atof(readZ):0;
     return Point3D(x,y,z);
+}
+
+void xmlContent::parseLight(XMLElement * light) {
+    XMLElement * lightEl = light->FirstChildElement();
+    std::string type(lightEl->Attribute("type"));
+    if(type=="POINT") {
+        float x = atof(lightEl->Attribute("posX"));
+        float y = atof(lightEl->Attribute("posY"));
+        float z = atof(lightEl->Attribute("posZ"));
+        std::shared_ptr<PointLight> pl = std::make_shared<PointLight>(x,y,z);
+        lights.push_back(pl);
+    }
+    else if(type=="DIRECTIONAL") {
+        float x = atof(lightEl->Attribute("dirX"));
+        float y = atof(lightEl->Attribute("dirY"));
+        float z = atof(lightEl->Attribute("dirZ"));
+        std::shared_ptr<DirectionalLight> dl = std::make_shared<DirectionalLight>(x,y,z);
+        lights.push_back(dl);
+    }
+    else if(type=="SPOT") {
+        float x = atof(lightEl->Attribute("posX"));
+        float y = atof(lightEl->Attribute("posY"));
+        float z = atof(lightEl->Attribute("posZ"));
+        float dx = atof(lightEl->Attribute("dirX"));
+        float dy = atof(lightEl->Attribute("dirY"));
+        float dz = atof(lightEl->Attribute("dirZ"));
+        float angle = atof(lightEl->Attribute("angle"));
+        std::shared_ptr<SpotLight> sl = std::make_shared<SpotLight>(x,y,z,dx,dy,dz,angle);
+        lights.push_back(sl);
+    }
+    else {
+        std::cout << "Error parsing lights\n";
+        exit(1);
+    }
+}
+
+void xmlContent::parseColor(Point3D colors[],float& shininess, XMLElement * model) {
+    const char * dr = model->Attribute("diffR");
+    const char * dg = model->Attribute("diffG");
+    const char * db = model->Attribute("diffB");
+    const char * sr = model->Attribute("specR");
+    const char * sg = model->Attribute("specG");
+    const char * sb = model->Attribute("specB");
+    const char * er = model->Attribute("emissR");
+    const char * eg = model->Attribute("emissG");
+    const char * eb = model->Attribute("emissB");
+    const char * ar = model->Attribute("ambR");
+    const char * ag = model->Attribute("ambG");
+    const char * ab = model->Attribute("ambB");
+    const char * shin = model->Attribute("shin");
+    double dred = dr?atof(dr):-1;
+    double dgreen = dg?atof(dg):-1;
+    double dblue = db?atof(db):-1;
+    double sred = sr?atof(sr):-1;
+    double sgreen = sg?atof(sg):-1;
+    double sblue = sb?atof(sb):-1;
+    double ered = er?atof(er):-1;
+    double egreen = eg?atof(eg):-1;
+    double eblue = eb?atof(eb):-1;
+    double ared = ar?atof(ar):-1;
+    double agreen = ag?atof(ag):-1;
+    double ablue = ab?atof(ab):-1;
+    shininess = shin?atof(shin):-1;
+    colors[0] = Point3D(dred,dgreen,dblue);
+    colors[1] = Point3D(sred,sgreen,sblue);
+    colors[2] = Point3D(ared,agreen,ablue);
+    colors[3] = Point3D(ered,egreen,eblue);
 }
 
 Group xmlContent::parseGroup(XMLElement * group) {
@@ -86,13 +157,10 @@ Group xmlContent::parseGroup(XMLElement * group) {
     if (models) {
         XMLElement * model;
         for (model=models->FirstChildElement();model;model=model->NextSiblingElement()) {
-            const char * rr = model->Attribute("redColor");
-            const char * gg = model->Attribute("greenColor");
-            const char * bb = model->Attribute("blueColor");
-            double red = rr?atof(rr):1;
-            double green = gg?atof(gg):1;
-            double blue = bb?atof(bb):1;
-            g.addFile(std::string(model->Attribute("file")),red,green,blue);
+            Point3D colors[4]; // 1. Diffuse   2. Specular   3. Ambient   4. Emissive
+            float shininess;
+            parseColor(colors,shininess,model);
+            g.addFile(std::string(model->Attribute("file")),colors,shininess);
         }
     }
     XMLElement *groupChild;
@@ -109,16 +177,31 @@ std::vector<Group> xmlContent::parse() {
     if(err == 0) {
         std:: cout << "Success" << std::endl;
         XMLElement * scene = doc.FirstChildElement("scene");
-        XMLElement * group;
-        for(group = scene->FirstChildElement();group != NULL;group = group->NextSiblingElement()) {
-            Group g = parseGroup(group);
-            groups.push_back(g);
+        XMLElement * node;
+
+        for(node = scene->FirstChildElement();node != NULL;node = node->NextSiblingElement()) {
+            std::string name(node->Name());
+            if(name=="group") {
+                Group g = parseGroup(node);
+                groups.push_back(g);
+            }
+            else if(name=="lights") {
+                parseLight(node);
+            }
+            else {
+                std::cout << "Error parsing xml!" << "\n";
+                exit(2);
+            }
         }
     }
     else {
         doc.PrintError();
     }
     return groups;
+}
+
+std::vector<std::shared_ptr<Light>> xmlContent::getLights() {
+    return lights;
 }
 
 std::unordered_set<std::string> xmlContent::getModels() {

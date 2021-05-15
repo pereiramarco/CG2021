@@ -7,7 +7,7 @@ set (CMAKE_CXX_STANDARD 11)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(${PROJECT_NAME} src/main.cpp ../Utils/Point3D.cpp ../Utils/Point3D.h include/Group.h src/Group.cpp src/VBO.cpp include/VBO.h src/Transformations/Rotation.cpp include/Transformations/Rotation.h src/Transformations/Translation.cpp include/Transformations/Translation.h src/Transformations/Scale.cpp include/Transformations/Scale.h include/Transformations/Transform.h src/Figure.cpp include/Figure.h)
+add_executable(${PROJECT_NAME} src/main.cpp ../Utils/Point3D.cpp ../Utils/Point3D.h include/Group.h src/Group.cpp src/VBO.cpp include/VBO.h src/Transformations/Rotation.cpp include/Transformations/Rotation.h src/Transformations/Translation.cpp include/Transformations/Translation.h src/Transformations/Scale.cpp include/Transformations/Scale.h include/Transformations/Transform.h src/Figure.cpp include/Figure.h include/Lights/Light.h include/Lights/SpotLight.h include/Lights/PointLight.h include/Lights/DirectionalLight.h src/Lights/DirectionalLight.cpp src/Lights/PointLight.cpp src/Lights/SpotLight.cpp)
 
 add_library(xmlParser src/XMLParser/xmlParser.cpp include/XMLParser/xmlParser.h src/XMLParser/tinyxml2.cpp include/XMLParser/tinyxml2.h)
 

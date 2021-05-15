@@ -53,6 +53,8 @@ std::shared_ptr<Model> Sphere::generate() {
     Point3D top=Point3D(0.0f,radius,0.0f,0),bottom=Point3D(0.0f,-radius,0.0f,1);
     vertixes.push_back(top);
     vertixes.push_back(bottom);
+    normals.push_back(Point3D(0.0f,1.0f,0.0f));
+    normals.push_back(Point3D(0.0f,-1.0f,0.0f));
     for (int stack=1;stack<nStacks;stack++) {
 
         double stack_angle=stack*stack_angle_increment;
@@ -68,6 +70,9 @@ std::shared_ptr<Model> Sphere::generate() {
 
             Point3D ponto=Point3D(x,y,z,index++);
             vertixes.push_back(ponto);
+            Point3D normal=Point3D(x,y,z);
+            normal.normalize();
+            normals.push_back(normal);
 
             //addPoint
             std::pair<int,int> sliceAndStack(slice,stack);
@@ -90,6 +95,6 @@ std::shared_ptr<Model> Sphere::generate() {
             }
         }
     }
-    return std::make_shared<Model>(vertixes,faces);
+    return std::make_shared<Model>(vertixes,faces,normals);
 }
 

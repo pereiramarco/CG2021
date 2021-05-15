@@ -12,6 +12,7 @@ public:
 	int vertixCount;
 	GLuint indexes;
 	int indexCount;
+	GLuint normals;
 
     VBO();
 	VBO(const VBO& vbo);
