@@ -10,6 +10,8 @@
 #include "../../include/Lights/SpotLight.h"
 #include "unordered_set"
 
+#include <il.h>
+
 xmlContent::xmlContent() {
     filename = "../configs/config.xml";
 }
@@ -99,6 +101,41 @@ void xmlContent::parseColor(Point3D colors[],float& shininess, XMLElement * mode
     colors[3] = Point3D(ered,egreen,eblue);
 }
 
+void xmlContent::loadTexture(std::string s) {
+
+	unsigned int t,tw,th;
+	unsigned char *texData;
+	unsigned int texID;
+
+    ilInit();
+	ilEnable(IL_ORIGIN_SET);
+	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+	ilGenImages(1,&t);
+	ilBindImage(t);
+	ilLoadImage((ILstring)("../textures/" + s).c_str());
+	tw = ilGetInteger(IL_IMAGE_WIDTH);
+	th = ilGetInteger(IL_IMAGE_HEIGHT);
+	std::cout << "Image Width: " << tw << std::endl;
+	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+	texData = ilGetData();
+
+	glGenTextures(1,&texID);
+	
+	glBindTexture(GL_TEXTURE_2D,texID);
+	glTexParameteri(GL_TEXTURE_2D,	GL_TEXTURE_WRAP_S,		GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D,	GL_TEXTURE_WRAP_T,		GL_REPEAT);
+
+	glTexParameteri(GL_TEXTURE_2D,	GL_TEXTURE_MAG_FILTER,   	GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D,	GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	textures[s] = texID;
+
+}
+
 Group xmlContent::parseGroup(XMLElement * group) {
     Group g = Group();
     XMLElement * translation = group->FirstChildElement("translate");
@@ -160,7 +197,15 @@ Group xmlContent::parseGroup(XMLElement * group) {
             Point3D colors[4]; // 1. Diffuse   2. Specular   3. Ambient   4. Emissive
             float shininess;
             parseColor(colors,shininess,model);
-            g.addFile(std::string(model->Attribute("file")),colors,shininess);
+            int texID = 0;
+            const char * texture = model->Attribute("texture");
+            if(texture) {
+                std::string stringTexture(texture);
+                if(textures.find(stringTexture) == textures.end())
+                    loadTexture(stringTexture);
+                texID = textures[stringTexture];
+            }
+            g.addFile(std::string(model->Attribute("file")),colors,shininess,texID);
         }
     }
     XMLElement *groupChild;

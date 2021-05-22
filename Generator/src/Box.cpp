@@ -39,11 +39,13 @@ void Box::addSquare(bool top,Point3D topRight,Point3D topLeft,Point3D bellowLeft
 void Box::addYLayer(bool top) { 
     float x_increment=1.0*width/(1.0*nDivisions);
     float z_increment=1.0*depth/(1.0*nDivisions);
+    float tex_increment = 1.0/(1.0*nDivisions);
     int y=top?1:0;
     std::vector<Point3D> layer;
     for(int x=0;x<=nDivisions;x++) {
         for(int z=0;z<=nDivisions;z++) {
             layer.push_back(Point3D(x*x_increment,y*height,z*z_increment,index++));
+            texCoords.push_back(std::make_pair<float,float>(x*tex_increment,z*tex_increment));
         }
     }
     for(int x=0;x<nDivisions;x++) {
@@ -63,11 +65,13 @@ void Box::addYLayer(bool top) {
 void Box::addXLayer(bool top) {
     float y_increment=1.0*height/(1.0*nDivisions);
     float z_increment=1.0*depth/(1.0*nDivisions);
+    float tex_increment = 1.0/(1.0*nDivisions);
     int x=top?1:0;
     std::vector<Point3D> layer;
     for(int y=0;y<=nDivisions;y++) {
         for(int z=0;z<=nDivisions;z++) {
             layer.push_back(Point3D(x*width,y*y_increment,z*z_increment,index++));
+            texCoords.push_back(std::make_pair<float,float>(z*tex_increment,y*tex_increment));
         }
     }
     for(int y=0;y<nDivisions;y++) {
@@ -87,11 +91,13 @@ void Box::addXLayer(bool top) {
 void Box::addZLayer(bool top) {
     float y_increment=1.0*height/(1.0*nDivisions);
     float x_increment=1.0*width/(1.0*nDivisions);
+    float tex_increment = 1.0/(1.0*nDivisions);
     int z=top?1:0;
     std::vector<Point3D> layer;
     for(int y=0;y<=nDivisions;y++) {
         for(int x=0;x<=nDivisions;x++) {
             layer.push_back(Point3D(x*x_increment,y*y_increment,z*depth,index++));
+            texCoords.push_back(std::make_pair<float,float>(x*tex_increment,y*tex_increment));
         }
     }
     for(int y=0;y<nDivisions;y++) {
@@ -115,5 +121,5 @@ std::shared_ptr<Model> Box::generate() {
     addXLayer(true);
     addZLayer(false);
     addZLayer(true);
-    return std::make_shared<Model>(points,faces,normals);
+    return std::make_shared<Model>(points,faces,normals,texCoords);
 }

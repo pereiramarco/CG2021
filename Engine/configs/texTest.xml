@@ -1,0 +1,21 @@
+<scene>
+    <lights>
+        <light type="DIRECTIONAL" dirX="1" dirY="1" dirZ ="1" />
+    </lights>
+    <group>
+        <models>
+            <model file="texTest.3d" texture="texSaturnRing.png" ambR="1" ambG="1" ambB="1" />
+        </models>
+    </group>
+    <group>
+        <models>
+            <model file="texTestSat.3d" texture="texEarth.jpg" ambR="1" ambG="1" ambB="1" />
+        </models>
+    </group>
+    <group>
+        <translate Y="10" />
+        <models>
+            <model file="texTestBez.3d" texture="tex1.jpg" ambR="1" ambG="1" ambB="1" />
+        </models>
+    </group>
+</scene>

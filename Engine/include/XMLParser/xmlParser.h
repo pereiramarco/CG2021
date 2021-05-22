@@ -22,9 +22,11 @@ class xmlContent {
         void parseLight(XMLElement * light);
         std::vector<std::shared_ptr<Light>> getLights();
         void parseColor(Point3D colors[],float& shininess,XMLElement * model);
+        void loadTexture(std::string s);
     private:
         std::string filename;
         std::vector<Group> groups;
         std::vector<std::shared_ptr<Light>> lights;
+        std::unordered_map<std::string,int> textures;
 
 };

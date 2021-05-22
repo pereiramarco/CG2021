@@ -27,7 +27,7 @@ public:
 
     void addTransform(std::shared_ptr<Transform> t);
 
-    void addFile(std::string filename,Point3D * colors, float shininess);
+    void addFile(std::string filename,Point3D * colors, float shininess, int texture);
 
     void addGroup(Group group);
 

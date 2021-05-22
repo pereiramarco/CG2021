@@ -28,10 +28,10 @@ std::unordered_map<std::string,VBO> buffers;
 std::vector<Group> groups;
 std::vector<std::shared_ptr<Light>> lights;
 int xMouseB4,yMouseB4;
-float yaw=-90.0f,pitch=0; //yaw horizontal turn//pitch vertical turn
+float yaw=-155.0f,pitch=0.0f; //yaw horizontal turn//pitch vertical turn
 float sensitivity = 0.3f; //sensibilidade do rato
 float speed=1.0f;
-Point3D lookingAtPoint(-200,0,-109.5);
+Point3D lookingAtPoint(-0.88,0,-0.48);
 Point3D camPosition(200,0,109.5);
 bool key_states[256];
 
@@ -58,18 +58,20 @@ void meteAxis() {
 
 void drawFigure(Figure figure) {
 	VBO vbo = buffers["../models/"+figure.filename];
-	figure.applyColor();
 	glBindBuffer(GL_ARRAY_BUFFER,vbo.vertixes);
  	glVertexPointer(3,GL_FLOAT,0,0);
 	glBindBuffer(GL_ARRAY_BUFFER,vbo.normals);
 	glNormalPointer(GL_FLOAT,0,0);
+	glBindBuffer(GL_ARRAY_BUFFER,vbo.texCoords);
+	glTexCoordPointer(2,GL_FLOAT,0,0);
  	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo.indexes);
+	figure.apply();
  	glDrawElements(GL_TRIANGLES,
  		vbo.indexCount, // número de índices a desenhar
  		GL_UNSIGNED_INT, // tipo de dados dos índices
  		0);// parâmetro não utilizado
 	glColor3f(0,0,0);
-	figure.resetColor();
+	figure.reset();
 }
 
 void drawFigures(Group g) {
@@ -204,6 +206,7 @@ void readFile3D(std::string filename) {
 	std::vector<float> vertixes;
 	std::vector<unsigned int> indexes;
 	std::vector<float> normals;
+	std::vector<float> textureCoordinates;
 	int i;
 	// Aquisição dos Pontos de Desenho dos Triangles do ficheiro
 	for(i = 0; i < numVertexes; i++) {
@@ -246,21 +249,30 @@ void readFile3D(std::string filename) {
 			std::cout << "Erro a ler normais do ficheiro! \n";
 			break;
 		}
-		//adição do índice de cada ponto do triângulo ao vetor de índices
 		normals.push_back(normalX);
 		normals.push_back(normalY);
 		normals.push_back(normalZ);
 	}
 	glBindBuffer(GL_ARRAY_BUFFER,vbo.normals); //liga o buffer indices ao array
-	glBufferData(GL_ARRAY_BUFFER,sizeof(unsigned int) * normals.size(),normals.data(),GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER,sizeof(float) * normals.size(),normals.data(),GL_STATIC_DRAW);
+	float texX, texY;
+	for(i = 0; i < numVertexes; i++) {
+		std::getline(fp,line);
+		std::istringstream iss(line);
+		if(!(iss >> texX >> texY)) {
+			std::cout << "Erro a ler texturas do ficheiro! \n";
+			break;
+		}
+		//adição do índice de cada ponto do triângulo ao vetor de índices
+		textureCoordinates.push_back(texX);
+		textureCoordinates.push_back(texY);
+	}
+	glBindBuffer(GL_ARRAY_BUFFER,vbo.texCoords); //liga o buffer indices ao array
+	glBufferData(GL_ARRAY_BUFFER,sizeof(float) * textureCoordinates.size(),textureCoordinates.data(),GL_STATIC_DRAW);
 	buffers[filename]=vbo;
 }
 
 void readConfig(int argc, char **argv) {
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
 	std::string name;
 	xmlContent parser;
 	if(argc == 2) {
@@ -300,6 +312,18 @@ void registerKeyUp(unsigned char key, int x, int y) {
 	key_states[key]=false;
 }
 
+void init() {
+	lookingAtPoint.x = cosf(radians(yaw)) * cosf(radians(pitch));
+    lookingAtPoint.y = sinf(radians(pitch));
+    lookingAtPoint.z = sinf(radians(yaw)) * cosf(radians(pitch));
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_TEXTURE_2D);
+}
+
 int main(int argc, char **argv) {
 // init GLUT and the window
 	glutInit(&argc, argv);
@@ -322,11 +346,13 @@ int main(int argc, char **argv) {
 	glutKeyboardUpFunc(registerKeyUp);
 	glutPassiveMotionFunc(mouseControls);
 
-	readConfig(argc,argv); //lê o xml e configura os VBO's
-
 //  OpenGL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+
+// Initializations
+	init();
+	readConfig(argc,argv); //lê o xml e configura os VBO's
 	
 // enter GLUT's main cycle
 	glutMainLoop();

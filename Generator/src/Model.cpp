@@ -5,13 +5,13 @@
 #include <map>
 #include <fstream>
 
-Model::Model(std::vector<Point3D> vertixesG,std::vector<Triangle> facesG,std::vector<Point3D> normals) {
+Model::Model(std::vector<Point3D> vertixesG,std::vector<Triangle> facesG,std::vector<Point3D> normals,std::vector<std::pair<float,float>> texCoords) {
     nVertices=vertixesG.size();
     nTriangulos=facesG.size();
-    nNormais=normals.size();
     vertixesT=vertixesG;
     facesT=facesG;
     normalsT=normals;
+    texCoordsT=texCoords;
 }
 
 void Model::saveToFile(std::string filename) {
@@ -23,8 +23,11 @@ void Model::saveToFile(std::string filename) {
     for (int j=0;j<nTriangulos;j++) {
         fout << std::to_string(facesT[j].indexP1) << " " << std::to_string(facesT[j].indexP2) << " " << std::to_string(facesT[j].indexP3) << "\n"; 
     }
-    for (int i=0;i<nNormais;i++) {
+    for (int i=0;i<nVertices;i++) {
         fout << std::to_string(normalsT[i].x) << " " << std::to_string(normalsT[i].y) << " " << std::to_string(normalsT[i].z) << "\n"; 
+    }
+    for (int i=0;i<nVertices;i++) {
+        fout << std::to_string(texCoordsT[i].first) << " " << std::to_string(texCoordsT[i].second) << "\n"; 
     }
 }
 

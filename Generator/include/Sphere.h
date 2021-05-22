@@ -10,11 +10,13 @@
 class Sphere {
 private:
     int radius,nStacks,nSlices;
+    std::vector<Point3D> vertexes;
     std::vector<Triangle> faces;
     std::map<std::pair<int,int>,Point3D> points;
     std::vector<Point3D> normals;
-    void addTopOrBottomSlice(bool top,int slice,int stack,int not_last);
-    void addSquareSlice(int slice,int stack,int not_last);
+    std::vector<std::pair<float,float>> texCoords;
+    void addTopOrBottomSlice(bool top,int slice,int stack);
+    void addSquareSlice(int slice,int stack);
 public:
     Sphere();
     Sphere(int radiusG,int slicesG,int stacksG);

@@ -17,6 +17,7 @@ private:
     std::vector<Triangle> faces;
     std::vector<Point3D> points;
     std::vector<Point3D> normals;
+    std::vector<std::pair<float,float>> texCoords;
     int index;
     void addYLayer(bool top);
     void addXLayer(bool top);

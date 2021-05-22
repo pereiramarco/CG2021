@@ -13,6 +13,7 @@ public:
 	GLuint indexes;
 	int indexCount;
 	GLuint normals;
+	GLuint texCoords;
 
     VBO();
 	VBO(const VBO& vbo);

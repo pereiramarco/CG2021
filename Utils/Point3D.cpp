@@ -30,9 +30,11 @@ void Point3D::zero() {
 
 void Point3D::normalize() {
 	float l = sqrt(x*x + y*y + z*z);
-	x = x/l;
-	y = y/l;
-	z = z/l;
+	if(l != 0) {
+		x = x/l;
+		y = y/l;
+		z = z/l;
+	}
 }
 
 Point3D Point3D::crossProduct(Point3D v2) {

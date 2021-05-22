@@ -14,6 +14,7 @@ Figure::Figure() {
     ambR=-1;
     shininess=-1;
     filename="";
+    texID = 0;
 }
 
 Figure::Figure(const Figure& fig) {
@@ -23,20 +24,22 @@ Figure::Figure(const Figure& fig) {
     ambR = fig.ambR;ambG = fig.ambG;ambB = fig.ambB;
     shininess = fig.shininess;
     filename = fig.filename;
+    texID = fig.texID;
 }
 
 // Point3D maps x,y,z to R,G,B
 
-Figure::Figure(Point3D diff,Point3D spec,float shin,Point3D amb, Point3D emiss,std::string filenameG) {
+Figure::Figure(int textureG, Point3D diff,Point3D spec,float shin,Point3D amb, Point3D emiss,std::string filenameG) {
     diffR = diff.x;diffG = diff.y;diffB = diff.z;
     emissR= emiss.x;emissG = emiss.y;emissB = emiss.z;
     specR = spec.x;specG = spec.y;specB = spec.z;
     ambR = amb.x;ambG = amb.y;ambB = amb.z;
     shininess=shin;
     filename=filenameG;
+    texID = textureG;
 }
 
-void Figure::applyColor() {
+void Figure::apply() {
     if(diffR != -1 && diffG != -1 && diffB != -1) {
         float appdiff[4] = {diffR,diffG,diffB,1.0};
         glMaterialfv(GL_FRONT,GL_DIFFUSE,appdiff);
@@ -55,9 +58,11 @@ void Figure::applyColor() {
         float appamb[4] = {ambR,ambG,ambB,1.0};
         glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,appamb);
     }
+    if(texID != 0)
+        glBindTexture(GL_TEXTURE_2D,texID);
 }
 
-void Figure::resetColor() {
+void Figure::reset() {
     float defamb[4] = {0.2,0.2,0.2,1.0};
     float defdiff[4] = {0.8,0.8,0.8,1.0};
     float defemiss[4] = {0.0,0.0,0.0,1.0};
@@ -68,4 +73,5 @@ void Figure::resetColor() {
     glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,defemiss);
     glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,defspec);
     glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,defshin);
+    glBindTexture(GL_TEXTURE_2D,0);
 }
