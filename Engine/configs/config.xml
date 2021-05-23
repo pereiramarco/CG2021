@@ -634,7 +634,7 @@
         <scale scaleX="109" scaleY="109" scaleZ="109"/>
 		<rotate time="4.438" clockwise="CW" axisY="1"/>
         <models>
-            <model file="sphere.3d" emissR="1" emissG="1" emissB="0"/>
+            <model file="sphere.3d" texture="texSun.jpg" emissR="1" emissG="1" emissB="0"/>
         </models>
     </group>
 </scene>
