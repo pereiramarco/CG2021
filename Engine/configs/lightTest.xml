@@ -1,0 +1,34 @@
+<scene>
+    <lights>
+        <light type="DIRECTIONAL" dirX="1" dirY="1" dirZ ="1" />
+    </lights>
+    <group>
+        <models>
+            <model file="lightTest.3d" emissR="1" emissG="0.647" emissB="0" />
+        </models>
+    </group>
+    <group>
+        <translate X="50"/>
+        <models>
+            <model file="lightTest.3d" diffR="1" diffG="0.347" diffB="0.2" specR="1" specG="1" specB="1" shin="25" />
+        </models>
+        <group>
+            <translate Z="50"/>
+            <models>
+                <model file="bezierTest.3d" diffR="0.467" diffG="0.893" diffB="0.23"/>
+            </models>
+        </group>
+    </group>
+    <group>
+        <translate Y="50"/>
+        <models>
+            <model file="lightTest.3d" diffR="0.3" diffG="0.347" diffB="0.6"/>
+        </models>
+    </group>
+    <group>
+        <translate Z="50"/>
+        <models>
+            <model file="lightTest.3d" ambR="1" ambG="1" ambB="1" texture="texEarth.jpg" />
+        </models>
+    </group>
+</scene>

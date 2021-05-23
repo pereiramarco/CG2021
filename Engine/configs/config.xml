@@ -1,11 +1,7 @@
 <scene>
-    <group>
-        <scale scaleX="109" scaleY="109" scaleZ="109"/>
-		<rotate time="4.438" clockwise="CW" axisY="1"/>
-        <models>
-            <model file="sphere.3d" redColor="1" greenColor="1" blueColor="0"/>
-        </models>
-    </group>
+	<lights>
+        <light type="POINT" posX="0" posY="0" posZ="0" />
+    </lights>
     <group><!--Mercurio-->
 		<rotate angle="-0.1" axisZ="1"/>
         <translate time="14.466" >
@@ -50,7 +46,7 @@
 		<group>
 			<rotate time="9.6438" clockwise="CCW" axisY="1"/>
         	<models>
-            	<model file="sphere.3d" redColor="1" greenColor="0" blueColor="0"/>
+            	<model file="sphere.3d" texture="texMercury.jpg" />
         	</models>
 		</group>
     </group>
@@ -98,7 +94,7 @@
 		<group>
 			<rotate time="39.9452" clockwise="CCW" axisY="1"/>
         	<models>
-        	    <model file="sphere.3d" redColor="0.8" greenColor="0.4" blueColor="0" />
+        	    <model file="sphere.3d" texture="texVenus.jpg" />
         	</models>
 		</group>
     </group>
@@ -145,7 +141,7 @@
 		<group>
 			<rotate time="0.164383" clockwise="CW" axisY="1"/>
         	<models>
-            	<model file="sphere.3d" redColor="0" greenColor="0" blueColor="0.8"/>
+            	<model file="sphere.3d" texture="texEarth.jpg"/>
         	</models>
 		</group>
         <group><!--Lua-->
@@ -189,7 +185,7 @@
 		    </translate>
             <scale scaleX="0.2" scaleY="0.2" scaleZ="0.2"/>
             <models>
-                <model file="sphere.3d" redColor="0.75" greenColor="0.75" blueColor="0.75"/>
+                <model file="sphere.3d" texture="texEarthMoon.jpg"/>
             </models>
         </group>
     </group>
@@ -237,7 +233,7 @@
 		<group>
 			<rotate time="0.1712328" clockwise="CW" axisY="1"/>
         	<models>
-        	    <model file="sphere.3d" redColor="0.6" greenColor="0" blueColor="0"/>
+        	    <model file="sphere.3d" texture="texMars.jpg"/>
         	</models>
 		</group>
         <group><!--Fobos-->
@@ -281,7 +277,7 @@
 			</translate>
             <scale scaleX="0.2" scaleY="0.2" scaleZ="0.2"/>
             <models>
-                <model file="sphere.3d" redColor="0.75" greenColor="0.75" blueColor="0.75"/>
+                <model file="sphere.3d" diffR="0.75" diffG="0.75" diffB="0.75" specR="1" specG="1" specB="1" shin="25"/>
             </models>
         </group>
         <group><!--Deimos-->
@@ -325,7 +321,7 @@
 		    </translate>
             <scale scaleX="0.1" scaleY="0.1" scaleZ="0.1"/>
             <models>
-                <model file="sphere.3d" redColor="0.4" greenColor="0.75" blueColor="0.75"/>
+                <model file="sphere.3d" diffR="0.4" diffG="0.75" diffB="0.75" specR="1" specG="1" specB="1" shin="25"/>
             </models>
         </group>
     </group>
@@ -373,7 +369,7 @@
         <group>
 			<rotate time="0.06849" clockwise="CW" axisY="1"/>
     		<models>
-    		    <model file="sphere.3d" redColor="0.7" greenColor="0.59" blueColor="0.478"/>
+    		    <model file="sphere.3d" texture="texJupiter.jpg"/>
     		</models>
 		</group>
     </group>
@@ -421,12 +417,12 @@
         <group>
 			<rotate time="0.07534246" clockwise="CW" axisY="1"/>
         	<models>
-        	    <model file="sphere.3d" redColor="1" greenColor="0.8" blueColor="0.6"/>
+        	    <model file="sphere.3d" texture="texSaturn.jpg"/>
         	</models>
         	<group><!--Anel de saturno -->
         	    <scale scaleX="0.5" scaleY="0.5" scaleZ="0.5"/>
         	    <models>
-        	        <model file="torus.3d" redColor="0.75" greenColor="0.75" blueColor="0.75"/>
+        	        <model file="torus.3d" texture="texSaturnRing.png"/>
         	    </models>
         	</group>
 		</group>
@@ -475,7 +471,7 @@
 		<group>
 			<rotate time="0.11643" clockwise="CW" axisY="1" />
         	<models>
-        	    <model file="sphere.3d" redColor="0.4" greenColor="0.69" blueColor="1"/>
+        	    <model file="sphere.3d" texture="texUranus.jpg"/>
         	</models>
 		</group>
     </group>
@@ -523,7 +519,7 @@
 		<group>
 			<rotate time="0.109589" clockwise="CW" axisY="1" />
         	<models>
-        	    <model file="sphere.3d" redColor="0.4" greenColor="0.4" blueColor="0.8"/>
+        	    <model file="sphere.3d" texture="texNeptune.jpg"/>
         	</models>
 		</group>
     </group>
@@ -631,7 +627,14 @@
 			<point X="-536.0" Y="0" Z="-42.000008" />
 		</translate>
 		<models>
-			<model file="teapot.3d" redColor="0.5" greenColor="0.5" blueColor="0.5" />
+			<model file="teapot.3d" texture="texComet.jpg" />
 		</models>
 	</group>
+	<group>
+        <scale scaleX="109" scaleY="109" scaleZ="109"/>
+		<rotate time="4.438" clockwise="CW" axisY="1"/>
+        <models>
+            <model file="sphere.3d" texture="texSun.jpg" emissR="1" emissG="1" emissB="0"/>
+        </models>
+    </group>
 </scene>

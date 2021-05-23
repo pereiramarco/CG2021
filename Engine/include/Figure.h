@@ -1,15 +1,26 @@
 #pragma once
 #include <string>
+#include "../../Utils/Point3D.h"
+
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
 
 class Figure {
 public:
-    float red;
-    float green;
-    float blue;
+    float diffR, diffG, diffB;
+    float specR, specG, specB;
+    float emissR, emissG, emissB;
+    float ambR, ambG, ambB;
+    float shininess;
+    GLuint texID;
     std::string filename;
 
     Figure();
     Figure(const Figure& fig);
-    Figure(float redG,float greenG,float blueG,std::string filenameG);
-
+    Figure(int textureG, Point3D diff,Point3D spec,float shin,Point3D amb,Point3D emiss,std::string filenameG);
+    void apply();
+    void reset();
 };

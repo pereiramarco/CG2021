@@ -11,8 +11,8 @@ void Group::addTransform(std::shared_ptr<Transform> t) {
     transformations.push_back(t);
 }
 
-void Group::addFile(std::string filename,float red,float green,float blue) {
-    models[filename]=Figure(red,green,blue,filename);
+void Group::addFile(std::string filename,Point3D * colors,float shininess, int texture) {
+    models[filename]=Figure(texture,colors[0],colors[1],shininess,colors[2],colors[3],filename);
 }
 
 void Group::addGroup(Group group) {

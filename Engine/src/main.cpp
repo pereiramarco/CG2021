@@ -9,6 +9,7 @@
 #include "../../Utils/Point3D.h"
 #include "../include/Group.h"
 #include "../include/VBO.h"
+#include "../include/Lights/Light.h"
 #include "../include/XMLParser/xmlParser.h"
 #include <string>
 #define _USE_MATH_DEFINES
@@ -25,15 +26,17 @@ int Transform::retroceder=1;
 bool axis=false,wire=true,firstCursor=true;
 std::unordered_map<std::string,VBO> buffers;
 std::vector<Group> groups;
+std::vector<std::shared_ptr<Light>> lights;
 int xMouseB4,yMouseB4;
-float yaw=-90.0f,pitch=0; //yaw horizontal turn//pitch vertical turn
+float yaw=-155.0f,pitch=0.0f; //yaw horizontal turn//pitch vertical turn
 float sensitivity = 0.3f; //sensibilidade do rato
 float speed=1.0f;
-Point3D lookingAtPoint(-200,0,-109.5);
+Point3D lookingAtPoint(-0.88,0,-0.48);
 Point3D camPosition(200,0,109.5);
 bool key_states[256];
 
 void meteAxis() {
+	glDisable(GL_LIGHTING);
 	glBegin(GL_LINES);
 	
 	// X axis in red
@@ -50,19 +53,25 @@ void meteAxis() {
 	glVertex3f(0.0f, 0.0f,  500.0f);
 	
 	glEnd();
+	glEnable(GL_LIGHTING);
 }
 
 void drawFigure(Figure figure) {
 	VBO vbo = buffers["../models/"+figure.filename];
-	glColor3f(figure.red,figure.green,figure.blue);
 	glBindBuffer(GL_ARRAY_BUFFER,vbo.vertixes);
  	glVertexPointer(3,GL_FLOAT,0,0);
+	glBindBuffer(GL_ARRAY_BUFFER,vbo.normals);
+	glNormalPointer(GL_FLOAT,0,0);
+	glBindBuffer(GL_ARRAY_BUFFER,vbo.texCoords);
+	glTexCoordPointer(2,GL_FLOAT,0,0);
  	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo.indexes);
+	figure.apply();
  	glDrawElements(GL_TRIANGLES,
  		vbo.indexCount, // número de índices a desenhar
  		GL_UNSIGNED_INT, // tipo de dados dos índices
  		0);// parâmetro não utilizado
 	glColor3f(0,0,0);
+	figure.reset();
 }
 
 void drawFigures(Group g) {
@@ -79,15 +88,8 @@ void drawFigures(Group g) {
 	glPopMatrix();
 }
 
-Point3D crossProduct(Point3D v1,Point3D v2) {
-	float x = v1.y * v2.z - v1.z * v2.y;
-    float y = v1.z * v2.x - v1.x * v2.z;
-    float z = v1.x * v2.y - v1.y * v2.x;
-	return Point3D(x,y,z);
-}
-
 void processKeyboardInput() {
-	Point3D horizontal_look=crossProduct(lookingAtPoint,Point3D(0,1,0)); // cross product entre o look e o eixo y de modo a ter apenas o ponto para onde se deve dirigir horizontalmente
+	Point3D horizontal_look=lookingAtPoint.crossProduct(Point3D(0,1,0)); // cross product entre o look e o eixo y de modo a ter apenas o ponto para onde se deve dirigir horizontalmente
 	if (key_states['w'])
 			camPosition+=lookingAtPoint*speed;
 	if (key_states['a'])
@@ -107,10 +109,10 @@ void processKeyboardInput() {
 }
 
 void renderScene(void) {
-
 	processKeyboardInput();
 
 	// clear buffers
+	glClearColor(0.0f,0.0f,0.0f,0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// set the camera
@@ -118,6 +120,8 @@ void renderScene(void) {
 	gluLookAt(camPosition.x,camPosition.y,camPosition.z, 
 		      lookingAtPoint.x+camPosition.x,lookingAtPoint.y+camPosition.y,lookingAtPoint.z+camPosition.z,
 			  0.0f,1.0f,0.0f);
+
+	lights[0]->applyLight();
 // put drawing instructions here
 	if (axis) meteAxis();
 	for (auto& g : groups) {
@@ -201,6 +205,8 @@ void readFile3D(std::string filename) {
 	iss >> numVertexes >> numTriangles;
 	std::vector<float> vertixes;
 	std::vector<unsigned int> indexes;
+	std::vector<float> normals;
+	std::vector<float> textureCoordinates;
 	int i;
 	// Aquisição dos Pontos de Desenho dos Triangles do ficheiro
 	for(i = 0; i < numVertexes; i++) {
@@ -235,11 +241,38 @@ void readFile3D(std::string filename) {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,vbo.indexes); //liga o buffer indices ao array
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(unsigned int) * indexes.size(),indexes.data(),GL_STATIC_DRAW);
  	vbo.indexCount = indexes.size();
+	float normalX, normalY, normalZ;
+	for(i = 0; i < numVertexes; i++) {
+		std::getline(fp,line);
+		std::istringstream iss(line);
+		if(!(iss >> normalX >> normalY >> normalZ)) {
+			std::cout << "Erro a ler normais do ficheiro! \n";
+			break;
+		}
+		normals.push_back(normalX);
+		normals.push_back(normalY);
+		normals.push_back(normalZ);
+	}
+	glBindBuffer(GL_ARRAY_BUFFER,vbo.normals); //liga o buffer indices ao array
+	glBufferData(GL_ARRAY_BUFFER,sizeof(float) * normals.size(),normals.data(),GL_STATIC_DRAW);
+	float texX, texY;
+	for(i = 0; i < numVertexes; i++) {
+		std::getline(fp,line);
+		std::istringstream iss(line);
+		if(!(iss >> texX >> texY)) {
+			std::cout << "Erro a ler texturas do ficheiro! \n";
+			break;
+		}
+		//adição do índice de cada ponto do triângulo ao vetor de índices
+		textureCoordinates.push_back(texX);
+		textureCoordinates.push_back(texY);
+	}
+	glBindBuffer(GL_ARRAY_BUFFER,vbo.texCoords); //liga o buffer indices ao array
+	glBufferData(GL_ARRAY_BUFFER,sizeof(float) * textureCoordinates.size(),textureCoordinates.data(),GL_STATIC_DRAW);
 	buffers[filename]=vbo;
 }
 
 void readConfig(int argc, char **argv) {
-	glEnableClientState(GL_VERTEX_ARRAY);
 	std::string name;
 	xmlContent parser;
 	if(argc == 2) {
@@ -255,6 +288,7 @@ void readConfig(int argc, char **argv) {
 		std::string model = "../models/" + filename;
 		readFile3D(model);
 	}
+	lights=parser.getLights();
 }
 
 void registerKeyDown(unsigned char key, int x, int y) {
@@ -276,6 +310,19 @@ void registerKeyDown(unsigned char key, int x, int y) {
 
 void registerKeyUp(unsigned char key, int x, int y) {
 	key_states[key]=false;
+}
+
+void init() {
+	lookingAtPoint.x = cosf(radians(yaw)) * cosf(radians(pitch));
+    lookingAtPoint.y = sinf(radians(pitch));
+    lookingAtPoint.z = sinf(radians(yaw)) * cosf(radians(pitch));
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_RESCALE_NORMAL);
 }
 
 int main(int argc, char **argv) {
@@ -300,11 +347,13 @@ int main(int argc, char **argv) {
 	glutKeyboardUpFunc(registerKeyUp);
 	glutPassiveMotionFunc(mouseControls);
 
-	readConfig(argc,argv); //lê o xml e configura os VBO's
-
 //  OpenGL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+
+// Initializations
+	init();
+	readConfig(argc,argv); //lê o xml e configura os VBO's
 	
 // enter GLUT's main cycle
 	glutMainLoop();

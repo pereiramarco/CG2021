@@ -15,7 +15,10 @@ public:
 private:
     int width,depth,height,nDivisions;
     std::vector<Triangle> faces;
-    std::map<std::tuple<int,int,int>,Point3D> points;
+    std::vector<Point3D> points;
+    std::vector<Point3D> normals;
+    std::vector<std::pair<float,float>> texCoords;
+    int index;
     void addYLayer(bool top);
     void addXLayer(bool top);
     void addZLayer(bool top);

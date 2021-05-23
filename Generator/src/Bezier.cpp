@@ -73,9 +73,10 @@ void Bezier::read_patches() {
 	fp >> numPoints;
 
 	for (int i=0;i<numPoints;i++) {
-		fp >> x >> y >> z;
+		//troca pontos para manter os eixos na engine
+		fp >> z >> x >> y;
+		z.pop_back();
 		x.pop_back();
-		y.pop_back();
  		Point3D point = Point3D(strtof(x.c_str(),NULL),strtof(y.c_str(),NULL),strtof(z.c_str(),NULL));
 		patch_points.push_back(point);
     }
@@ -93,6 +94,52 @@ void Bezier::read_patches() {
 		}
 		patches.push_back(patch);
 	}
+}
+
+void Bezier::computeNormal(std::vector<std::vector<Point3D>> preCalculatedMatrix, float u, float v, std::vector<std::vector<Point3D>> u_matrix, std::vector<std::vector<Point3D>> v_matrix) {
+	std::vector<std::vector<Point3D>> u_der_matrix,v_der_matrix;
+	// Create u derivative matrix
+	std::vector<Point3D> rowu;
+	Point3D uPoint = Point3D(3 * u * u, 3*u*u,3*u*u);
+	rowu.push_back(uPoint);
+	uPoint = Point3D(2 * u, 2 * u, 2 * u);
+	rowu.push_back(uPoint);
+	uPoint = Point3D( 1, 1, 1);
+	rowu.push_back(uPoint);
+	uPoint = Point3D(0, 0, 0);
+	rowu.push_back(uPoint);
+	u_der_matrix.push_back(rowu);
+
+	// Create v derivative matrix
+	std::vector<Point3D> rowv1,rowv2,rowv3,rowv4;
+	Point3D vPoint = Point3D(3 * v * v, 3*v*v,3*v*v);
+	rowv1.push_back(vPoint);
+	v_der_matrix.push_back(rowv1);
+	vPoint = Point3D(2 * v, 2 * v, 2 * v);
+	rowv2.push_back(vPoint);
+	v_der_matrix.push_back(rowv2);
+	vPoint = Point3D( 1, 1, 1);
+	rowv3.push_back(vPoint);
+	v_der_matrix.push_back(rowv3);
+	vPoint = Point3D(0, 0, 0);
+	rowv4.push_back(vPoint);
+	v_der_matrix.push_back(rowv4);
+
+	// Calculo derivada parcial horizontal
+	auto auxMatrix = multiplyMatrix(u_der_matrix,preCalculatedMatrix);
+	auto finalMatrix = multiplyMatrix(auxMatrix,v_matrix);
+	Point3D uPointDer = finalMatrix[0][0];
+
+	// Calculo derivada parcial vertical
+	auto auxMatrix2 = multiplyMatrix(u_matrix,preCalculatedMatrix);
+	auto finalMatrix2 = multiplyMatrix(auxMatrix2,v_der_matrix);
+	Point3D vPointDer = finalMatrix2[0][0];
+
+	// Produto externo para obter normal
+	Point3D normal = vPointDer.crossProduct(uPointDer);
+	normal.normalize();
+	normals.push_back(normal);
+
 }
 
 Point3D Bezier::calculatePoint(std::vector<std::vector<Point3D>> preCalculatedMatrix,int vertical_level,int horizontal_level) {
@@ -113,6 +160,8 @@ Point3D Bezier::calculatePoint(std::vector<std::vector<Point3D>> preCalculatedMa
 	u_matrix.push_back(rowu);
 	auto auxMatrix = multiplyMatrix(u_matrix,preCalculatedMatrix);
 	auto returnMatrix = multiplyMatrix(auxMatrix,v_matrix);
+	computeNormal(preCalculatedMatrix,u,v,u_matrix,v_matrix);
+	texCoords.push_back(std::make_pair<float,float>((double)u,(double)v));
 	return returnMatrix[0][0];
 }
 
@@ -121,10 +170,6 @@ void Bezier::calculatePoints(std::vector<std::vector<Point3D>> preCalculatedMatr
 		for (int j=0;j<=horizontal_tesselation;j++) {
 			auto point = calculatePoint(preCalculatedMatrix,i,j);
 			point.index=indexPoint;
-			//troca pontos para manter os eixos na engine
-			float y=point.y;float x=point.x;
-			point.y=point.z;point.x=y;
-			point.z=x;
 			vertixes.push_back(point);
 			if (i && j) {
 			    triangs.push_back(Triangle(indexPoint-horizontal_tesselation-2,indexPoint-horizontal_tesselation-1,indexPoint));
@@ -148,5 +193,5 @@ std::shared_ptr<Model> Bezier::generate() {
 		auto preCalculatedMatrix = multiplyMatrix(auxMatrix,bezier_matrix);
 		calculatePoints(preCalculatedMatrix,indexPoint,vertixes,triangs);
 	}
-	return std::make_shared<Model>(vertixes,triangs);
+	return std::make_shared<Model>(vertixes,triangs,normals,texCoords);
 }

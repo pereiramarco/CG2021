@@ -1,5 +1,6 @@
 #include "Point3D.h"
 #include <string>
+#include <cmath>
 
 
 Point3D::Point3D(){
@@ -25,6 +26,22 @@ void Point3D::zero() {
 	x=0;
 	y=0;
 	z=0;
+}
+
+void Point3D::normalize() {
+	float l = sqrt(x*x + y*y + z*z);
+	if(l != 0) {
+		x = x/l;
+		y = y/l;
+		z = z/l;
+	}
+}
+
+Point3D Point3D::crossProduct(Point3D v2) {
+	float rx = y * v2.z - z * v2.y;
+    float ry = z * v2.x - x * v2.z;
+    float rz = x * v2.y - y * v2.x;
+	return Point3D(rx,ry,rz);
 }
 
 void Point3D::operator-=(Point3D& p) {
