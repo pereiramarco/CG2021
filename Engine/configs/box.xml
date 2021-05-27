@@ -1,7 +1,11 @@
 <scene>
+    <lights>
+        <light type="DIRECTIONAL" dirX="1" dirY="1" dirZ="1" />
+    </lights>
     <group>
+     <rotate angle="20" axisZ="1" />
         <models>
-            <model file="box.3d" />
+            <model file="box.3d" texture="texToTest.jpg" />
         </models>
     </group>
 </scene>

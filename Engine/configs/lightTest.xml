@@ -1,6 +1,6 @@
 <scene>
     <lights>
-        <light type="DIRECTIONAL" dirX="1" dirY="1" dirZ ="1" />
+        <light type="DIRECTIONAL" dirX="1" dirY="1" dirZ="1" />
     </lights>
     <group>
         <models>
@@ -12,23 +12,18 @@
         <models>
             <model file="lightTest.3d" diffR="1" diffG="0.347" diffB="0.2" specR="1" specG="1" specB="1" shin="25" />
         </models>
-        <group>
-            <translate Z="50"/>
-            <models>
-                <model file="bezierTest.3d" diffR="0.467" diffG="0.893" diffB="0.23"/>
-            </models>
-        </group>
     </group>
     <group>
-        <translate Y="50"/>
+        <translate Y="15"/>
+        <scale scaleX="3.8" scaleY="3.8" scaleZ="3.8"/>
         <models>
-            <model file="lightTest.3d" diffR="0.3" diffG="0.347" diffB="0.6"/>
+            <model file="cone.3d" diffR="0.3" diffG="0.347" diffB="0.6" ambR="0.7" ambG="0" ambB="0"/>
         </models>
     </group>
     <group>
         <translate Z="50"/>
         <models>
-            <model file="lightTest.3d" ambR="1" ambG="1" ambB="1" texture="texEarth.jpg" />
+            <model file="lightTest.3d" diffR="0.456" diffG="0.237" diffB="0.792" />
         </models>
     </group>
 </scene>
