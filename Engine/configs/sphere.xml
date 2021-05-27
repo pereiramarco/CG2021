@@ -1,7 +1,10 @@
 <scene>
+    <lights>
+        <light type="DIRECTIONAL" dirX="1" dirY="1" dirZ="1" />
+    </lights>
     <group>
         <models>
-            <model file="sphere.3d" />
+            <model file="sphere.3d" texture="texEarth.jpg" ambR="1" ambG="1" ambB="1"/>
         </models>
     </group>
 </scene>

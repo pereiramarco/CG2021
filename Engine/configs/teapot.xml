@@ -1,8 +1,10 @@
 <scene>
+    <lights>
+        <light type="DIRECTIONAL" dirX="1" dirY="1" dirZ="1" />
+    </lights>
     <group>
-        <rotate angle="-90" axisX="1"/>
         <models>
-            <model file="bezier.3d" />
+            <model file="teapot.3d" texture="texToTest.jpg"/>
         </models>
     </group>
 </scene>
