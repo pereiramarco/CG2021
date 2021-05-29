@@ -1,3 +1,5 @@
+#include <GL/glew.h>
+#include <IL/il.h>
 #include "../../include/Group.h"
 #include "../../include/Transformations/Transform.h"
 #include "../../include/Transformations/Scale.h"
@@ -9,8 +11,6 @@
 #include "../../include/Lights/PointLight.h"
 #include "../../include/Lights/SpotLight.h"
 #include "unordered_set"
-
-#include <il.h>
 
 xmlContent::xmlContent() {
     filename = "../configs/config.xml";
