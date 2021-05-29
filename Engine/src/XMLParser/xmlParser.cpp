@@ -1,5 +1,11 @@
+#ifndef __APPLE__
+#endif
+#ifdef __APPLE__
+#include <il.h>
+#else
 #include <GL/glew.h>
 #include <IL/il.h>
+#endif
 #include "../../include/Group.h"
 #include "../../include/Transformations/Transform.h"
 #include "../../include/Transformations/Scale.h"
