@@ -59,8 +59,8 @@ std::shared_ptr<Model> Sphere::generate() {
         normals.push_back(Point3D(0.0f,1.0f,0.0f));
         normals.push_back(Point3D(0.0f,-1.0f,0.0f));
         double x_tex_coord = i * tex_x_increment * 1.0 + (tex_x_increment / 2.0);
-        texCoords.push_back(std::make_pair<float,float>(x_tex_coord,1.0));
-        texCoords.push_back(std::make_pair<float,float>(x_tex_coord,0.0));
+        texCoords.push_back(std::make_pair<float,float>(float(x_tex_coord),1.0f));
+        texCoords.push_back(std::make_pair<float,float>(float(x_tex_coord),0.0f));
     }
     for (int stack=1;stack<nStacks;stack++) {
 

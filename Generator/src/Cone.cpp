@@ -111,7 +111,7 @@ std::shared_ptr<Model> Cone::generate() {
         vertexes.push_back(top);
         normals.push_back(Point3D(0,1,0));
         double x_tex_coord = i * tex_x_increment * 1.0 + (tex_x_increment / 2.0);
-        texCoords.push_back(std::make_pair<float,float>(x_tex_coord,1.0));
+        texCoords.push_back(std::make_pair<float,float>(float(x_tex_coord),1.0f));
     }
     // Builds everything except base, from top to bottom
     for (int stack=nStacks-1;stack>=0;stack--) {

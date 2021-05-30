@@ -48,10 +48,10 @@ void Torus::constructRing(int ring, float ring_angle) {
     normals.push_back(Point3D(0,1,0));
     normals.push_back(Point3D(0,-1,0));
     normals.push_back(Point3D(0,-1,0));
-    texCoords.push_back(std::make_pair<float,float>(0,ring));
-    texCoords.push_back(std::make_pair<float,float>(1,ring));
-    texCoords.push_back(std::make_pair<float,float>(0,ring));
-    texCoords.push_back(std::make_pair<float,float>(1,ring));
+    texCoords.push_back(std::make_pair<float,float>(0.0f,float(ring)));
+    texCoords.push_back(std::make_pair<float,float>(1.0f,float(ring)));
+    texCoords.push_back(std::make_pair<float,float>(0.0f,float(ring)));
+    texCoords.push_back(std::make_pair<float,float>(1.0f,float(ring)));
     if(ring == 0)
         return;
     Point3D beforeNearCenter, beforeFarCenter;
@@ -96,7 +96,7 @@ std::shared_ptr<Model> Torus::generate() {
             Point3D normal = Point3D(x-centerX,y,z-centerZ);
             normal.normalize();
             normals.push_back(normal);
-            texCoords.push_back(std::make_pair<float,float>(side,ring));
+            texCoords.push_back(std::make_pair<float,float>(float(side),float(ring)));
 
             Point3D ponto=Point3D(x,y,z,index++);
             vertexes.push_back(ponto);
