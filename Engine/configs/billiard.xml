@@ -1,6 +1,6 @@
 <scene>
 	<lights>
-		<light type="POINT" posX="0" posY="30" posZ="0" />
+		<light type="DIRECTIONAL" dirX="0" dirY="1" dirZ="0" />
 	</lights>
 	<group>
 		<!--Table-Top-->
@@ -15,7 +15,7 @@
 		<scale scaleX="5" scaleZ="0.4"/>
 		<translate Y="9" X="-20" Z="-21"/>
 		<models>
-			<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" />
+			<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" specR="0" specG="0" specB="0" shin="0" />
 		</models>
 	</group>
 	<group>
@@ -23,7 +23,7 @@
 		<scale scaleX="5" scaleZ="0.4"/>
 		<translate Y="9" X="-20" Z="20"/>
 		<models>
-			<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" />
+			<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" specR="0" specG="0" specB="0" shin="0" />
 		</models>
 	</group>
 	<group>
@@ -31,7 +31,7 @@
 		<scale scaleX="0.4" scaleZ="3.8"/>
 		<translate Y="9" X="40" Z="-21"/>
 		<models>
-			<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" />
+			<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" specR="0" specG="0" specB="0" shin="0" />
 		</models>
 	</group>
 	<group>
@@ -39,7 +39,7 @@
 		<scale scaleX="0.4" scaleZ="3.8"/>
 		<translate Y="9" X="-24.8" Z="-21"/>
 		<models>
-			<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" />
+			<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" specR="0" specG="0" specB="0" shin="0" />
 		</models>
 	</group>
 	<group>
@@ -47,7 +47,7 @@
 		<scale scaleX="0.2" scaleZ="0.2"/>
 		<translate X="39" Z="20"/>
 		<models>
-			<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" />
+			<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" specR="0" specG="0" specB="0" shin="0" />
 		</models>
 	</group>
 	<group>
@@ -55,7 +55,7 @@
 		<scale scaleX="0.2" scaleZ="0.2"/>
 		<translate X="39" Z="-20"/>
 		<models>
-			<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" />
+			<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" specR="0" specG="0" specB="0" shin="0" />
 		</models>
 	</group>
 	<group>
@@ -63,7 +63,7 @@
 		<scale scaleX="0.2" scaleZ="0.2"/>
 		<translate X="-24" Z="20"/>
 		<models>
-			<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" />
+			<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" specR="0" specG="0" specB="0" shin="0" />
 		</models>
 	</group>
 	<group>
@@ -71,7 +71,7 @@
 		<scale scaleX="0.2" scaleZ="0.2"/>
 		<translate X="-24" Z="-20"/>
 		<models>
-			<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" />
+			<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" specR="0" specG="0" specB="0" shin="0" />
 		</models>
 	</group>
 	<group>
@@ -80,7 +80,7 @@
 		<translate X="50" Z="-5" Y="21"/>
 		<rotate angle="90" axisZ="1"/>
 		<models>
-			<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" />
+			<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" specR="0" specG="0" specB="0" shin="0" />
 		</models>
 	</group>
 	<group>
@@ -91,7 +91,7 @@
 			<scale scaleX="0.03" scaleZ="0.03" scaleY="3"/>
 			<translate Y="-50" Z="-18" X="22"/>
 			<models>
-				<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" />
+				<model file="box.3d" texture="Pool/cue stick.jpg" diffR="0.64" diffG="0.455" diffB="0.29" specR="0" specG="0" specB="0" shin="0" />
 			</models>
 		</group>
 	</group>

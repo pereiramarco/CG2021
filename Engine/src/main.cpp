@@ -120,7 +120,6 @@ void renderScene(void) {
 	gluLookAt(camPosition.x,camPosition.y,camPosition.z, 
 		      lookingAtPoint.x+camPosition.x,lookingAtPoint.y+camPosition.y,lookingAtPoint.z+camPosition.z,
 			  0.0f,1.0f,0.0f);
-
 	lights[0]->applyLight();
 // put drawing instructions here
 	if (axis) meteAxis();
@@ -151,7 +150,7 @@ void changeSize(int w, int h) {
     glViewport(0, 0, w, h);
 
 	// Set perspective
-	gluPerspective(45.0f ,ratio, 1.0f ,1000.0f);
+	gluPerspective(45.0f ,ratio, 1.0f ,10000.0f);
 
 	// return to the model view matrix mode
 	glMatrixMode(GL_MODELVIEW);
@@ -312,6 +311,19 @@ void registerKeyUp(unsigned char key, int x, int y) {
 	key_states[key]=false;
 }
 
+void printCommands() {
+	std::string commands = R"(Comandos:
+		WASD - Mover Câmara
+		Q - Mostrar Eixos"
+		C - Mostrar Trajetórias
+		'+' '-' - Aumentar/Diminuir velocidade da simulação
+		SpaceBar - Pausar/Retomar simulação
+		F G - Diminuir/Aumentar velocidade da câmara
+		P - Mostrar PolygonMode
+		R - Retroceder Simulação)";
+	std::cout << commands << std::endl;
+}
+
 void init() {
 	lookingAtPoint.x = cosf(radians(yaw)) * cosf(radians(pitch));
     lookingAtPoint.y = sinf(radians(pitch));
@@ -323,6 +335,7 @@ void init() {
 	glEnable(GL_LIGHT0);
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_RESCALE_NORMAL);
+	printCommands();
 }
 
 int main(int argc, char **argv) {

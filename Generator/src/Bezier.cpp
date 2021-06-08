@@ -24,6 +24,7 @@ Bezier::Bezier(std::string patch_fileG,int tesselation_levelG) {
 	Point3D p13 = Point3D(p1*(1.0/3.0));
 	Point3D p23 = Point3D(p1*(2.0/3.0));
 	std::vector<Point3D> row0,row1,row2,row3;
+	// Matriz M que define a patch de Bezier
 	row0.push_back(p_1);row0.push_back(p3);row0.push_back(p_3);row0.push_back(p1);
 	row1.push_back(p3);row1.push_back(p_6);row1.push_back(p3);row1.push_back(p0);
 	row2.push_back(p_3);row2.push_back(p3);row2.push_back(p0);row2.push_back(p0);
@@ -143,6 +144,7 @@ void Bezier::computeNormal(std::vector<std::vector<Point3D>> preCalculatedMatrix
 }
 
 Point3D Bezier::calculatePoint(std::vector<std::vector<Point3D>> preCalculatedMatrix,int vertical_level,int horizontal_level) {
+	// Segmentos verticais e horizontais do patch a desenhar. Variam entre [0,1].
 	float u = vertical_level*vertical_tesselation_inc;
 	float v = horizontal_level*horizontal_tesselation_inc;
 	std::vector<std::vector<Point3D>> u_matrix,v_matrix;
@@ -151,6 +153,8 @@ Point3D Bezier::calculatePoint(std::vector<std::vector<Point3D>> preCalculatedMa
 		std::vector<Point3D> rowv;
 		float uValue = std::pow(u,i);
 		float vValue = std::pow(v,i);
+		// Cada elemento representa um ponto, logo multiplicar um escalar por um ponto é o mesmo
+		// que criar um ponto em que os 3 valores são o escalar em questão e realizar a multiplicação
 		Point3D uPoint = Point3D(uValue,uValue,uValue);
 		Point3D vPoint = Point3D(vValue,vValue,vValue);
 		rowu.push_back(uPoint);

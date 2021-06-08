@@ -42,12 +42,14 @@ void Box::addYLayer(bool top) {
     float tex_increment = 1.0/(1.0*nDivisions);
     int y=top?1:0;
     std::vector<Point3D> layer;
+    // Cálculo dos pontos 
     for(int x=0;x<=nDivisions;x++) {
         for(int z=0;z<=nDivisions;z++) {
             layer.push_back(Point3D(x*x_increment,y*height,z*z_increment,index++));
             texCoords.push_back(std::make_pair<float,float>(x*tex_increment,z*tex_increment));
         }
     }
+    // Cálculo dos triângulos a desenhar
     for(int x=0;x<nDivisions;x++) {
         for(int z=0;z<nDivisions;z++) {
             Point3D topLeft=layer[((nDivisions+1)*x)+z];
@@ -59,6 +61,7 @@ void Box::addYLayer(bool top) {
     }
     for(int i = 0; i < layer.size(); i++)
         normals.push_back(Point3D(0,top?1:-1,0));
+    // Adição dos pontos calculados da face ao array de todos pontos que formam o cubo
     points.insert(points.end(),layer.begin(),layer.end());
 }
 
@@ -68,12 +71,14 @@ void Box::addXLayer(bool top) {
     float tex_increment = 1.0/(1.0*nDivisions);
     int x=top?1:0;
     std::vector<Point3D> layer;
+    // Cálculo dos pontos 
     for(int y=0;y<=nDivisions;y++) {
         for(int z=0;z<=nDivisions;z++) {
             layer.push_back(Point3D(x*width,y*y_increment,z*z_increment,index++));
             texCoords.push_back(std::make_pair<float,float>(z*tex_increment,y*tex_increment));
         }
     }
+    // Cálculo dos triângulos a desenhar
     for(int y=0;y<nDivisions;y++) {
         for(int z=0;z<nDivisions;z++) {
             Point3D topLeft=layer[((nDivisions+1)*y)+z];
@@ -85,6 +90,7 @@ void Box::addXLayer(bool top) {
     }
     for(int i = 0; i < layer.size(); i++)
         normals.push_back(Point3D(top?1:-1,0,0));
+    // Adição dos pontos calculados da face ao array de todos pontos que formam o cubo
     points.insert(points.end(),layer.begin(),layer.end());
 }
 
@@ -94,12 +100,14 @@ void Box::addZLayer(bool top) {
     float tex_increment = 1.0/(1.0*nDivisions);
     int z=top?1:0;
     std::vector<Point3D> layer;
+    // Cálculo dos pontos
     for(int y=0;y<=nDivisions;y++) {
         for(int x=0;x<=nDivisions;x++) {
             layer.push_back(Point3D(x*x_increment,y*y_increment,z*depth,index++));
             texCoords.push_back(std::make_pair<float,float>(x*tex_increment,y*tex_increment));
         }
     }
+    // Cálculo dos triângulos a desenhar 
     for(int y=0;y<nDivisions;y++) {
         for(int x=0;x<nDivisions;x++) {
             Point3D bellowLeft=layer[((nDivisions+1)*y)+x];
@@ -109,12 +117,15 @@ void Box::addZLayer(bool top) {
             addSquare(top,topRight,topLeft,bellowLeft,bellowRight);
         }
     }
+    // Cálculo das normais
     for(int i = 0; i < layer.size(); i++)
         normals.push_back(Point3D(0,0,top?1:-1));
+    // Adição dos pontos calculados da face ao array de todos pontos que formam o cubo
     points.insert(points.end(),layer.begin(),layer.end());
 }
 
 std::shared_ptr<Model> Box::generate() {
+    // Os argumentos false e true retratam a face da caixa (true - direção positiva do eixo; false - direção negativa do eixo)
     addYLayer(false);
     addYLayer(true);
     addXLayer(false);

@@ -9,6 +9,8 @@
 #include "../include/Torus.h"
 #include "../include/Bezier.h"
 
+// O generator tem que ter sempre os seus argumentos para trabalhar
+// Cada uma das operações gera uma classe Model que fará a escrita dos dados calculados para um ficheiro .3d
 int main(int argc, char **argv) {
 	std::string filename;
 	std::shared_ptr<Model> m;
