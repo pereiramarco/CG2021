@@ -29,6 +29,7 @@ Rotation::Rotation(double degreesG, float axisXG, float axisYG, float axisZG) {
 
 Rotation::Rotation(double timeG, int ccG ,float axisXG, float axisYG, float axisZG) {    
     time=timeG*1000.0;
+    // Clock wise or Counter Clock wise
     cc=ccG==2?1:-1;
     axisX=axisXG;
     axisY=axisYG;
@@ -40,6 +41,8 @@ void Rotation::applyTransform() {
     int t=glutGet(GLUT_ELAPSED_TIME);
     if (type==2) {
         float delta_time = t-t_before;
+        // Os graus a rodar têm de ter em conta o tempo passado, bem como se queremos a simulação a retroceder (valor -1)
+        // e se a simulação está parada (multiplica por 0)
         degrees+=(360.0/(time*time_multiplier))*delta_time*!paused*retroceder;
         //std::cout<<"Angle: " << degrees << "\n";
     }

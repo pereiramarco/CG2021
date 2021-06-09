@@ -25,6 +25,7 @@ SpotLight::SpotLight(float px, float py, float pz, float dx, float dy, float dz,
 }
 
 void SpotLight::applyLight() {
+    // SpotLight requere uma posição, direção e ângulo do feixe de luz
     float pos[4] = {pointX,pointY,pointZ,1.0};
     float dir[3] = {dirX,dirY,dirZ};
     glLightfv(GL_LIGHT0,GL_POSITION,pos);
