@@ -35,5 +35,6 @@ std::shared_ptr<Model> Plane::generate() {
         auto normal=Point3D(0,1,0);
         normals.push_back(normal);
     }
-    return std::make_shared<Model>(vertixes,faces,normals,texCoords);
+    float radius = sqrt(x*x + z*z);
+    return std::make_shared<Model>(vertixes,faces,normals,texCoords,radius);
 }

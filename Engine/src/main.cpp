@@ -11,6 +11,7 @@
 #include "../include/VBO.h"
 #include "../include/Lights/Light.h"
 #include "../include/XMLParser/xmlParser.h"
+#include "../include/Frustum.h"
 #include <string>
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -23,7 +24,7 @@ bool Translation::showCurves=false;
 bool Transform::paused=false;
 float Transform::time_multiplier=1;
 int Transform::retroceder=1;
-bool axis=false,wire=true,firstCursor=true;
+bool axis=false,wire=true,firstCursor=true,enableFrustum = false;
 std::unordered_map<std::string,VBO> buffers;
 std::vector<Group> groups;
 std::vector<std::shared_ptr<Light>> lights;
@@ -34,6 +35,8 @@ float speed=1.0f;
 Point3D lookingAtPoint(-0.88,0,-0.48);
 Point3D camPosition(200,0,109.5);
 bool key_states[256];
+Frustum frustum;
+float triangles = 0;
 
 void meteAxis() {
 	glDisable(GL_LIGHTING);
@@ -71,20 +74,28 @@ void drawFigure(Figure figure) {
  		GL_UNSIGNED_INT, // tipo de dados dos índices
  		0);// parâmetro não utilizado
 	glColor3f(0,0,0);
+	triangles += (vbo.indexCount) / 3.0;
 	figure.reset();
 }
 
 void drawFigures(Group g) {
 	glPushMatrix();
 	for (auto& transform : g.transformations) {
-		transform->applyTransform();
+		auto tr = transform->applyTransform();
+		g.updateFigures(tr);
 	}
 	for (auto& modelFileName : g.models) {
-		drawFigure(modelFileName.second);
+		if(enableFrustum) {
+			if(frustum.sphereInFrustum(modelFileName.second.centerPoint,modelFileName.second.radius) == Frustum::INSIDE)
+				drawFigure(modelFileName.second);
+		}
+		else
+			drawFigure(modelFileName.second);
 	}
 	for (auto& group : g.nestedGroups) {
 		drawFigures(group);
 	}
+	g.isDrawn = true;
 	glPopMatrix();
 }
 
@@ -110,7 +121,8 @@ void processKeyboardInput() {
 
 void renderScene(void) {
 	processKeyboardInput();
-
+	triangles = 0;
+	frustum.calculatePlanes();
 	// clear buffers
 	glClearColor(0.0f,0.0f,0.0f,0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -126,6 +138,7 @@ void renderScene(void) {
 	for (auto& g : groups) {
 		drawFigures(g);
 	}
+	glutSetWindowTitle(("Triangles: " + std::to_string(triangles)).c_str());
 
 	// End of frame
 	glutSwapBuffers();
@@ -151,6 +164,8 @@ void changeSize(int w, int h) {
 
 	// Set perspective
 	gluPerspective(45.0f ,ratio, 1.0f ,10000.0f);
+
+	frustum.calculatePlanes();
 
 	// return to the model view matrix mode
 	glMatrixMode(GL_MODELVIEW);
@@ -305,6 +320,8 @@ void registerKeyDown(unsigned char key, int x, int y) {
 		Transform::paused=!Transform::paused;
 	if (key=='r')
 		Transform::retroceder=-1*Transform::retroceder;
+	if (key=='v')
+		enableFrustum = !enableFrustum;
 }
 
 void registerKeyUp(unsigned char key, int x, int y) {
@@ -320,7 +337,8 @@ void printCommands() {
 		SpaceBar - Pausar/Retomar simulação
 		F G - Diminuir/Aumentar velocidade da câmara
 		P - Mostrar PolygonMode
-		R - Retroceder Simulação)";
+		R - Retroceder Simulação)
+		V - Ativar/Desativar Frustum)";
 	std::cout << commands << std::endl;
 }
 

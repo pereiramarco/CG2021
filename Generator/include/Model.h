@@ -8,7 +8,7 @@
 
 class Model{
 public:
-    Model(std::vector<Point3D> vertixesG,std::vector<Triangle> faces,std::vector<Point3D> normals,std::vector<std::pair<float,float>> texCoords);
+    Model(std::vector<Point3D> vertixesG,std::vector<Triangle> faces,std::vector<Point3D> normals,std::vector<std::pair<float,float>> texCoords,float radius);
     void saveToFile(std::string filename);
 private:
     int nVertices,nTriangulos;
@@ -16,4 +16,5 @@ private:
     std::vector<Point3D> vertixesT;
     std::vector<Point3D> normalsT;
     std::vector<std::pair<float,float>> texCoordsT;
+    float radius;
 };

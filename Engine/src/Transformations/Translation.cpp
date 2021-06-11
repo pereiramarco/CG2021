@@ -145,12 +145,16 @@ void Translation::drawCatmullRomCurve() {
     
 }
 
-void Translation::applyTransform() {
+std::vector<float> Translation::applyTransform() {
+	std::vector<float> ret;
+	ret.push_back(0);
     if (type==2) {
     	if (showCurves) drawCatmullRomCurve();
     	Point3D res,XX(1,0,0),YY(0,1,0),ZZ(0,0,1);
 		getGlobalCatmullRomPoint(currentPos,res,ZZ);
-
+		ret.push_back(res.x);
+		ret.push_back(res.y);
+		ret.push_back(res.z);
         cross(YY,ZZ,XX);
 	    cross(ZZ,XX,YY);
 
@@ -171,6 +175,11 @@ void Translation::applyTransform() {
 
         currentPos+=(delta_time/(time*time_multiplier)*!paused*retroceder);
     }
-    else 
+    else {
+		ret.push_back(x);
+		ret.push_back(y);
+		ret.push_back(z);
 		glTranslatef(x,y,z); 
+	}
+	return ret;
 }

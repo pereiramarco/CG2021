@@ -105,6 +105,6 @@ std::shared_ptr<Model> Sphere::generate() {
             }
         }
     }
-    return std::make_shared<Model>(vertexes,faces,normals,texCoords);
+    return std::make_shared<Model>(vertexes,faces,normals,texCoords,radius);
 }
 

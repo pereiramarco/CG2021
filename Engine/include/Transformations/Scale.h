@@ -1,5 +1,6 @@
 #pragma once
 #include "Transform.h"
+#include <vector>
 
 class Scale : public Transform {
 public:
@@ -10,6 +11,6 @@ public:
     Scale(const Scale& s);
 
     Scale(float xG, float yG, float zG);
-    void applyTransform();
+    std::vector<float> applyTransform();
 
 };

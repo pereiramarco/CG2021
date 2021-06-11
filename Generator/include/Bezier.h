@@ -15,6 +15,7 @@ public:
     Bezier(std::string patch_file,int tesselation_level);
     void read_patches();
     std::shared_ptr<Model> generate();
+    float maxDistance;
 private:
     int vertical_tesselation;
     float vertical_tesselation_inc;
@@ -30,4 +31,5 @@ private:
     void calculatePoints(std::vector<std::vector<Point3D>> preCalculatedMatrix,int& indexPoint,std::vector<Point3D>& vertixes,std::vector<Triangle>& triangs);
     Point3D calculatePoint(std::vector<std::vector<Point3D>> preCalculatedMatrix,int vertical_level,int horizontal_level);
     std::vector<std::vector<Point3D>> multiplyMatrix(std::vector<std::vector<Point3D>> m1, std::vector<std::vector<Point3D>> m2);
+    float distance(float x,float y,float z);
 };

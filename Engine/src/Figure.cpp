@@ -25,11 +25,13 @@ Figure::Figure(const Figure& fig) {
     shininess = fig.shininess;
     filename = fig.filename;
     texID = fig.texID;
+    radius = fig.radius;
+    centerPoint = fig.centerPoint;
 }
 
 // Point3D maps x,y,z to R,G,B
 
-Figure::Figure(int textureG, Point3D diff,Point3D spec,float shin,Point3D amb, Point3D emiss,std::string filenameG) {
+Figure::Figure(int textureG, Point3D diff,Point3D spec,float shin,Point3D amb, Point3D emiss,std::string filenameG,float radiusG) {
     diffR = diff.x;diffG = diff.y;diffB = diff.z;
     emissR= emiss.x;emissG = emiss.y;emissB = emiss.z;
     specR = spec.x;specG = spec.y;specB = spec.z;
@@ -37,6 +39,8 @@ Figure::Figure(int textureG, Point3D diff,Point3D spec,float shin,Point3D amb, P
     shininess=shin;
     filename=filenameG;
     texID = textureG;
+    centerPoint = Point3D(0,0,0);
+    radius = radiusG;
 }
 
 void Figure::apply() {

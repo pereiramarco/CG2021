@@ -136,5 +136,5 @@ std::shared_ptr<Model> Torus::generate() {
             }
         }
     }
-    return std::make_shared<Model>(vertexes,faces,normals,texCoords);
+    return std::make_shared<Model>(vertexes,faces,normals,texCoords,widenessRadius+thicknessRadius);
 }

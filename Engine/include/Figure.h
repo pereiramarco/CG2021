@@ -15,12 +15,14 @@ public:
     float emissR, emissG, emissB;
     float ambR, ambG, ambB;
     float shininess;
+    float radius;
+    Point3D centerPoint;
     GLuint texID;
     std::string filename;
 
     Figure();
     Figure(const Figure& fig);
-    Figure(int textureG, Point3D diff,Point3D spec,float shin,Point3D amb,Point3D emiss,std::string filenameG);
+    Figure(int textureG, Point3D diff,Point3D spec,float shin,Point3D amb,Point3D emiss,std::string filenameG,float radiusG);
     void apply();
     void reset();
 };

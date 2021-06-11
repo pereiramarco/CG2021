@@ -1,5 +1,6 @@
 #pragma once
 #include "Transform.h"
+#include <vector>
 
 class Rotation : public Transform {
 public:    
@@ -15,6 +16,6 @@ public:
     Rotation(const Rotation& r);
     Rotation(double degreesG, float axisXG, float axisYG, float axisZG);
     Rotation(double timeG, int ccG ,float axisXG, float axisYG, float axisZG);
-    void applyTransform();
+    std::vector<float> applyTransform();
 
 };
