@@ -132,5 +132,6 @@ std::shared_ptr<Model> Box::generate() {
     addXLayer(true);
     addZLayer(false);
     addZLayer(true);
-    return std::make_shared<Model>(points,faces,normals,texCoords);
+    float radius = sqrt(width*width + height*height + depth*depth);
+    return std::make_shared<Model>(points,faces,normals,texCoords,radius);
 }

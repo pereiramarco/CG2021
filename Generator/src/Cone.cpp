@@ -148,5 +148,5 @@ std::shared_ptr<Model> Cone::generate() {
             addBase(index);
         }
     }
-    return std::make_shared<Model>(vertexes,faces,normals,texCoords);
+    return std::make_shared<Model>(vertexes,faces,normals,texCoords,height > radiusBase ? height : radiusBase);
 }

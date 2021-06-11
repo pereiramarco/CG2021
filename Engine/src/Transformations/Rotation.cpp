@@ -37,7 +37,7 @@ Rotation::Rotation(double timeG, int ccG ,float axisXG, float axisYG, float axis
     type=2;
 }
 
-void Rotation::applyTransform() {
+std::vector<float> Rotation::applyTransform() {
     int t=glutGet(GLUT_ELAPSED_TIME);
     if (type==2) {
         float delta_time = t-t_before;
@@ -48,4 +48,11 @@ void Rotation::applyTransform() {
     }
     glRotatef(degrees*cc,axisX,axisY,axisZ);
     t_before=t;
+    std::vector<float> ret;
+    ret.push_back(2.0f);
+    ret.push_back(axisX);
+    ret.push_back(axisY);
+    ret.push_back(axisZ);
+    ret.push_back(degrees*cc);
+    return ret;
 }

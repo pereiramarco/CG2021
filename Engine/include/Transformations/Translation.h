@@ -19,7 +19,7 @@ public:
     Translation(const Translation& t);
     Translation(float xG, float yG, float zG);
     Translation(double timeG,std::vector<Point3D> curve_pointsG);
-    void applyTransform();
+    std::vector<float> applyTransform();
 private:
     void multMatrixVector(float *m, Point3D *v, Point3D *res);
     void getCatmullRomPoint(float t, Point3D p0, Point3D p1, Point3D p2, Point3D p3, Point3D& pos, Point3D& deriv);

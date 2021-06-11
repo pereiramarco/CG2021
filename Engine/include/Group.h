@@ -16,13 +16,16 @@
 #include "Transformations/Scale.h"
 #include "Figure.h"
 
+
 class Group {
 public:
     std::vector<std::shared_ptr<Transform>> transformations;
     std::unordered_map<std::string,Figure> models;
     std::vector<Group> nestedGroups;
+    bool isDrawn = false;
+    float actualMatrix[16];
 
-    Group()=default;
+    Group();
     Group(const Group& g);
 
     void addTransform(std::shared_ptr<Transform> t);
@@ -32,4 +35,6 @@ public:
     void addGroup(Group group);
 
     std::unordered_set<std::string> getModels();
+
+    void updateFigures(std::vector<float> trans);
 };

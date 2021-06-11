@@ -19,6 +19,12 @@ Scale::Scale(float xG, float yG, float zG) {
     zScale=zG;
 } 
 
-void Scale::applyTransform() {
+std::vector<float> Scale::applyTransform() {
+    std::vector<float> ret;
+    ret.push_back(1);
+    ret.push_back(xScale);
+    ret.push_back(yScale);
+    ret.push_back(zScale);
     glScalef(xScale,yScale,zScale);
+    return ret;
 }
